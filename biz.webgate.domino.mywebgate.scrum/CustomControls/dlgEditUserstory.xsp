@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view xmlns:xp="http://www.ibm.com/xsp/core" xmlns:xe="http://www.ibm.com/xsp/coreex"
+	xmlns:xc="http://www.ibm.com/xsp/custom">
+
+	<xp:this.resources>
+		<xp:dojoModule name="dijit.form.DateTextBox"></xp:dojoModule>
+	</xp:this.resources>
+
+	<xe:dialog id="dlgEditUserstory" style="width:600px;" title="Userstory">
+		<xp:panel>
+			<xp:this.data>
+				<xe:objectData var="editUserstory">
+					<xe:this.createObject><![CDATA[#{javascript:var id = viewScope.editUserstoryId;
+if(id == "" || id == null) {
+	viewScope.isEditUS = true;
+	viewScope.isUSNew = true;
+	editUserstory = userstoryBean.createNewUserstory();
+	editUserstory.setAuthor(session.createName(session.getEffectiveUserName()).getAbbreviated());
+	editUserstory.setCreatedAt(new Date());
+	editUserstory.setStatus("1");
+	editUserstory.setProjectId(compositeData.ProjectId);
+} else {
+	viewScope.isEditUS = false;
+	viewScope.isUSNew = false;
+	editUserstory = userstoryBean.getUserstoryById("" + id);
+}
+return editUserstory;}]]></xe:this.createObject>
+				</xe:objectData>
+			</xp:this.data>
+
+			<xe:formTable id="ftaUSEdit" labelWidth="110px;"
+				style="margin-top:10px;" styleClass="ftEditDialog">
+				<xp:this.facets>
+					<xe:dialogButtonBar id="dbbUSEdit" xp:key="footer">
+						<xp:button id="btSaveBug" value="Save">
+							<xp:eventHandler event="onclick" submit="true"
+								refreshMode="complete">
+								<xp:this.action><![CDATA[#{javascript:editUserstory.setIsDeleted("false");
+ccBean.updateMultiValueData(editUserstory, "userstoryAlias");
+editUserstory.setModifiedAt(new Date());
+userstoryBean.saveUserstory(editUserstory);
+viewScope.isUSNew = false;
+getComponent("dlgEditUserstory").hide("tblUserstories");}]]></xp:this.action>
+							</xp:eventHandler>
+						</xp:button>
+						<xp:button value="Close" id="btCloseUS">
+							<xp:eventHandler event="onclick" submit="true"
+								refreshMode="complete" immediate="true">
+								<xp:this.action><![CDATA[#{javascript:getComponent("dlgEditUserstory").hide();}]]></xp:this.action>
+							</xp:eventHandler>
+						</xp:button>
+					</xe:dialogButtonBar>
+				</xp:this.facets>
+
+				<xe:formRow id="froUSCustomer" for="cfUSCustomer" label="Customer">
+					<xp:text id="cfUSCustomer">
+						<xp:this.value><![CDATA[#{javascript:if (projectBean.getProjectById(editUserstory.projectId) != null) {
+	var customer = projectBean.getProjectById(editUserstory.projectId).getCustomer();
+	return editUserstory.getCustomerName(customer);
+}
+return "";}]]></xp:this.value>
+					</xp:text>
+				</xe:formRow>
+
+				<xe:formRow id="froUSProjekt" for="cfUSProjekt" label="Project">
+					<xp:text id="cfUSProjekt">
+						<xp:this.value><![CDATA[#{javascript:if (projectBean.getProjectById(editUserstory.projectId) != null) {
+	return "" + projectBean.getProjectById(editUserstory.projectId).getSubject();
+}
+return "";
+							}]]></xp:this.value>
+					</xp:text>
+				</xe:formRow>
+
+				<xe:formRow id="froUSIteration" for="cbbUSIteration"
+					label="Iteration">
+					<xp:comboBox id="cbbUSIteration" value="#{editUserstory.iterationId}">
+						<xp:selectItem itemLabel="- No Iteration -"
+							itemValue="">
+						</xp:selectItem>
+						<xp:selectItems id="cbbUserstoryIterationSelectItems">
+							<xp:this.value><![CDATA[#{javascript:if (editUserstory.getProjectId() != "" && editUserstory.getProjectId() != null) {
+	return iterationBean.getIterationValuesOfProject(editUserstory.getProjectId());
+}}]]></xp:this.value>
+						</xp:selectItems>
+					</xp:comboBox>
+				</xe:formRow>
+
+				<xe:formRow id="froUSSubject" for="iptUSSubject" label="Subject">
+					<xp:inputText id="iptUSSubject" value="#{editUserstory.subject}"
+						required="true" style="width:450px;">
+						<xp:this.validators>
+							<xp:validateRequired message="Please enter a subject for this Userstory">
+							</xp:validateRequired>
+						</xp:this.validators>
+					</xp:inputText>
+				</xe:formRow>
+
+				<xe:formRow id="froUSDue" for="iptUSDue" label="Due Date">
+					<xp:inputText id="iptUSDue" value="#{editUserstory.due}">
+						<xp:this.converter>
+							<xp:convertDateTime type="date">
+							</xp:convertDateTime>
+						</xp:this.converter>
+						<xp:dateTimeHelper dojoType="dijit.form.DateTextBox">
+						</xp:dateTimeHelper>
+					</xp:inputText>
+				</xe:formRow>
+
+
+
+				<xe:formRow id="froUSTime" for="iptUSTime" label="Expected Effort">
+					<xp:inputText id="iptUSTime" value="#{editUserstory.time}"
+						style="width:30px;">
+					</xp:inputText>
+					&#160;h
+				</xe:formRow>
+
+				<xe:formRow id="froUSResponsible" for="cnpResponsible"
+					label="Responsible">
+					<xc:ccNamePicker dirIsLookup="true"
+						dirMultiValue="false" dirReturnFieldFormula="true"
+						dirPath="mywebgate/mywebgate.nsf" dirView="($VIMPeople)"
+						pickerFieldName="Responsible" pickerId="ResponsibleId"
+						pickerObject="#{javascript:editUserstory}"
+						pickerObjectAlias="userstoryAlias" id="cnpResponsible"
+						dirReadOnly="false" dirFTSearchFieldInView="FullName"
+						mvSeparator="," dirRefreshId="cnpResponsible">
+						<xc:this.dirReturnFields>
+							<xp:value>
+								@Name([Abbreviate];FullName)
+							</xp:value>
+							<xp:value>FirstName</xp:value>
+							<xp:value>LastName</xp:value>
+						</xc:this.dirReturnFields>
+						<xc:this.dirReturnField><![CDATA[@Name([ABBREVIATE];FullName)]]></xc:this.dirReturnField>
+					</xc:ccNamePicker>
+				</xe:formRow>
+
+				<xe:formRow id="froUSStatus" for="cbbUSStatus" label="Status">
+					<xp:comboBox id="cbbUSStatus" value="#{editUserstory.status}">
+						<xp:selectItem itemLabel="Idea" itemValue="0">
+						</xp:selectItem>
+						<xp:selectItem itemLabel="Planned" itemValue="1">
+						</xp:selectItem>
+						<xp:selectItem itemLabel="In progress" itemValue="3">
+						</xp:selectItem>
+						<xp:selectItem itemLabel="Completed" itemValue="4">
+						</xp:selectItem>
+						<xp:selectItem itemLabel="Accepted" itemValue="5">
+						</xp:selectItem>
+					</xp:comboBox>
+				</xe:formRow>
+
+				<xe:formRow id="froUSTags" label="Tags" for="cmtTags">
+					<xc:ccMultivalueText id="cmtTags"
+						textArrayFieldName="Tags" textArrayId="taTags"
+						textArrayObjectAlias="userstoryAlias" textArrayObject="#{javascript:editUserstory}"
+						typeAheadReturnField="TagsDL" typeAheadView="lupDocumentsByTag"
+						mvSeparator=",">
+					</xc:ccMultivalueText>
+				</xe:formRow>
+
+				<xe:formRow id="froUSBody" label="Description" for="itUSBody">
+					<xp:inputTextarea id="itUSBody" value="#{editUserstory.body}"
+						style="width:450px;height:100px;">
+					</xp:inputTextarea>
+					<br />
+					<xp:link escape="true" id="lnkTimestamp">
+						<xp:this.text><![CDATA[> Add timestamp]]></xp:this.text>
+						<xp:eventHandler event="onclick" submit="false">
+							<xp:this.script><![CDATA[var toSet = "#{javascript:@Name('[CN]',@UserName()) + ' - ' + @Now() + ':'}"; 
+setTimestamp(toSet, '#{id:itUSBody}');]]></xp:this.script>
+						</xp:eventHandler>
+					</xp:link>
+				</xe:formRow>
+
+				<xe:formRow label="Files" id="froUSFiles">
+					<xc:ccFileDownload fileDownloadFieldName="Files"
+						fileDownloadId="Files" fileDownloadObject="#{javascript:editUserstory}"
+						uploadDisabled="false" deletionDisabled="false">
+					</xc:ccFileDownload>
+				</xe:formRow>
+
+
+			</xe:formTable>
+		</xp:panel>
+	</xe:dialog>
+
+</xp:view>

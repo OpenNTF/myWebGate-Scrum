@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view xmlns:xp="http://www.ibm.com/xsp/core" xmlns:xe="http://www.ibm.com/xsp/coreex">
+	<xp:this.afterPageLoad><![CDATA[#{javascript://ccBean.unregisterFiles(compositeData.fileDownloadId, compositeData.fileDownloadFieldName)
+//ccBean.unregisterFiles(compositeData.fileDownloadId, compositeData.fileUploadFieldName)}]]></xp:this.afterPageLoad>
+
+	<xp:panel>
+		<xp:this.id><![CDATA[${javascript:"pnlFileDownload" + compositeData.fileDownloadId}]]></xp:this.id>
+
+		<xp:this.data>
+			<xe:objectData var="objFiles" scope="request">
+				<xe:this.createObject><![CDATA[#{javascript:var newId = ""+viewScope.newId;
+if(newId != null && newId != ""){
+	var valueAdded = ccBean.addFileToObject(compositeData.fileDownloadObject, compositeData.fileDownloadFieldName, compositeData.fileDownloadId, newId);
+	if(valueAdded) viewScope.remove("newId");
+}
+
+var files = ccBean.getValue(compositeData.fileDownloadObject,compositeData.fileDownloadFieldName, compositeData.fileDownloadId);
+if(files == null) {
+	return "";
+ } else { 
+	return files;
+}}]]></xe:this.createObject>
+			</xe:objectData>
+		</xp:this.data>
+
+		<xp:panel>
+			<xp:button value="Upload New File" id="button1">
+				<xp:this.rendered><![CDATA[#{javascript:!compositeData.uploadDisabled && objFiles != ""}]]></xp:this.rendered>
+				<xp:eventHandler event="onclick" submit="true"
+					refreshMode="partial"
+					refreshId='#{javascript:"pnlFileDownload" + compositeData.fileDownloadId}'
+					disableValidators="true">
+					<xp:this.action><![CDATA[#{javascript:sessionScope.mySource = compositeData.fileDownloadObject;
+var url:XSPUrl = context.getUrl();
+url = @Left(url,url.getSiteRelativeAddress(context)) + "/FileUpload.xsp";
+url += "?field=" + compositeData.fileDownloadFieldName;
+url += "&ccId=" + compositeData.fileDownloadId;
+newId = @Unique();
+url += "&newId=" + newId;
+viewScope.newId = newId;
+/*dialogValues = "dialogHeight:100px;dialogWidth:300px;center:Yes;scroll:No;resizable:No;status:No"
+view.postScript("var oReturnValue = window.showModalDialog('" + url + "','','" + dialogValues +"');");
+*/
+viewScope.openURL = url;
+getComponent("dlgFile").show()
+}]]></xp:this.action>
+
+				</xp:eventHandler>
+			</xp:button>
+
+
+			<xp:text escape="true" id="cfMsgSaveFirst" style="color:rgb(128,128,128)">
+				<xp:this.value><![CDATA[#{javascript:var msg = compositeData.msgSaveFirst;
+if(msg == null || msg == ""){
+	"Please save the record to enable the upload function"
+}else{
+msg
+}}]]></xp:this.value>
+				<xp:this.rendered><![CDATA[#{javascript://!compositeData.uploadDisabled && objFiles == ""
+return false}]]></xp:this.rendered>
+			</xp:text>
+			<xp:link escape="true" id="link1"
+				style="color: #222222;font-weight: bold;color:#105CB6;">
+				<xp:this.rendered><![CDATA[#{javascript:!compositeData.uploadDisabled && objFiles == ""}]]></xp:this.rendered>
+				<xp:this.text><![CDATA[#{javascript:var msg = compositeData.msgSaveFirst;
+if(msg == null || msg == ""){
+	"> Enable File Upload";
+}else{
+	msg
+}}]]></xp:this.text>
+				<xp:eventHandler event="onclick" submit="true"
+					refreshMode="complete">
+					<xp:this.action><![CDATA[#{javascript:ccBean.updateMultiValueData(file, "fileAlias");
+library.saveFile(file);}]]></xp:this.action>
+					<xp:this.onComplete><![CDATA[XSP.partialRefreshPost("#{id:ccDownload}",{})
+]]></xp:this.onComplete>
+				</xp:eventHandler>
+			</xp:link>
+
+			<xp:br>
+				<xp:this.rendered><![CDATA[#{javascript:!compositeData.uploadDisabled}]]></xp:this.rendered>
+			</xp:br>
+			<xp:br>
+				<xp:this.rendered><![CDATA[#{javascript:!compositeData.uploadDisabled}]]></xp:this.rendered>
+			</xp:br>
+		</xp:panel>
+
+		<xp:table styleClass="xspDataTableFileDownload" id="tblFiles"
+			style="width:100%;">
+			<!--
+				<xp:this.rendered><![CDATA[#{javascript:objFiles !=
+				""}]]></xp:this.rendered>
+			-->
+			<thead>
+				<xp:tr style="text-align:left">
+					<th style="text-align:left" styleClass="xspDataTableFileDownloadName">
+						<xp:text value="File Name" id="cfName" for="image1">
+						</xp:text>
+					</th>
+					<th style="text-align:left" styleClass="xspDataTableFileDownloadSize">
+						<xp:text value="Size" id="cfSize" for="image1" escape="true">
+						</xp:text>
+					</th>
+					<th style="text-align:left" styleClass="xspDataTableFileDownloadType">
+						<xp:text value="File Type" id="cfType" for="image1">
+						</xp:text>
+					</th>
+					<th style="text-align:left; display:none;" styleClass="xspDataTableFileDownloadCreated">
+						<xp:text value="Created On" id="cfCreated" for="image1">
+						</xp:text>
+					</th>
+					<th style="text-align:left" styleClass="xspDataTableFileDownloadDelete">
+					</th>
+				</xp:tr>
+			</thead>
+			<xp:repeat id="rptFiles" rows="30" var="myFile">
+				<xp:this.value><![CDATA[#{javascript:objFiles
+}]]></xp:this.value>
+
+				<xp:this.rendered><![CDATA[#{javascript:objFiles != ""}]]></xp:this.rendered>
+				<xp:tr rendered="#{javascript:!myFile.isNewFile()}">
+					<xp:td styleClass="xspColumn" style="padding:4px 4px 2px 2px">
+						<xp:link escape="true" text="#{javascript:myFile.getDisplayName()}"
+							id="lnkName">
+							<xp:this.value><![CDATA[#{javascript:"FileUpload.xsp/file/" + compositeData.fileDownloadId + "/" + myFile.getId()}]]></xp:this.value>
+							<xp:eventHandler event="onclick" submit="true"
+								refreshMode="complete">
+								<xp:this.action><![CDATA[#{javascript:file.setDownloads(file.getDownloads()+1);
+library.saveFile(file);
+//context.redirectToPage("FileUpload.xsp/file/" + compositeData.fileDownloadId + "/" + myFile.getId());}]]></xp:this.action>
+							</xp:eventHandler>
+						</xp:link>
+					</xp:td>
+					<xp:td styleClass="xspColumn" style="padding:4px 4px 2px 2px">
+						<xp:text escape="true" id="cfFileSize">
+							<xp:this.value><![CDATA[#{javascript:var size = myFile.getFileSize();
+if(size > 1000000)
+	return @Round(size / 1000000) + " MB"
+else
+ return @Round(size / 1000) + " KB"}]]></xp:this.value>
+						</xp:text>
+					</xp:td>
+					<xp:td styleClass="xspColumn" style="padding:4px 4px 2px 2px">
+						<xp:image id="imgFile">
+							<xp:this.url><![CDATA[#{javascript:var protocol = context.getUrl().getScheme();
+var url= protocol + "://" + context.getUrl().getHost();
+if(myFile.getFileType().equals("application/pdf"))
+	url +"/domjava/xsp/theme/common/images/iconPDF.gif"
+else if(@Left(myFile.getFileType(),6).equals("image/"))
+	url +"/domjava/xsp/theme/common/images/iconImage.gif"
+else
+	 url +"/domjava/xsp/theme/common/images/iconFile.gif"}]]></xp:this.url>
+						</xp:image>
+						&#160;
+						<xp:text escape="true" id="cfFileType">
+							<xp:this.value><![CDATA[#{javascript:myFile.getFileType();
+}]]></xp:this.value>
+						</xp:text>
+					</xp:td>
+					<xp:td styleClass="xspColumn" style="padding:4px 4px 2px 2px"
+						rendered="false">
+						<xp:text escape="true" id="cfFileCreated"
+							value="#{javascript:myFile.getCreated();}">
+							<xp:this.converter>
+								<xp:convertDateTime type="both" dateStyle="short"
+									timeStyle="short">
+								</xp:convertDateTime>
+							</xp:this.converter>
+						</xp:text>
+					</xp:td>
+					<xp:td styleClass="xspColumn" style="padding:4px 4px 2px 2px">
+						<xp:image id="image1"
+							rendered="#{javascript:!compositeData.deletionDisabled}">
+							<xp:this.url><![CDATA[#{javascript:var protocol = context.getUrl().getScheme();
+var url= protocol + "://" + context.getUrl().getHost();
+url + "/domjava/xsp/theme/common/images/trash.gif"}]]></xp:this.url>
+							<xp:eventHandler event="onclick" submit="true"
+								refreshMode="partial"
+								refreshId='#{javascript:"pnlFileDownload" + compositeData.fileDownloadId}'>
+								<xp:this.action><![CDATA[#{javascript:ccBean.removeFile(compositeData.fileDownloadObject,compositeData.fileDownloadFieldName,compositeData.fileDownloadId, myFile.getId())}]]></xp:this.action>
+								<xp:this.script><![CDATA[return confirm("Do you really want to delete this attachment?")]]></xp:this.script>
+							</xp:eventHandler>
+						</xp:image>
+					</xp:td>
+				</xp:tr>
+			</xp:repeat>
+		</xp:table>
+	</xp:panel>
+	<xp:span rendered="false" style="color:rgb(255,0,0)">Needed Elements: Java
+		Files: biz.webgate.mywebgate.components.*,
+		biz.webgate.xpages.dss.binding.files.*,
+		biz.webgate.xpages.dss.binding.util.FileHelper, define
+		biz.webgate.mywebgate.components.ComponentSessionFacade as session
+		Bean 'ccBean' </xp:span>
+	<xp:br></xp:br>
+	<xp:span rendered="false" style="color:rgb(255,0,0)">Use XPage 'FileUpload' to
+		upload Files within a Dialog. Bind the CustomControl to a Attribute of
+		type 'List&lt;FileHelper&gt;'
+	</xp:span>
+	
+	
+	<xe:dialog id="dlgFile" title="Select file..." style="width:500px;">
+
+		<iframe src="#{javascript:viewScope.openURL}" id="fileupload"
+			style="margin-left:10px;border:0; width:90%; height:100%;"
+			frameBorder="0" class="dialog fileupload">
+		</iframe>
+
+		<xp:scriptBlock id="scriptBlock_fileupload_handler">
+			<xp:this.value><![CDATA[function hideDialog_fileupload() {
+    var id = "#{javascript:getClientId('pnlFileDownload' + compositeData.fileDownloadId)}";
+	XSP.closeDialog("#{id:dlgFile}");
+	XSP.partialRefreshPost(id,{});
+
+}]]></xp:this.value>
+		</xp:scriptBlock>
+
+	</xe:dialog>
+
+
+</xp:view>
+
+
+

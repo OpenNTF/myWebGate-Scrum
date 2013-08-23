@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view xmlns:xp="http://www.ibm.com/xsp/core"
+	xmlns:xe="http://www.ibm.com/xsp/coreex">
+	<xp:this.afterPageLoad><![CDATA[#{javascript:
+ccBean.removeCustomControl(compositeData.pickerObjectAlias,compositeData.pickerId,ccBean.CC_TYPE_MV)
+
+var scopeKey = "textArrayValue"+compositeData.pickerId;
+
+
+values = ccBean.getValue(compositeData.pickerObject,compositeData.pickerFieldName);
+
+viewScope.put(scopeKey,values);
+
+var valueBinding = facesContext.getApplication().createValueBinding( "#{viewScope." + scopeKey + "}");
+
+var field = getComponent("djltbValues" + compositeData.pickerId);
+
+if(field != null){
+	field.setValueBinding("value", valueBinding);
+}
+
+viewScope.put(scopeKey,values);
+
+ccBean.addCustomControl(compositeData.pickerId,compositeData.pickerObject,compositeData.pickerObjectAlias,compositeData.pickerFieldName,ccBean.CC_TYPE_MV)
+
+}]]></xp:this.afterPageLoad>
+
+
+
+
+
+
+	<xp:this.resources>
+		<xp:script src="/biz.webgate.tools.customcontrol.jss"
+			clientSide="false">
+		</xp:script>
+	</xp:this.resources>
+	<xp:scriptBlock id="scriptBlock1">
+		<xp:this.value><![CDATA[#{javascript:var thisId = compositeData.pickerId;
+var idAddIT = getClientId("lnkAddIT");
+var strRC = "function updateMVValue" + thisId + "(){\n"+
+	"var link = dojo.byId(\""+idAddIT+"\");\n"+
+	"if (dojo.isIE)\n"+
+    "{\n"+
+    "    link.fireEvent(\"onclick\");\n"+
+    "}\n"+
+    "else\n"+
+    "{ // Not IE\n"+
+    "    var event = document.createEvent(\"HTMLEvents\");\n"+
+    "    event.initEvent(\"click\", false, true);\n"+
+    "    console.debug(event);\n"+
+    "    link.dispatchEvent(event);\n"+
+    "}\n"+
+"};\n";
+return strRC;
+}]]></xp:this.value>
+	</xp:scriptBlock>
+	<xp:panel>
+		<xp:table>
+			<xp:tr>
+				<xp:td>
+					<xp:inputText id="itPicker" readonly="#{javascript:compositeData.dirReadOnly}">
+						<xp:this.rendered><![CDATA[#{javascript:var count = getComponent("djltbValues" + compositeData.pickerId).getValueAsList().size();
+if(count == 1){
+ var value = getComponent("djltbValues" + compositeData.pickerId).getValueAsString();
+ return value == null  || value == ""  || compositeData.dirMultiValue
+}
+return count < 1 || compositeData.dirMultiValue || compositeData.dirReadOnly}]]></xp:this.rendered>
+						<xp:typeAhead mode="partial" minChars="1"
+							tokens="#{javascript:compositeData.mvSeparator}"
+							ignoreCase="true" valueMarkup="true" var="lupkey">
+
+							<xp:this.valueList><![CDATA[#{javascript:var addFunction = "updateMVValue" + compositeData.pickerId;
+var searchFieldInView = compositeData.dirFTSearchFieldInView;
+ccBean.getTypeAhead(lupkey, compositeData.dirServer,compositeData.dirPath, compositeData.dirIsLookup,compositeData.dirView, compositeData.dirFTSearch, compositeData.dirInputString, compositeData.dirReturnFields, compositeData.dirReturnField, compositeData.dirReturnFieldFormula, 0, addFunction, searchFieldInView);
+}]]></xp:this.valueList>
+						</xp:typeAhead>
+
+
+						<xp:eventHandler event="onkeypress"
+							submit="true" refreshMode="partial"
+							refreshId='#{javascript:"pnlPicker"+ compositeData.pickerId }'
+							execMode="partial" disableValidators="true">
+							<xp:this.script><![CDATA[if (document.getElementById("#{id:itPicker}").value == "") { return false };
+if (thisEvent.keyCode != '13') { return false; }]]></xp:this.script>
+
+							<xp:this.execId><![CDATA[#{javascript:"pnlPicker"+ compositeData.pickerId }]]></xp:this.execId>
+							<xp:this.action><![CDATA[#{javascript:
+var count = getComponent("djltbValues" + compositeData.pickerId).getValueAsList().size();
+if(count == 1){
+ var value = getComponent("djltbValues" + compositeData.pickerId).getValueAsString();
+	if(value != null && value != ""  && !compositeData.dirMultiValue){
+		return;
+	}
+}
+if( count > 1 && !compositeData.dirMultiValue){
+	return;
+}
+
+
+var value = getComponent("itPicker").getValue();
+if(!compositeData.dirMultiValue && @Contains(value, compositeData.mvSeparator)){
+	value = @Left(value, compositeData.mvSeparator);
+}
+var scopeKey = "textArrayValue"+compositeData.pickerId;
+var tmpPicker = viewScope.get(scopeKey);
+
+addValue(tmpPicker,  value, scopeKey, compositeData.mvSeparator)
+
+getComponent("itPicker").setValue("");
+
+var scopeKey2 = "changedValue"+compositeData.pickerId;
+viewScope.put(scopeKey2,true);}]]></xp:this.action>
+							<xp:this.onComplete><![CDATA[#{javascript:if(compositeData.dirRefreshId != null && compositeData.dirRefreshId != ""){
+	var id = getClientId(compositeData.dirRefreshId);
+	return "XSP.partialRefreshPost('" + id + "',{});"
+}}]]></xp:this.onComplete>
+						</xp:eventHandler>
+					</xp:inputText>
+					
+					<xp:image id="imgAdd">
+
+
+						<xp:this.rendered><![CDATA[#{javascript:if(getComponent("itPicker").isReadonly()) return false;
+
+var count = getComponent("djltbValues" + compositeData.pickerId).getValueAsList().size();
+if(count == 1){
+ var value = getComponent("djltbValues" + compositeData.pickerId).getValueAsString();
+ return value == null  || value == ""  || compositeData.dirMultiValue
+}
+return count < 1 || compositeData.dirMultiValue}]]></xp:this.rendered><xp:this.url><![CDATA[#{javascript:var protocol = context.getUrl().getScheme();
+var url= protocol + "://" + context.getUrl().getHost();
+url + "/icons/vwicn008.gif"}]]></xp:this.url><xp:eventHandler event="onclick" submit="true"
+							refreshMode="partial" refreshId='#{javascript:"pnlPicker"+ compositeData.pickerId }' execMode="partial" disableValidators="true">
+							<xp:this.action><![CDATA[#{javascript:viewScope.namePickerTargetField="itPicker";
+getComponent("dlgNmPickerSingle").show();}]]></xp:this.action>
+							<xp:this.script><![CDATA[XSP.submitLatency = 300000;
+return true;]]></xp:this.script>
+						<xp:this.execId><![CDATA[#{javascript:"pnlPicker"+ compositeData.pickerId }]]></xp:this.execId></xp:eventHandler>
+					</xp:image>
+					
+					<xp:link escape="true" text="Add" id="lnkAddIT">
+						&#160;
+
+						<xp:this.rendered><![CDATA[#{javascript:if(getComponent("itPicker").isReadonly()) return false;
+
+var count = getComponent("djltbValues" + compositeData.pickerId).getValueAsList().size();
+if(count == 1){
+ var value = getComponent("djltbValues" + compositeData.pickerId).getValueAsString();
+ return value == null  || value == ""  || compositeData.dirMultiValue
+}
+
+return count < 1 || compositeData.dirMultiValue
+}]]></xp:this.rendered>
+						<xp:eventHandler event="onclick" submit="true"
+							refreshMode="partial" execMode="partial"
+							refreshId='#{javascript:"pnlPicker"+ compositeData.pickerId }'
+							disableValidators="true">
+
+
+							<xp:this.action><![CDATA[#{javascript:var value = getComponent("itPicker").getValue();
+if(!compositeData.dirMultiValue && @Contains(value, compositeData.mvSeparator)){
+	value = @Left(value, compositeData.mvSeparator);
+}
+var scopeKey = "textArrayValue"+compositeData.pickerId;
+var tmpPicker = viewScope.get(scopeKey);
+
+addValue(tmpPicker,  value, scopeKey, compositeData.mvSeparator);
+
+getComponent("itPicker").setValue("");
+
+var scopeKey2 = "changedValue"+compositeData.pickerId;
+viewScope.put(scopeKey2,true);}]]></xp:this.action>
+							<xp:this.execId><![CDATA[#{javascript:"pnlPicker"+ compositeData.pickerId }]]></xp:this.execId>
+							<xp:this.onComplete><![CDATA[#{javascript:if(compositeData.dirRefreshId != null && compositeData.dirRefreshId != ""){
+	var id = getClientId(compositeData.dirRefreshId);
+	return "XSP.partialRefreshPost('" + id + "');"
+}}]]></xp:this.onComplete>
+
+						</xp:eventHandler>
+					</xp:link>
+					
+
+					
+
+					<xp:br style="clear:both;">
+						<xp:this.rendered><![CDATA[#{javascript:if(getComponent("itPicker").isReadonly()) return false;
+
+var count = getComponent("djltbValues" + compositeData.pickerId).getValueAsList().size();
+if(count == 1){
+ var value = getComponent("djltbValues" + compositeData.pickerId).getValueAsString();
+ return value == null  || value == ""  || compositeData.dirMultiValue
+}
+
+return count < 1 || compositeData.dirMultiValue
+}]]></xp:this.rendered>
+					</xp:br>
+					<xe:djextListTextBox
+						multipleSeparator="#{javascript:compositeData.mvSeparator}"
+						multipleTrim="true">
+
+
+						<xe:this.id><![CDATA[${javascript:"djltbValues" + compositeData.pickerId}]]></xe:this.id>
+
+
+				
+						<xp:eventHandler event="onChange" submit="true"
+							refreshMode="partial"
+							refreshId='#{javascript:"pnlPicker"+ compositeData.pickerId }'
+							execMode="partial">
+							<xp:this.onComplete><![CDATA[//var id = "#{javascript:getClientId('pnlPicker'+ compositeData.pickerId)}";
+var id = "#{javascript:getClientId(compositeData.dirRefreshId)}";
+XSP.partialRefreshPost(id,{});]]></xp:this.onComplete>
+							<xp:this.execId><![CDATA[#{javascript:"pnlPicker"+ compositeData.pickerId }]]></xp:this.execId>
+							<xe:this.action><![CDATA[#{javascript:var scopeKey2 = "changedValue"+compositeData.pickerId;
+viewScope.put(scopeKey2,true);}]]></xe:this.action>
+						</xp:eventHandler>
+					</xe:djextListTextBox>
+
+				</xp:td>
+			</xp:tr>
+
+		</xp:table>
+		<xp:this.id><![CDATA[${javascript:"pnlPicker" + compositeData.pickerId}]]></xp:this.id>
+	</xp:panel>
+	<xp:span rendered="false" style="color:rgb(255,0,0)">
+		Needed Elements: Java
+		Files:biz.webgate.mywebgate.components.ComponentSessionFacade
+		(as session Bean 'ccBean')
+		call&#160;ccBean.updateMulitValueData(&lt;pickerObject&gt;,
+		&lt;pickerObjectAlias&gt;) to ensure that the data are in
+		sync with the Object. (e.g. in the save button)&#160;
+	</xp:span>
+	<xp:panel>
+		<xe:dialog id="dlgNmPickerSingle" title="Address book">
+
+			<xe:dialogContent id="dlgNmPickerSingleContent">
+				<table cellpadding="0" cellspacing="0" border="0"
+					width="100%">
+					<tr>
+						<td width="20%">
+							<xp:label value="Search for:"
+								id="lbSucheNach">
+							</xp:label>
+						</td>
+						<td style="padding: 0 3px;" width="60%">
+							<xp:inputText id="fldNmPickerSingleSrch"
+								style=" height: 20px !important;width:100%">
+								<xp:eventHandler event="onkeypress"
+									submit="false">
+									<xp:this.script><![CDATA[if (thisEvent.keyCode==13) document.getElementById("#{id:btnNmPickerSingleGO}").click(); 
+]]></xp:this.script>
+								</xp:eventHandler>
+							</xp:inputText>
+						</td>
+						<td width="20%" align="right">
+							<xp:button value="Search"
+								id="btnNmPickerSingleGO" style="height: 25px !important;">
+								<xp:eventHandler event="onclick"
+									submit="true" refreshMode="partial"
+									refreshId="panelNmPickerSingleSrch">
+								</xp:eventHandler>
+							</xp:button>
+						</td>
+					</tr>
+				</table>
+				<xp:br></xp:br>
+				<xp:panel id="panelNmPickerSingleSrch"
+					style="height:200.0px; overflow-y: scroll; border: 1px solid #C3C3C3; -webkit-box-shadow: 1px 1px 2px #666 inset; box-shadow: 1px 1px 2px #666 inset; padding: 0px">
+
+
+					<xp:table cellpadding="0" cellspacing="0"
+						style="padding:3px; width: 96%">
+						<xp:repeat id="NmPickerSingleResult"
+							var="nmPickerEntry" rows="50" indexVar="nmIndex">
+							<xp:this.value><![CDATA[#{javascript:var nm = getComponent("fldNmPickerSingleSrch").getValue();
+var maxResult = getComponent("NmPickerSingleResult").getRows();
+//print(compositeData.dirReturnFields);
+if(nm=="" || nm==null){
+	ccBean.getAllNames(compositeData.dirServer,compositeData.dirPath, compositeData.dirIsLookup,compositeData.dirView, compositeData.dirFTSearchAll, compositeData.dirInputString, compositeData.dirReturnFields, compositeData.dirReturnField, compositeData.dirReturnFieldFormula, 0, maxResult);
+}else{
+	ccBean.searchNames(nm, compositeData.dirServer,compositeData.dirPath, compositeData.dirIsLookup,compositeData.dirView, compositeData.dirFTSearch, compositeData.dirInputString, compositeData.dirReturnFields, compositeData.dirReturnField, compositeData.dirReturnFieldFormula, 0, compositeData.dirFTSearchFieldInView);
+}
+}]]></xp:this.value>
+
+
+							<xp:tr id="tr1">
+								<xp:this.style><![CDATA[#{javascript:style = "cursor:pointer; ";
+if(nmIndex%2 != 0){
+	style += "background-color:#EDEDED";
+}
+return style;}]]></xp:this.style>
+								<xp:repeat id="repeat1" rows="30"
+									value="#{javascript:nmPickerEntry.getValues()}" var="rptEntry"
+									indexVar="rptEntryIndex">
+									<xp:td
+										style="border: 1px solid #C3C3C3; padding:2px 3px;">
+										<xp:text escape="true"
+											id="computedField1">
+											<xp:this.value><![CDATA[#{javascript:nmPickerEntry.getValues().get(compositeData.dirReturnFields[rptEntryIndex])}]]></xp:this.value>
+										</xp:text>
+
+
+									</xp:td>
+								</xp:repeat>
+								<xp:td
+									style="width:100.0px; border: 1px solid #C3C3C3; padding:2px 10px 2px 3px">
+									<xp:image url="icn_user.png">
+									</xp:image>
+									&#160;
+									<xp:link escape="true" id="link2"
+										text="Select">
+
+										<xp:eventHandler event="onclick"
+											submit="true" refreshMode="partial"
+											refreshId='#{javascript:"pnlPicker"+ compositeData.pickerId }' disableValidators="true">
+											<xp:this.action><![CDATA[#{javascript:
+var value = nmPickerEntry.getReturnValue();
+var scopeKey = "textArrayValue"+compositeData.pickerId;
+var tmpPicker = viewScope.get(scopeKey);
+
+addValue(tmpPicker,  value, scopeKey, compositeData.mvSeparator);
+
+var scopeKey2 = "changedValue"+compositeData.pickerId;
+viewScope.put(scopeKey2,true);
+
+getComponent("dlgNmPickerSingle").hide("pnlPicker"+ compositeData.pickerId );
+
+}]]></xp:this.action>
+
+											<xp:this.onComplete><![CDATA[#{javascript:if(compositeData.dirRefreshId != null && compositeData.dirRefreshId != ""){
+	var id = getClientId(compositeData.dirRefreshId);
+	return "XSP.partialRefreshPost('" + id + "',{});"
+}}]]></xp:this.onComplete>
+										</xp:eventHandler>
+									</xp:link>
+
+								</xp:td>
+
+								<xp:eventHandler event="onclick"
+									submit="true" refreshMode="partial"
+									refreshId='#{javascript:"pnlPicker"+ compositeData.pickerId }'>
+									<xp:this.action><![CDATA[#{javascript:
+var value = nmPickerEntry.getReturnValue();
+var scopeKey = "textArrayValue"+compositeData.pickerId;
+var tmpPicker = viewScope.get(scopeKey);
+
+addValue(tmpPicker,  value, scopeKey, compositeData.mvSeparator);
+
+getComponent("dlgNmPickerSingle").hide("pnlPicker"+ compositeData.pickerId );}]]></xp:this.action>
+									<xp:this.onComplete><![CDATA[#{javascript:if(compositeData.dirRefreshId != null && compositeData.dirRefreshId != ""){
+	var id = getClientId(compositeData.dirRefreshId);
+	return "XSP.partialRefreshPost('" + id + "',{});"
+}}]]></xp:this.onComplete>
+								</xp:eventHandler>
+							</xp:tr>
+
+
+						</xp:repeat>
+					</xp:table>
+				</xp:panel>
+
+			</xe:dialogContent>
+		</xe:dialog>
+	</xp:panel>
+</xp:view>
+

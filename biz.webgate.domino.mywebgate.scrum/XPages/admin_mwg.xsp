@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view xmlns:xp="http://www.ibm.com/xsp/core"
+	xmlns:xe="http://www.ibm.com/xsp/coreex"
+	xmlns:xc="http://www.ibm.com/xsp/custom" pageTitle="Scrum - Administration"
+	pageIcon="wgc.ico">
+
+	<xp:this.beforeRenderResponse><![CDATA[#{javascript:if( viewScope.userSelect == null || viewScope.userSelect == "") {
+	viewScope.userSelect = @UserName();
+}}]]></xp:this.beforeRenderResponse>
+	<xc:ccApplication navigationPath="/administration/mwgapi"
+		title="Administration - myWebGate API">
+		<xp:this.facets>
+			<xc:ccAdminLogSettingsWidget xp:key="facetRight"></xc:ccAdminLogSettingsWidget>
+			
+			<xp:panel xp:key="facetMiddle" id="panUserDumb">
+				<xc:ccMyWebGateConfig></xc:ccMyWebGateConfig>
+				<xe:widgetContainer id="widgetContainer1"
+					titleBarText="User Object Dump">
+					<xp:panel>
+
+						<xp:inputText id="itUserName"
+							value="#{viewScope.userSelect}"
+							defaultValue="#{javascript:@UserName()}" size="80">
+						</xp:inputText>
+						<xp:button value="Query" id="btCheck">
+							<xp:eventHandler event="onclick"
+								submit="true" refreshMode="partial" refreshId="panUserDumb">
+							</xp:eventHandler>
+						</xp:button>
+						&#160;
+						<xp:button value="Clear Cache" id="button1">
+							<xp:eventHandler event="onclick"
+								submit="true" refreshMode="complete">
+								<xp:this.action><![CDATA[#{javascript:peopleBean.clearCache()}]]></xp:this.action>
+							</xp:eventHandler>
+						</xp:button>
+						<xp:br></xp:br>
+						<xp:br></xp:br>
+						<xe:dumpObject id="dumpObject1"
+							value="#{javascript:peopleBean.get(viewScope.userSelect);}">
+						</xe:dumpObject>
+
+					</xp:panel>
+				</xe:widgetContainer>
+				<xp:br></xp:br>
+
+			</xp:panel>
+			
+			<xc:ccNavigationAdmin xp:key="facetLeft"></xc:ccNavigationAdmin>
+		</xp:this.facets>
+	</xc:ccApplication>
+</xp:view>

@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view xmlns:xp="http://www.ibm.com/xsp/core"
+	xmlns:xe="http://www.ibm.com/xsp/coreex">
+
+	<xe:widgetContainer id="wcLogSettings"
+		titleBarText="Log Settings" type="sidebar">
+
+		<xe:this.dropDownNodes>
+			<xe:basicLeafNode label="Edit Settings">
+				<xe:this.onClick><![CDATA[XSP.openDialog("#{id:dlgLogSettings}");]]></xe:this.onClick>
+			</xe:basicLeafNode>
+			
+		</xe:this.dropDownNodes>
+		<xp:panel id="panLogSettings">
+
+			<xp:this.data>
+				<xe:objectData var="logSetting"
+					createObject="#{javascript:return mywebgateBean.getLogSettings()}">
+				</xe:objectData>
+			</xp:this.data>
+
+			<xp:table styleClass="mwg-listTable">
+
+				<xp:tr>
+					<xp:td style="width:60px">
+						General
+						
+					</xp:td>
+					<xp:td>
+						<xp:text escape="true" id="computedField1"
+							value="#{javascript:mywebgateBean.getLogLevelTXT(logSetting.getLogLevel())}">
+						</xp:text>
+					</xp:td>
+				</xp:tr>
+				<xp:tr>
+					<xp:td>Console</xp:td>
+					<xp:td>
+						<xp:text escape="true" id="computedField2"
+							value="#{javascript:mywebgateBean.getLogLevelTXT(logSetting.getLogLevelConsole())}">
+						</xp:text>
+					</xp:td>
+				</xp:tr>
+				<xp:tr>
+					<xp:td>File</xp:td>
+					<xp:td>
+						<xp:text escape="true" id="computedField3"
+							value="#{javascript:mywebgateBean.getLogLevelTXT(logSetting.getLogLevelFile())}">
+						</xp:text>
+					</xp:td>
+				</xp:tr>
+			</xp:table>
+			<xe:dialog id="dlgLogSettings" title="Log Settings">
+				<xe:dialogContent id="dialogContent1">
+					<xp:table style="width:389.0px"
+						styleClass="mwg-listTable">
+						<xp:tr>
+							<xp:td style="width:60px" valign="top">
+								<xp:label value="General" id="label1"
+									for="cbMainLogLevel">
+								</xp:label>
+							</xp:td>
+							<xp:td>
+								<xp:comboBox id="cbMainLogLevel"
+									value="#{logSetting.logMainLevelTXT}">
+									<xp:selectItem itemLabel="OFF"
+										itemValue="0">
+									</xp:selectItem>
+									<xp:selectItem itemLabel="SEVERE"
+										itemValue="1">
+									</xp:selectItem>
+									<xp:selectItem itemLabel="WARNING"
+										itemValue="2">
+									</xp:selectItem>
+									<xp:selectItem itemLabel="INFO"
+										itemValue="3">
+									</xp:selectItem>
+									<xp:selectItem itemLabel="FINE"
+										itemValue="4">
+									</xp:selectItem>
+									<xp:selectItem itemLabel="FINER"
+										itemValue="5">
+									</xp:selectItem>
+									<xp:selectItem itemLabel="FINEST"
+										itemValue="6">
+									</xp:selectItem>
+								</xp:comboBox>
+								<xp:br></xp:br>
+								Minimum log level for all
+								adapters.&#160;This setting will
+								override all&#160;other logging
+								settings below.
+							</xp:td>
+						</xp:tr>
+						<xp:tr>
+							<xp:td valign="top">
+								<xp:label value="Console" id="label2"
+									for="cbLogLevelConsole">
+								</xp:label>
+							</xp:td>
+							<xp:td>
+								<xp:comboBox id="cbLogLevelConsole"
+									value="#{logSetting.logLevelConsoleTXT}">
+									<xp:selectItem itemLabel="OFF"
+										itemValue="0">
+									</xp:selectItem>
+									<xp:selectItem itemLabel="SEVERE"
+										itemValue="1">
+									</xp:selectItem>
+									<xp:selectItem itemLabel="WARNING"
+										itemValue="2">
+									</xp:selectItem>
+									<xp:selectItem itemLabel="INFO"
+										itemValue="3">
+									</xp:selectItem>
+									<xp:selectItem itemLabel="FINE"
+										itemValue="4">
+									</xp:selectItem>
+									<xp:selectItem itemLabel="FINER"
+										itemValue="5">
+									</xp:selectItem>
+									<xp:selectItem itemLabel="FINEST"
+										itemValue="6">
+									</xp:selectItem>
+								</xp:comboBox>
+								<xp:br></xp:br>
+								Log level for server&#160;console
+								logging&#160;adapter.
+							</xp:td>
+						</xp:tr>
+						<xp:tr>
+							<xp:td valign="top">
+								<xp:label value="File" id="label3"
+									for="cbLogLevelFile">
+								</xp:label>
+							</xp:td>
+							<xp:td>
+								<xp:comboBox id="cbLogLevelFile"
+									value="#{logSetting.logLevelFileTXT}">
+									<xp:selectItem itemLabel="OFF"
+										itemValue="0">
+									</xp:selectItem>
+									<xp:selectItem itemLabel="SEVERE"
+										itemValue="1">
+									</xp:selectItem>
+									<xp:selectItem itemLabel="WARNING"
+										itemValue="2">
+									</xp:selectItem>
+									<xp:selectItem itemLabel="INFO"
+										itemValue="3">
+									</xp:selectItem>
+									<xp:selectItem itemLabel="FINE"
+										itemValue="4">
+									</xp:selectItem>
+									<xp:selectItem itemLabel="FINER"
+										itemValue="5">
+									</xp:selectItem>
+									<xp:selectItem itemLabel="FINEST"
+										itemValue="6">
+									</xp:selectItem>
+								</xp:comboBox>
+								<xp:br></xp:br>
+								Log level for file logging adapter.
+							</xp:td>
+						</xp:tr>
+					</xp:table>
+				</xe:dialogContent>
+				<xe:dialogButtonBar id="dialogButtonBar1">
+					<xp:button value="Save and apply" id="btSave">
+						<xp:eventHandler event="onclick" submit="true"
+							refreshMode="partial" refreshId="wcLogSettings">
+							<xp:this.action><![CDATA[#{javascript:mywebgateBean.saveLogSettings(logSetting);
+getComponent("dlgLogSettings").hide("wcLogSettings");}]]></xp:this.action>
+						</xp:eventHandler></xp:button>
+					<xp:button value="Cancel" id="btCancel">
+						<xp:eventHandler event="onclick" submit="true"
+							refreshMode="partial" immediate="true"
+							refreshId="wcLogSettings">
+							<xp:this.action><![CDATA[#{javascript:getComponent("dlgLogSettings").hide("wcLogSettings");}]]></xp:this.action>
+						</xp:eventHandler></xp:button></xe:dialogButtonBar>
+			</xe:dialog>
+		</xp:panel>
+	</xe:widgetContainer>
+</xp:view>

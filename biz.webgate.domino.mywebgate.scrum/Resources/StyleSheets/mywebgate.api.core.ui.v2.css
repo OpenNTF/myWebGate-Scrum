@@ -1,0 +1,59 @@
+.clear {clear: both;}
+.mwgMasterHeaderWarning {padding: 3px; background-color: #FFC74F; font-weight: bold; }
+.mwg-leftTagCloudPanel { padding: 0; }
+.mwg-defaultPadding { padding: 0 10px; }
+.shadowBtm:hover { -moz-box-shadow: 0 0 6px #ababab; -webkit-box-shadow: 0 0 6px #ababab; box-shadow: 0 0 6px #ababab;}
+.roundedCorners { -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; }
+
+.mwg-person { position: relative; padding: 3px; margin-top: 6px; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; 
+ background: white; /* old browsers */
+background: -moz-linear-gradient(left, #FFFFFF 0%, #E6E6E6 100%); /* firefox */
+background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,#FFFFFF), color-stop(100%,#E6E6E6)); /* webkit */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FFFFFF', endColorstr='#E6E6E6',GradientType=0 ); /* ie */}
+
+.mwg-person:hover { background-color: White;
+background: -moz-linear-gradient(top, #E6E6E6 0%, #FFFFFF 100%) !important; /* firefox */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#E6E6E6), color-stop(100%,#FFFFFF)) !important; /* webkit */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#E6E6E6', endColorstr='#FFFFFF',GradientType=0 ) !important; /* ie */ 
+box-shadow: 1px 1px 3px #999;
+}
+
+.mwg-person-del {position: absolute; top: 2px; right: 2px; cursor: pointer; display: none;}
+.mwg-person-add {position: absolute; top: 20px; right: 2px; cursor: pointer; display: none;}
+.mwg-person-rem {position: absolute; top: 20px; right: 18px; cursor: pointer; display: none;}
+.mwg-person:hover .mwg-person-del, .mwg-person:hover .mwg-person-add, .mwg-person:hover .mwg-person-rem {display: block; }
+
+/* Main dropdown menu */
+.mwg-loading { background-image:url(mwgapi_loader1.gif); background-repeat: no-repeat; padding: 8px 53px 0 0; }
+.mwg-menu-dropdown-container { background-color: White; padding: 4px; box-shadow: 3px 3px 3px #666; z-index: 1000;
+ border-style: solid; border-color: black; border-width: 0 1px 1px 1px;}
+ 
+.mwg-menu-dropdown-container li { display: block !important; float: none !important; list-style-image: none; list-style-position: outside; list-style-type: none; }
+.mwg-menu-dropdown-container li a { border: 0 !important; padding: 4px !important; } 
+.mwg-menu-dropdown-container li a:hover { background-color: #F0F3F5 !important;}
+.mwg-menu-dropdown-container li img { padding-right: 4px; border: 0; width: 16px; height: 16px; }
+
+/* add some extra padding for notification icon*/
+.myWebGate-menu-profiles a, .myWebGate-menu-notifications a {padding-left: 20px !important; }
+.mwg-menu-notifyIcon { background-image:url(mwgapi_icn_redexcl.png); background-repeat: no-repeat; background-position: 2px; color: red;}
+.mwg-menu-notifyIcon > a { color: #FF4D4D !important }
+/*.mwg-dd-notify { background-color: #FFC685 !important; }*/
+
+.mwg-dropdownlist-notifications li { width: 270px; white-space: normal !important; }
+.mwg-dropdownlist-notifications li a { border-bottom: 1px solid #E9E9E9 !important; font-weight: normal !important; }
+.mwg-dropdownlist-notifications .notif-Avatar { float: left; margin-right: 5px; }
+.mwg-dropdownlist-notifications .notif-Avatar img { width: 32px !important; height: 32px !important; }
+
+.mwgWidget {border: 1px solid #7F9DB9; padding: 0; margin-bottom: 20px;
+ -moz-box-shadow: 4px 4px 6px #ccc; -webkit-box-shadow: 4px 4px 6px #ccc;  box-shadow: 4px 4px 6px #ccc;  
+ -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px;
+}
+.mwgWidget H2 {border-bottom: 1px solid #7F9DB9; padding: 4px 5px 6px 10px; color: #39577A; font-size: 12px;
+background: -moz-linear-gradient(top, #E0E8F1 0%, #FFFFFF 100%); /* firefox */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#E0E8F1), color-stop(100%,#FFFFFF)); /* webkit */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#E0E8F1', endColorstr='#FFFFFF',GradientType=0 ); /* ie */
+}
+.mwgWidgetBody { padding: 3px 3px 0px 3px; }
+
+.addrPickerBtn { width: 14px; height: 14px; cursor: pointer; padding: 2px; border: 1px solid #9b9b9b !important; border-radius: 2px; }
+.addrSelectionZone:hover .addrPickerBtn, .addrPickerBtn:hover { background-color: #FFD263;  }

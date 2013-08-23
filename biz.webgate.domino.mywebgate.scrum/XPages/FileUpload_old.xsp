@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view xmlns:xp="http://www.ibm.com/xsp/core"
+	xmlns:xe="http://www.ibm.com/xsp/coreex">
+	<xp:this.beforePageLoad><![CDATA[#{javascript:viewScope.mySource = sessionScope.mySource;
+sessionScope.mySource = null;}]]></xp:this.beforePageLoad>
+	<xe:restService id="fileService" pathInfo="file">
+		<xe:this.service>
+			<xe:customRestService serviceBean="ccBean">
+			</xe:customRestService>
+		</xe:this.service>
+	</xe:restService><xp:br></xp:br>
+
+	<xp:fileUpload id="fileUpload1" value="#{viewScope.myFile}"></xp:fileUpload>
+	<xp:br></xp:br>
+	<xp:button value="Upload" id="btn">
+		<xp:eventHandler event="onclick" submit="true"
+			refreshMode="complete">
+			<xp:this.action><![CDATA[#{javascript:var objFile = viewScope.myFile;
+var objSource = viewScope.mySource;
+var strField = ""+ paramValues.field;
+var strId= ""+ paramValues.ccId;
+var strNewId= ""+ paramValues.newId;
+ccBean.uploadFile(objFile, objSource, strField, strId, strNewId);
+/*view.postScript("window.returnValue='" + objFile +"'")
+view.postScript("window.close()")*/
+view.postScript("parent.hideDialog_fileupload()")
+
+}]]></xp:this.action>
+		</xp:eventHandler></xp:button></xp:view>

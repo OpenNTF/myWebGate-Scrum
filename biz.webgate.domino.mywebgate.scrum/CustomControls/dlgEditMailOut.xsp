@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view xmlns:xp="http://www.ibm.com/xsp/core" xmlns:xe="http://www.ibm.com/xsp/coreex"
+	xmlns:xc="http://www.ibm.com/xsp/custom">
+
+	<xe:dialog id="dlgEditMailOut" style="width:600px;" title="Send Link">
+
+		<xp:panel>
+			<xe:formTable id="ftaMailOut" labelWidth="110px;"
+				style="margin-top:10px;" styleClass="ftEditDialog">
+
+				<xp:this.facets>
+					<xe:dialogButtonBar id="dbbMailOut" xp:key="footer">
+						<xp:button id="btSendMail" value="Send Link">
+							<xp:eventHandler event="onclick"
+								submit="true" refreshMode="complete">
+								<xp:this.action><![CDATA[#{javascript:var sendTo = asVector(getComponent("iptSendTo").getValue());
+var url = context.getUrl();
+url = url.getScheme() + "://" + url.getHost() + "/" + database.getFilePath() + "/show.xsp?id=" + viewScope.get("targetID");
+adminBean.sendLink(url, sendTo, getComponent("iptComment").getValue());
+getComponent("dlgEditMailOut").hide();}]]></xp:this.action>
+							</xp:eventHandler>
+						</xp:button>
+
+						<xp:button value="Close" id="btCloseMailOut">
+							<xp:eventHandler event="onclick" submit="true"
+								refreshMode="complete" immediate="true">
+								<xp:this.action><![CDATA[#{javascript:getComponent("dlgEditMailOut").hide();}]]></xp:this.action>
+							</xp:eventHandler>
+						</xp:button>
+					</xe:dialogButtonBar>
+				</xp:this.facets>
+
+				<xe:formRow id="froMailOutSendTo" for="iptSendTo" label="Send To">
+					<xp:inputText id="iptSendTo" style="width:450px;"
+						required="true" multipleSeparator=", ">
+						<xp:this.validators>
+							<xp:validateRequired message="Please enter at least one recipient!">
+							</xp:validateRequired>
+						</xp:this.validators>
+					</xp:inputText>
+				</xe:formRow>
+
+				<xe:formRow id="froMailOutComment" for="iptComment"
+					label="Comment">
+					<xp:inputTextarea id="iptComment" style="width:450px;height:100px;"></xp:inputTextarea>
+				</xe:formRow>
+
+			</xe:formTable>
+		</xp:panel>
+	</xe:dialog>
+
+</xp:view>

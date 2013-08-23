@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view xmlns:xp="http://www.ibm.com/xsp/core" xmlns:xe="http://www.ibm.com/xsp/coreex">
+
+	<xe:navigator id="navBoards">
+		<xe:this.treeNodes>
+			<xe:pageTreeNode page="/home.xsp" label="My Projects"
+				queryString="sel=p" selection="/home/p">
+			</xe:pageTreeNode>
+			<xe:pageTreeNode page="/home.xsp" label="My Tasks &amp; Bugs"
+				queryString="sel=t" selection="/home/t">
+			</xe:pageTreeNode>
+			<xe:pageTreeNode page="/home.xsp" label="Latest News"
+				queryString="sel=n" selection="/home/n">
+			</xe:pageTreeNode>
+		</xe:this.treeNodes>
+	</xe:navigator>
+
+	<xp:section id="secTagCloud" header="Tag Cloud" styleClass="xspSection tagCloud"
+		style="margin:0 5px;">
+		<xe:tagCloud rendererType="com.ibm.xsp.extlib.OneUITagCloud"
+			alternateText="{0} Entries" sliderVisible="false">
+			<xe:this.cloudData>
+				<xe:dominoViewCloudData cacheMode="auto"
+					viewName="lupDocumentsByTag" maxTagLimit="25" linkTargetPage="/home.xsp?sel=tag"
+					linkRequestParam="tag">
+				</xe:dominoViewCloudData>
+			</xe:this.cloudData>
+		</xe:tagCloud>
+	</xp:section>
+
+</xp:view>

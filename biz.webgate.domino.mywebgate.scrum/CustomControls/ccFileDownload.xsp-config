@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config>
+  <faces-config-extension>
+    <namespace-uri>http://www.ibm.com/xsp/custom</namespace-uri>
+    <default-prefix>xc</default-prefix>
+  </faces-config-extension>
+  <composite-component>
+    <component-type>ccFileDownload</component-type>
+    <composite-name>ccFileDownload</composite-name>
+    <composite-file>/ccFileDownload.xsp</composite-file>
+    <composite-extension>
+      <designer-extension>
+        <in-palette>true</in-palette>
+      </designer-extension>
+    </composite-extension>
+    <property>
+      <property-name>fileDownloadId</property-name>
+      <property-class>string</property-class>
+      <display-name>Id</display-name>
+      <description>Unique identifier for the Custom Control</description>
+    </property>
+    <property>
+      <property-name>fileDownloadFieldName</property-name>
+      <property-class>string</property-class>
+    </property>
+    <property>
+      <property-name>fileDownloadObject</property-name>
+      <property-class>java.lang.Object</property-class>
+    </property>
+    <property>
+      <property-name>uploadDisabled</property-name>
+      <property-class>boolean</property-class>
+      <property-extension>
+        <designer-extension>
+          <default-value>false</default-value>
+        </designer-extension>
+      </property-extension>
+    </property>
+    <property>
+      <property-name>msgSaveFirst</property-name>
+      <property-class>string</property-class>
+    </property>
+    <property>
+      <property-name>deletionDisabled</property-name>
+      <property-class>boolean</property-class>
+      <property-extension>
+        <designer-extension>
+          <default-value>false</default-value>
+        </designer-extension>
+      </property-extension>
+    </property>
+  </composite-component>
+</faces-config>

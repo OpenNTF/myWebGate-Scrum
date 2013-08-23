@@ -1,0 +1,32 @@
+<theme extends="oneuiv3.0.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="platform:/plugin/com.ibm.designer.domino.stylekits/schema/stylekit.xsd" >
+
+	<description>myWebGate Theme extends OneUI v3.0.2</description>	
+	
+	<resources mode="concat">
+        <script>
+            <contents>var mwgTheme='myWebGate-OneUI-V3';</contents>
+            <clientSide>true</clientSide>
+        </script>
+    </resources>
+	
+	<!-- CSS Styles -->
+	<resource>
+		<content-type>text/css</content-type><href>mywebgate.api.core.ui.v3.css</href>
+	</resource>
+	
+	<!-- Client-Side JavaScript -->
+	<resource>	
+		<content-type>application/x-javascript</content-type>
+		<href>biz.webgate.mywebgate.api.core.ui.js</href>
+	</resource> 
+
+	<!-- Controls -->	
+	<control override="false">
+		<name>ViewRoot</name>
+		<property>
+			<name>pageTitle</name>
+			<value>SCRUM</value>
+		</property>
+	</control>
+	
+</theme>

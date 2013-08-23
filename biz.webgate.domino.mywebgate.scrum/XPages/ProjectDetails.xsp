@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view xmlns:xp="http://www.ibm.com/xsp/core" xmlns:xc="http://www.ibm.com/xsp/custom"
+	xmlns:xe="http://www.ibm.com/xsp/coreex" pageIcon="wgc.ico">
+
+	<xp:this.resources>
+		<xp:dojoModule name="dijit.form.DateTextBox"></xp:dojoModule>
+	</xp:this.resources>
+
+	<xp:this.afterRenderResponse><![CDATA[#{javascript:sessionScope.remove("id");
+sessionScope.remove("type");}]]></xp:this.afterRenderResponse>
+
+	<xp:this.beforePageLoad><![CDATA[#{javascript:if (sessionScope.get("id") != null && sessionScope.get("id") != "") {
+	viewScope.put(sessionScope.get("type")+"Id",sessionScope.get("id"))
+}}]]></xp:this.beforePageLoad>
+
+	<xp:this.pageTitle><![CDATA[#{javascript:if (paramValues.id == null || paramValues.id == "") {
+	"Scrum - New project..."
+} else {
+	"Scrum - " + editProject.getCustomerName(editProject.customer) + ", " + editProject.getSubject()
+}}]]></xp:this.pageTitle>
+	<xp:eventHandler event="onClientLoad" submit="false">
+		<xp:this.script><![CDATA[var id = "#{javascript:sessionScope.id}";
+var type = "#{javascript:sessionScope.type}";
+if (type == "iteration") {
+	tabClickProject(document.getElementById("pIterations"));
+	XSP.showContent("#{id:dynContProject}","dynContPIterations")
+} else if (type == "userstory") {
+	tabClickProject(document.getElementById("pUserstories"));
+	XSP.showContent("#{id:dynContProject}","dynContPUserstories")
+} else if (type == "task") {
+	tabClickProject(document.getElementById("pTasks"));
+	XSP.showContent("#{id:dynContProject}","dynContPTasks")
+} else if (type == "bug") {
+	tabClickProject(document.getElementById("pBugs"));
+	XSP.showContent("#{id:dynContProject}","dynContPBugs")
+}]]></xp:this.script>
+	</xp:eventHandler>
+
+	<xp:this.data>
+		<xe:objectData var="editProject" scope="view">
+			<xe:this.createObject><![CDATA[#{javascript:var id = paramValues.id;
+if(id == "" || id == null) {
+	viewScope.isEdit = true;
+	viewScope.isNew = true;
+	editProject = projectBean.createNewProject();					
+}else{
+	viewScope.isEdit = false;
+	viewScope.isNew = false;
+	editProject = projectBean.getProjectById("" + id);
+}
+return editProject;}]]></xe:this.createObject>
+		</xe:objectData>
+	</xp:this.data>
+
+	<xc:ccApplication navigationPath="/project/overview">
+		<xc:this.title><![CDATA[#{javascript:if (paramValues.id == null || paramValues.id == "") {
+	"New project..."
+} else {
+	editProject.getCustomerName(editProject.customer) + ", " + editProject.getSubject()
+}}]]></xc:this.title>
+		<xp:this.facets>
+			<xp:panel xp:key="facetLeft"></xp:panel>
+
+			<xp:panel xp:key="facetMiddle" id="panContent">
+
+				<div class="lotusTabContainer">
+					<ul class="lotusTabs" id="projectDetails">
+						<li class="lotusSelected">
+							<a href="#"
+								onclick='tabClickProject(this);XSP.showContent("#{id:dynContProject}","dynContPDetails")'
+								id="pDetails"> Details
+							</a>
+						</li>
+						<li>
+							<a href="#"
+								onclick='tabClickProject(this);XSP.showContent("#{id:dynContProject}","dynContPIterations")'
+								id="pIterations">
+								Iterations
+							</a>
+						</li>
+						<li>
+							<a href="#"
+								onclick='tabClickProject(this);XSP.showContent("#{id:dynContProject}","dynContPUserstories")'
+								id="pUserstories">
+								Userstories
+							</a>
+						</li>
+						<li>
+							<a href="#"
+								onclick='tabClickProject(this);XSP.showContent("#{id:dynContProject}","dynContPTasks")'
+								id="pTasks">
+								Tasks
+							</a>
+						</li>
+						<li>
+							<a href="#"
+								onclick='tabClickProject(this);XSP.showContent("#{id:dynContProject}","dynContPBugs")'
+								id="pBugs">
+								Bugs
+							</a>
+						</li>
+					</ul>
+				</div>
+
+				<xe:dynamicContent id="dynContProject"
+					defaultFacet="dynContPDetails">
+					<xp:this.facets>
+						<xp:panel xp:key="dynContPDetails">
+							<xe:formTable id="ftaProjectEdit" labelWidth="130px;"
+								style="margin-top:10px;" styleClass="ftEditDialog">
+								<xp:this.facets>
+									<xe:dialogButtonBar id="dbbEditProject"
+										xp:key="footer">
+										<xp:button value="Edit" id="btEditProject">
+											<xp:this.rendered><![CDATA[#{javascript:!viewScope.isEdit && (hasRole("[Admin]") || hasRole("[Intern]"))}]]></xp:this.rendered>
+											<xp:eventHandler event="onclick" submit="true"
+												refreshMode="partial" immediate="true" refreshId="ftaProjectEdit">
+												<xp:this.action><![CDATA[#{javascript:viewScope.isEdit = true;}]]></xp:this.action>
+											</xp:eventHandler>
+										</xp:button>
+
+										<xp:button id="btSaveProject" value="Save"
+											rendered="#{viewScope.isEdit}">
+											<xp:eventHandler event="onclick" submit="true"
+												refreshMode="complete">
+												<xp:this.action><![CDATA[#{javascript:ccBean.updateMultiValueData(editProject, "projectAlias");
+editProject.setModifiedAt(new Date());
+projectBean.saveProject(editProject);
+viewScope.isEdit = false;
+
+var strLink = "/ProjectDetails.xsp?id=" + editProject.getId();
+if(compositeData.UserOnly) {
+	strLink += "&parentNode=myProjects";
+}
+context.redirectToPage(strLink);}]]>
+												</xp:this.action>
+											</xp:eventHandler>
+										</xp:button>
+										<xp:button value="Cancel" id="btCancelEditProject">
+											<xp:this.rendered><![CDATA[#{javascript:viewScope.isEdit && (paramValues.id != null && paramValues.id != "")}]]></xp:this.rendered>
+											<xp:eventHandler event="onclick" submit="true"
+												refreshMode="partial" immediate="true" refreshId="ftaProjectEdit">
+												<xp:this.action><![CDATA[#{javascript:viewScope.isEdit = false;}]]></xp:this.action>
+											</xp:eventHandler>
+										</xp:button>
+										<xp:button value="Close" id="btCloseEditProject">
+											<xp:eventHandler event="onclick" submit="true"
+												refreshMode="complete" immediate="true">
+												<xp:this.action><![CDATA[#{javascript:if(paramValues.sel != null) {
+	context.redirectToPage("/home.xsp?sel=" + paramValues.sel);
+} else if(paramValues.tag != null) {
+	context.redirectToPage("/home.xsp?tag=" + paramValues.tag);
+} else {
+	context.redirectToPage("/ProjectOverview.xsp");
+}}]]></xp:this.action>
+											</xp:eventHandler>
+										</xp:button>
+
+										<xp:link escape="true" id="lnkSendLink">
+											<xp:this.text><![CDATA[> send link]]></xp:this.text>
+											<xp:this.rendered><![CDATA[#{javascript:paramValues.id != null && paramValues.id != ""}]]></xp:this.rendered>
+											<xp:eventHandler event="onclick" submit="true"
+												refreshMode="partial" refreshId="dlgEditMailOut">
+												<xp:this.action><![CDATA[#{javascript:viewScope.put("targetID", editProject.id);
+getComponent("dlgEditMailOut").show();}]]></xp:this.action>
+											</xp:eventHandler>
+										</xp:link>
+
+									</xe:dialogButtonBar>
+								</xp:this.facets>
+								<xe:formRow id="froID" for="cpfId" label="ID"
+									rendered="false">
+									<xp:text escape="true" id="cpfId" value="#{editProject.id}">
+									</xp:text>
+								</xe:formRow>
+								<xe:formRow id="froSubject" for="iptSubject" label="Project name">
+									<xp:inputText id="iptSubject" value="#{editProject.subject}"
+										style="width:400px;" readonly="#{!viewScope.isEdit}" required="#{viewScope.isEdit}">
+										<xp:this.validators>
+											<xp:validateRequired message="Please enter the project's name!">
+											</xp:validateRequired>
+										</xp:this.validators>
+									</xp:inputText>
+								</xe:formRow>
+								<xe:formRow id="froCustomer" for="cfCustomer" label="Customer">
+									<xp:text id="iptCustomerRead" style="width:400px;"
+										rendered="#{javascript:!viewScope.isEdit}"
+										value="#{javascript:editProject.getCustomerName(editProject.customer)}">
+									</xp:text>
+
+									<xp:comboBox id="cfCustomer" value="#{editProject.customer}"
+										rendered="#{javascript:viewScope.isEdit}" required="#{viewScope.isEdit}">
+										<xp:selectItem itemLabel="" itemValue="">
+										</xp:selectItem>
+										<xp:selectItems>
+											<xp:this.value><![CDATA[#{javascript:customerBean.getCustomersList();}]]></xp:this.value>
+										</xp:selectItems>
+										<xp:this.validators>
+											<xp:validateRequired message="Please select the customer!">
+											</xp:validateRequired>
+										</xp:this.validators>
+										<xp:eventHandler event="onchange" submit="true"
+											refreshMode="partial" refreshId="ftaProjectEdit"
+											disableValidators="true">
+										</xp:eventHandler>
+									</xp:comboBox>
+
+								</xe:formRow>
+								<xe:formRow id="froStart" label="Start date">
+									<xp:inputText id="inpStart" value="#{editProject.start}"
+										readonly="#{!viewScope.isEdit}">
+										<xp:this.converter>
+											<xp:convertDateTime type="date">
+											</xp:convertDateTime>
+										</xp:this.converter>
+										<xp:dateTimeHelper dojoType="dijit.form.DateTextBox">
+										</xp:dateTimeHelper>
+									</xp:inputText>
+								</xe:formRow>
+								<xe:formRow id="froEnd" label="End date">
+									<xp:inputText id="inpEnd" value="#{editProject.end}"
+										readonly="#{!viewScope.isEdit}">
+										<xp:this.converter>
+											<xp:convertDateTime type="date">
+											</xp:convertDateTime>
+										</xp:this.converter>
+										<xp:dateTimeHelper dojoType="dijit.form.DateTextBox">
+										</xp:dateTimeHelper>
+									</xp:inputText>
+								</xe:formRow>
+								<xe:formRow id="froLeader" for="cnpLeader" label="Project leader">
+									<xe:this.rendered><![CDATA[#{javascript:!getComponent("cfCustomer").getValue() == ""}]]></xe:this.rendered>
+									<xc:ccNamePicker dirIsLookup="true"
+										rendered="#{viewScope.isEdit}" dirMultiValue="false"
+										dirRefreshId="cnpLeader" dirReturnFieldFormula="true"
+										dirPath="mywebgate/mywebgate.nsf" dirView="($VIMPeople)"
+										pickerFieldName="Leader" pickerId="LeaderId"
+										pickerObject="#{javascript:editProject}"
+										pickerObjectAlias="projectAlias" id="cnpLeader"
+										dirFTSearchFieldInView="FullName" mvSeparator=","
+										dirReadOnly="false">
+										<xc:this.dirReturnFields>
+											<xp:value>
+												@Name([Abbreviate];FullName)
+											</xp:value>
+											<xp:value>
+												FirstName
+											</xp:value>
+											<xp:value>
+												LastName
+											</xp:value>
+										</xc:this.dirReturnFields>
+										<xc:this.dirReturnField><![CDATA[@Name([ABBREVIATE];FullName)]]></xc:this.dirReturnField>
+
+									</xc:ccNamePicker>
+									<xe:djextListTextBox rendered="#{!viewScope.isEdit}"
+										multipleSeparator="," multipleTrim="true"
+										value="#{javascript:editProject.getLeader()}" disabled="true"
+										showReadonlyAsDisabled="true">
+									</xe:djextListTextBox>
+								</xe:formRow>
+								<xe:formRow id="froInternal" for="cnpInternal" label="Internal members">
+									<xe:this.rendered><![CDATA[#{javascript:!getComponent("cfCustomer").getValue() == ""}]]></xe:this.rendered>
+
+									<xc:ccNamePicker
+										rendered="#{viewScope.isEdit}" dirRefreshId="cnpInternal"
+										dirIsLookup="true" dirMultiValue="true"
+										dirReturnFieldFormula="true" dirPath="mywebgate/mywebgate.nsf"
+										dirView="($VIMPeople)" pickerFieldName="Internal"
+										pickerId="InternalId" pickerObject="#{javascript:editProject}"
+										pickerObjectAlias="projectAlias" id="cnpInternal"
+										mvSeparator="," dirFTSearchFieldInView="FullName">
+										<xc:this.dirReturnFields>
+											<xp:value>
+												@Name([Abbreviate];FullName)
+											</xp:value>
+											<xp:value>
+												FirstName
+											</xp:value>
+											<xp:value>
+												LastName
+											</xp:value>
+										</xc:this.dirReturnFields>
+										<xc:this.dirReturnField><![CDATA[@Name([ABBREVIATE];FullName)]]></xc:this.dirReturnField>
+									</xc:ccNamePicker>
+									<xe:djextListTextBox rendered="#{!viewScope.isEdit}"
+										multipleSeparator="," multipleTrim="true"
+										value="#{javascript:editProject.getInternal()}" disabled="true"
+										showReadonlyAsDisabled="true">
+									</xe:djextListTextBox>
+
+								</xe:formRow>
+								<xe:formRow id="froExternal" for="cnpExternal" label="External members">
+									<xe:this.rendered><![CDATA[#{javascript:!getComponent("cfCustomer").getValue() == ""}]]></xe:this.rendered>
+									<xc:ccNamePicker dirIsLookup="true"
+										dirRefreshId="cnpExternal" rendered="#{viewScope.isEdit}"
+										dirMultiValue="true" dirReturnFieldFormula="true"
+										dirPath="mywebgate/mywebgate.nsf" dirView="($VIMPeople)"
+										pickerFieldName="External" pickerId="ExternalId"
+										pickerObject="#{javascript:editProject}"
+										pickerObjectAlias="projectAlias" id="cnpExternal"
+										mvSeparator="," dirFTSearchFieldInView="FullName">
+										<xc:this.dirReturnFields>
+											<xp:value>
+												@Name([Abbreviate];FullName)
+											</xp:value>
+											<xp:value>
+												FirstName
+											</xp:value>
+											<xp:value>
+												LastName
+											</xp:value>
+										</xc:this.dirReturnFields>
+										<xc:this.dirReturnField><![CDATA[@Name([ABBREVIATE];FullName)]]></xc:this.dirReturnField>
+									</xc:ccNamePicker>
+									<xe:djextListTextBox rendered="#{!viewScope.isEdit}"
+										multipleSeparator="," multipleTrim="true"
+										value="#{javascript:editProject.getExternal()}" disabled="true"
+										showReadonlyAsDisabled="true">
+									</xe:djextListTextBox>
+								</xe:formRow>
+								<xe:formRow id="froTags" label="Tags" for="cmtTags">
+									<xc:ccMultivalueText id="cmtTags"
+										rendered="#{viewScope.isEdit}" binding="#{javascript:editProject}"
+										textArrayId="taTags" textArrayFieldName="Tags"
+										textArrayObject="#{javascript:editProject}"
+										textArrayObjectAlias="projectAlias" mvSeparator=",">
+									</xc:ccMultivalueText>
+									<xe:djextListTextBox rendered="#{!viewScope.isEdit}"
+										multipleSeparator="," multipleTrim="true"
+										value="#{javascript:editProject.getTags()}" disabled="true"
+										showReadonlyAsDisabled="true">
+									</xe:djextListTextBox>
+								</xe:formRow>
+								<xe:formRow id="froProjectBody" label="Description"
+									for="itProjectBody">
+									<xp:inputTextarea id="itProjectBody" value="#{editProject.body}"
+										style="width:400px;height:100px;" readonly="#{!viewScope.isEdit}">
+									</xp:inputTextarea>
+									<br />
+									<xp:link escape="true" id="lnkTimestamp" rendered="#{viewScope.isEdit}">
+										<xp:this.text><![CDATA[> Add timestamp]]></xp:this.text>
+										<xp:eventHandler event="onclick" submit="false">
+											<xp:this.script><![CDATA[var toSet = "#{javascript:@Name('[CN]',@UserName()) + ' - ' + @Now() + ':'}"; 
+setTimestamp(toSet, '#{id:itProjectBody}');]]></xp:this.script>
+										</xp:eventHandler>
+									</xp:link>
+								</xe:formRow>
+								<xe:formRow label="Files" id="froProjectFiles">
+									<xc:ccFileDownload uploadDisabled="#{!viewScope.isEdit}"
+										fileDownloadFieldName="Files" fileDownloadId="Fileslll"
+										fileDownloadObject="#{javascript:editProject}"
+										deletionDisabled="#{!viewScope.isEdit}" id="projectUploader">
+									</xc:ccFileDownload>
+								</xe:formRow>
+							</xe:formTable>
+						</xp:panel>
+						<xp:panel xp:key="dynContPIterations">
+							<xc:ccIterationOverview ProjectId="#{editProject.id}"
+								ProjectIsNew="#{javascript:viewScope.isNew}">
+							</xc:ccIterationOverview>
+						</xp:panel>
+						<xp:panel xp:key="dynContPUserstories">
+							<xc:ccUserstoriesOverview ProjectId="#{editProject.id}">
+							</xc:ccUserstoriesOverview>
+						</xp:panel>
+						<xp:panel xp:key="dynContPTasks">
+							<xc:ccTaskOverview ProjectId="#{editProject.id}"
+								ProjectIsNew="#{viewScope.isNew}" showAssignedTo="true"
+								showAuthor="true" showCustomer="false" showIteration="true"
+								showUserstory="true" showProject="false" showCompleted="true">
+							</xc:ccTaskOverview>
+						</xp:panel>
+						<xp:panel xp:key="dynContPBugs">
+							<xc:ccBugOverview ProjectId="#{editProject.id}"
+								ProjectIsNew="#{viewScope.isNew}" showAssignedTo="true"
+								showAuthor="true" showCustomer="false" showUserstory="true"
+								showProject="false" showCompleted="true">
+							</xc:ccBugOverview>
+						</xp:panel>
+					</xp:this.facets>
+				</xe:dynamicContent>
+
+			</xp:panel>
+		</xp:this.facets>
+	</xc:ccApplication>
+	<xc:dlgEditTask refreshId=""></xc:dlgEditTask>
+	<xc:dlgEditBug refreshId=""></xc:dlgEditBug>
+	<xc:dlgEditMailOut></xc:dlgEditMailOut>
+
+</xp:view>

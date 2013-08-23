@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view xmlns:xp="http://www.ibm.com/xsp/core" xmlns:xc="http://www.ibm.com/xsp/custom"
+	xmlns:xe="http://www.ibm.com/xsp/coreex" pageTitle="Scrum - Administration"
+	pageIcon="/wgc.ico">
+
+	<xc:ccApplication navigationPath="/administration/home"
+		title="Administration - General Settings">
+		<xp:this.facets>
+			<xp:span xp:key="facetMiddle">
+				<xp:panel id="panContainer">
+
+					<xe:widgetContainer id="widgetContainer1"
+						titleBarText="Cockpit Settings">
+						<xp:panel>
+							<xp:this.data>
+								<xe:objectData var="welcomePage"
+									createObject="#{javascript:adminBean.getWelcomePage()}" scope="request">
+								</xe:objectData>
+							</xp:this.data>
+
+							<xp:table style="width:50%;">
+								<xp:tr>
+									<xp:td style="width:150px;vertical-align:top;">
+										<xp:label value="Infotext" id="lblInfoText"
+											for="InfoText">
+										</xp:label>
+									</xp:td>
+									<xp:td>
+										<xp:inputTextarea id="InfoText" style="width:400px;"
+											value="#{welcomePage.infoText}" readonly="true">
+										</xp:inputTextarea>
+									</xp:td>
+								</xp:tr>
+							</xp:table>
+
+							<xp:panel style="margin-top:30px;">
+								<xp:button value="Edit Settings" id="btnEdit">
+									<xp:eventHandler event="onclick" submit="true"
+										refreshMode="complete">
+										<xp:this.action><![CDATA[#{javascript:getComponent("dlgEditSettings").show()}]]></xp:this.action>
+									</xp:eventHandler>
+								</xp:button>
+							</xp:panel>
+
+						</xp:panel>
+					</xe:widgetContainer>
+
+				</xp:panel>
+			</xp:span>
+			<xc:ccNavigationAdmin xp:key="facetLeft"></xc:ccNavigationAdmin>
+		</xp:this.facets>
+	</xc:ccApplication>
+	<xc:dlgEditSettings></xc:dlgEditSettings>
+</xp:view>

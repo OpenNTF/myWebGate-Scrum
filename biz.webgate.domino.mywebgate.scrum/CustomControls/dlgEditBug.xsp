@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view xmlns:xp="http://www.ibm.com/xsp/core" xmlns:xe="http://www.ibm.com/xsp/coreex"
+	xmlns:xc="http://www.ibm.com/xsp/custom">
+
+	<xp:this.resources>
+		<xp:dojoModule name="dijit.form.DateTextBox"></xp:dojoModule>
+	</xp:this.resources>
+
+	<xe:dialog id="dlgEditBug" style="width:600px;" title="Bug">
+		<xp:panel>
+			<xp:this.data>
+				<xe:objectData var="editBug" scope="view">
+					<xe:this.createObject><![CDATA[#{javascript:var id = viewScope.editBugId;
+var thisEditBug = null;
+if(id == "" || id == null){
+	if (compositeData.ProjectId != "" && compositeData.ProjectId != null) {
+		thisEditBug = bugBean.createNewBug(compositeData.ProjectId);
+	} else if (viewScope.get("project") != "" && viewScope.get("project") != null) {
+		thisEditBug = bugBean.createNewBug(viewScope.get("project"));
+	}	
+	if(compositeData.UserstoryId != null && compositeData.UserstoryId != "" ) {
+		thisEditBug.setUserstoryId(compositeData.UserstoryId);
+	}
+	viewScope.isBugNew = true;
+}else{
+	thisEditBug = bugBean.getBugById(id);
+	viewScope.isBugNew = false;
+}
+return thisEditBug;}]]></xe:this.createObject>
+				</xe:objectData>
+			</xp:this.data>
+
+			<xe:formTable id="ftaBugEdit" labelWidth="110px;"
+				style="margin-top:10px;" styleClass="ftEditDialog">
+				<xp:this.facets>
+					<xe:dialogButtonBar id="dbbBugEdit" xp:key="footer">
+						<xp:button id="btSaveBug" value="Save">
+							<xp:eventHandler event="onclick" submit="true"
+								refreshMode="complete">
+								<xp:this.action><![CDATA[#{javascript:editBug.setIsDeleted("false");
+ccBean.updateMultiValueData(editBug, "bugAlias");
+editBug.setModifiedAt(new Date());
+bugBean.saveBug(editBug);
+viewScope.isBugNew = false;
+viewScope.remove("editBugId");
+//getComponent("dlgEditBug").hide("tblData");
+if(viewScope.bugRefreshId != null || viewScope.bugRefreshId != ""){
+	getComponent("dlgEditBug").hide(viewScope.bugRefreshId);
+}else{
+	getComponent("dlgEditBug").hide(compositeData.refreshId);
+}}]]></xp:this.action>
+							</xp:eventHandler>
+						</xp:button>
+						<xp:button value="Close" id="btCloseBug">
+							<xp:eventHandler event="onclick" submit="true"
+								refreshMode="complete" immediate="true">
+								<xp:this.action><![CDATA[#{javascript:getComponent("dlgEditBug").hide();}]]></xp:this.action>
+							</xp:eventHandler>
+						</xp:button>
+						<xp:button value="Delete" id="btDeleteBug">
+							<xp:this.rendered><![CDATA[#{javascript://return !viewScope.isBugNew;
+return false;}]]></xp:this.rendered>
+							<xp:eventHandler event="onclick" submit="true"
+								refreshMode="partial" immediate="true" refreshId="tblData">
+								<xp:this.script><![CDATA[return confirm("Are you sure, you want to delete this bug permanently?");]]></xp:this.script>
+								<xp:this.action><![CDATA[#{javascript:
+										getComponent("dlgEditBug").hide();
+										bugBean.deleteBug(editBug);
+									}]]></xp:this.action>
+							</xp:eventHandler>
+						</xp:button>
+					</xe:dialogButtonBar>
+				</xp:this.facets>
+
+				<xe:formRow id="froBugID" for="cfBugID" label="ID"
+					rendered="false">
+					<xp:text escape="true" id="cfBugID" value="#{editBug.id}">
+					</xp:text>
+				</xe:formRow>
+
+				<xe:formRow id="froBugAuthor" for="cfBugAuthor" label="Author">
+					<xp:text escape="true" id="cfBugAuthor" value="#{editBug.author}">
+						<xp:this.converter>
+							<xp:customConverter getAsObject="#{javascript:value}">
+								<xp:this.getAsString><![CDATA[#{javascript:@Name("[CN]", value)}]]></xp:this.getAsString>
+							</xp:customConverter>
+						</xp:this.converter>
+					</xp:text>
+					&#160;on&#160;
+					<xp:text escape="true" id="cfBugCreatedAt" value="#{editBug.createdAt}">
+					</xp:text>
+				</xe:formRow>
+
+				<xe:formRow id="froBugCustomer" for="cfBugCustomer"
+					label="Customer">
+					<xp:text id="cfBugCustomer">
+						<xp:this.value><![CDATA[#{javascript:var projID = editBug.projectId;
+if (viewScope.get("project") != null && viewScope.get("project") != "") {
+	projID = viewScope.get("project");
+}
+if (projectBean.getProjectById(projID) != null) {
+	var customer = projectBean.getProjectById(editBug.projectId).getCustomer();
+	return editBug.getCustomerName(customer);
+}
+return "";}]]></xp:this.value>
+					</xp:text>
+
+
+				</xe:formRow>
+
+				<xe:formRow id="froBugProjekt" for="cfBugProjekt" label="Project">
+					<xp:text escape="true" id="cfBugProjekt">
+						<xp:this.value><![CDATA[#{javascript:var projID = editBug.projectId;
+if (viewScope.get("project") != null && viewScope.get("project") != "") {
+	projID = viewScope.get("project");
+}
+if (projectBean.getProjectById(projID) != null) {
+	return "" + projectBean.getProjectById(projID).getSubject();
+}
+return "";}]]></xp:this.value>
+					</xp:text>
+				</xe:formRow>
+
+				<xe:formRow id="froBugUserstory" for="cbbBugUserstory"
+					label="Userstory">
+					<xp:comboBox id="cbbBugUserstory" value="#{editBug.userstoryId}"
+						rendered="#{javascript:compositeData.UserstoryId == '' || compositeData.UserstoryId == null}">
+
+						<xp:selectItem itemLabel="- No Userstory -"
+							itemValue="">
+						</xp:selectItem>
+						<xp:selectItems id="cbbBugUserstorySelectItems">
+							<xp:this.value><![CDATA[#{javascript:var projID = editBug.projectId;
+if (viewScope.get("project") != null && viewScope.get("project") != "") {
+	projID = viewScope.get("project");
+}
+if (projID != "") {
+	return userstoryBean.getUserstoryValuesOfProject(projID);
+}
+return userstoryBean.getUserstoryValues();}]]></xp:this.value>
+						</xp:selectItems>
+					</xp:comboBox>
+					<xp:text escape="true" id="cfEditBugUserstory">
+						<xp:this.rendered><![CDATA[#{javascript:(compositeData.UserstoryId != '' && compositeData.UserstoryId != null)}]]></xp:this.rendered>
+						<xp:this.value><![CDATA[#{javascript:
+								if (userstoryBean.getUserstoryById(editBug.userstoryId) == null) {
+									return "";
+								}
+								return userstoryBean.getUserstoryById(editBug.userstoryId).getSubject();
+							}]]></xp:this.value>
+					</xp:text>
+				</xe:formRow>
+
+				<xe:formRow id="froBugSubject" for="iptBugSubject" label="Subject">
+					<xp:inputText id="iptBugSubject" value="#{editBug.subject}"
+						style="width:450px;" required="true">
+						<xp:this.validators>
+							<xp:validateRequired message="Please enter a subject for this bug!">
+							</xp:validateRequired>
+						</xp:this.validators>
+					</xp:inputText>
+				</xe:formRow>
+
+				<xe:formRow id="froBugEditor" for="cnpBugEditor" label="Assigned to">
+					<xe:this.rendered><![CDATA[#{javascript:hasRole("[Intern]")}]]></xe:this.rendered>
+					<xc:ccNamePicker dirIsLookup="true" dirMultiValue="false"
+						dirReturnFieldFormula="true" dirPath="mywebgate/mywebgate.nsf"
+						dirView="($VIMPeople)" pickerFieldName="Editor" pickerId="EditorId"
+						pickerObject="#{javascript:editBug}" pickerObjectAlias="bugAlias"
+						id="cnpBugEditor" dirRefreshId="ftaBugEdit"
+						dirFTSearchFieldInView="FullName">
+						<xc:this.dirReturnFields>
+							<xp:value>
+								@Name([Abbreviate];FullName)
+							</xp:value>
+							<xp:value>FirstName</xp:value>
+							<xp:value>LastName</xp:value>
+						</xc:this.dirReturnFields>
+						<xc:this.dirReturnField><![CDATA[@Name([ABBREVIATE];FullName)]]></xc:this.dirReturnField>
+					</xc:ccNamePicker>
+				</xe:formRow>
+
+				<xe:formRow id="froBugDue" for="iptBugDue" label="Due Date">
+					<xe:this.rendered><![CDATA[#{javascript:hasRole("[Intern]")}]]></xe:this.rendered>
+					<xp:inputText id="iptBugDue" value="#{editBug.due}">
+						<xp:this.converter>
+							<xp:convertDateTime type="date">
+							</xp:convertDateTime>
+						</xp:this.converter>
+						<xp:dateTimeHelper dojoType="dijit.form.DateTextBox">
+						</xp:dateTimeHelper>
+					</xp:inputText>
+				</xe:formRow>
+
+				<xe:formRow id="froBugStatus" for="cbbBugStatus" label="Status">
+					<xp:comboBox id="cbbBugStatus" value="#{editBug.status}"
+						defaultValue="1">
+						<xp:this.readonly><![CDATA[#{javascript:!hasRole("[Intern]")}]]></xp:this.readonly>
+						<xp:selectItem itemLabel="New" itemValue="1">
+						</xp:selectItem>
+						<xp:selectItem itemLabel="Approved" itemValue="2">
+						</xp:selectItem>
+						<xp:selectItem itemLabel="In progress" itemValue="3">
+						</xp:selectItem>
+						<xp:selectItem itemLabel="Fixed" itemValue="4">
+						</xp:selectItem>
+						<xp:selectItem itemLabel="No Bug" itemValue="9">
+						</xp:selectItem>
+					</xp:comboBox>
+				</xe:formRow>
+
+				<xe:formRow id="froBugTags" label="Tags" for="cmtBugTags">
+					<xe:this.rendered><![CDATA[#{javascript:hasRole("[Intern]")}]]></xe:this.rendered>
+					<xc:ccMultivalueText id="cmtBugTags" binding="#{javascript:editBug}"
+						textArrayId="taTags" textArrayFieldName="Tags" textArrayObject="#{javascript:editBug}"
+						textArrayObjectAlias="bugAlias" typeAheadView="lupDocumentsByTag"
+						typeAheadReturnField="TagsDL" mvSeparator=",">
+					</xc:ccMultivalueText>
+				</xe:formRow>
+
+				<xe:formRow id="froBugBody" label="Description" for="itBugBody">
+					<xp:inputTextarea id="itBugBody" value="#{editBug.body}"
+						style="width:450px;height:100px;">
+					</xp:inputTextarea>
+					<br />
+					<xp:link escape="true" id="lnkTimestamp">
+						<xp:this.text><![CDATA[> Add timestamp]]></xp:this.text>
+						<xp:eventHandler event="onclick" submit="false">
+							<xp:this.script><![CDATA[var toSet = "#{javascript:@Name('[CN]',@UserName()) + ' - ' + @Now() + ':'}"; 
+setTimestamp(toSet, '#{id:itBugBody}');]]></xp:this.script>
+						</xp:eventHandler>
+					</xp:link>
+				</xe:formRow>
+				<xe:formRow label="Files" id="froBugFiles">
+					<xc:ccFileDownload uploadDisabled="false" id="ccDownload"
+						fileDownloadFieldName="Files" fileDownloadId="Files"
+						fileDownloadObject="#{javascript:editBug}" deletionDisabled="false">
+					</xc:ccFileDownload>
+
+				</xe:formRow>
+			</xe:formTable>
+		</xp:panel>
+	</xe:dialog>
+
+</xp:view>

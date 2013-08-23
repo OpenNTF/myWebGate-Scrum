@@ -1,0 +1,58 @@
+table {
+    border-collapse: collapse;
+}
+
+.taskList table.content td {
+	vertical-align: top;
+}
+.taskList table.content td.th {
+	font-weight:bold !important;
+	background-color: #F1F3F5;
+    background-image: url("lotusHorzBgSprite-8bit.png");
+    background-position: 0 -900px;
+    border: 1px solid #DEDEDE;
+    font-weight: bold;
+    padding: 5px 2px;
+    vertical-align: top;
+}
+
+.taskList table.content td.date {
+	width:70px;
+}
+.taskList table.content td.icon {
+	width:60px;
+	text-align:center;
+}
+
+.taskList tr.hover:hover {
+	background-color:#F1F3F5;
+	background-image: url("lotusHorzBgSprite-8bit.png");
+	background-position: 0 -900px;
+}
+
+.taskList tr.overdue {
+	background-color:#FFCC99
+}
+
+.taskList .selectedTask {
+	background-color:#f5f5f5;
+	color:#555555;
+}
+.taskList .selectedTaskText {
+	font-weight:bold;
+}
+
+.selectedTask td label {
+	font-weight: normal;
+}
+
+.taskList .lotusWidget2 .lotusWidgetBody h2 {
+	background-image: -moz-linear-gradient(center top , #F4F4F4 0%, #EAEAEA 100%);
+    border: 1px solid #CCCCCC;
+}
+
+ .ftEditDialog .lotusFormTable td {
+ 	padding: 3px 0 !important;
+ }
+
+

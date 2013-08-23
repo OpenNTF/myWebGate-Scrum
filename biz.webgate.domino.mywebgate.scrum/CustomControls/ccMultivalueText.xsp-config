@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config>
+  <faces-config-extension>
+    <namespace-uri>http://www.ibm.com/xsp/custom</namespace-uri>
+    <default-prefix>xc</default-prefix>
+  </faces-config-extension>
+  <composite-component>
+    <component-type>ccMultivalueText</component-type>
+    <composite-name>ccMultivalueText</composite-name>
+    <composite-file>/ccMultivalueText.xsp</composite-file>
+    <composite-extension>
+      <designer-extension>
+        <in-palette>true</in-palette>
+        <render-markup>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&#xd;
+&lt;xp:view xmlns:xp="http://www.ibm.com/xsp/core"&gt;&#xd;
+ccMultivalueText&#xd;
+&lt;/xp:view&gt;</render-markup>
+      </designer-extension>
+    </composite-extension>
+    <property>
+      <property-name>textArrayId</property-name>
+      <property-class>string</property-class>
+      <display-name>Id</display-name>
+      <property-extension>
+        <required>true</required>
+        <designer-extension>
+          <validation-formula>textArrayId != ""</validation-formula>
+        </designer-extension>
+      </property-extension>
+      <description>Unique identifier for the Custom Control</description>
+    </property>
+    <property>
+      <property-name>textArrayFieldName</property-name>
+      <property-class>string</property-class>
+      <description>FieldName of the Object - Used for the Setter &amp; Getters&#xd;
+&#xd;
+get&lt;textArrayFieldName&gt;()&#xd;
+set&lt;textArrayFieldName&gt;()</description>
+    </property>
+    <property>
+      <property-name>textArrayObject</property-name>
+      <property-class>java.lang.Object</property-class>
+      <description>the Object which the field should refer to</description>
+    </property>
+    <property>
+      <property-name>textArrayObjectAlias</property-name>
+      <property-class>string</property-class>
+      <description>Alias for the Object.&#xd;
+This is also needed in the updateMulitValueData (to ensure that only the object is updated where the field refers to if there are multiple instances of the Class)</description>
+    </property>
+    <property>
+      <property-name>typeAheadReturnField</property-name>
+      <property-class>string</property-class>
+    </property>
+    <property>
+      <property-name>typeAheadView</property-name>
+      <property-class>string</property-class>
+    </property>
+    <property>
+      <property-name>mvSeparator</property-name>
+      <property-class>string</property-class>
+      <property-extension>
+        <designer-extension>
+          <default-value>,</default-value>
+        </designer-extension>
+      </property-extension>
+    </property>
+  </composite-component>
+</faces-config>

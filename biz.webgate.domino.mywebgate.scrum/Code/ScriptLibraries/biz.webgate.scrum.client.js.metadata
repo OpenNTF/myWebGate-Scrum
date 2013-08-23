@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="C1257BD000474D7F" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="38e" sequence="18" unid="21778FE6E9889473C1257BA50030B4AC">
+<created><datetime dst="true">20130711T105159,80+02</datetime></created>
+<modified><datetime dst="true">20130823T145903,92+02</datetime></modified>
+<revised><datetime dst="true">20130716T143925,34+02</datetime></revised>
+<lastaccessed><datetime dst="true">20130823T145903,92+02</datetime></lastaccessed>
+<addedtofile><datetime dst="true">20130823T145903,92+02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Marco Baumann/O=WGC/C=CH</name></updatedby>
+<wassignedby><name>CN=Marco Baumann/O=WGC/C=CH</name></wassignedby>
+<item name="$TITLE" sign="true"><text>biz.webgate.scrum.client</text></item>
+<item name="$Flags"><text>h534Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+<item name="$DesignerVersion" sign="true"><text>8.5.3</text></item>
+</note>

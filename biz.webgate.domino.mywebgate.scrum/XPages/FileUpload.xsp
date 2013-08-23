@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view xmlns:xp="http://www.ibm.com/xsp/core" xmlns:xe="http://www.ibm.com/xsp/coreex">
+	<xp:this.beforePageLoad><![CDATA[#{javascript:viewScope.mySource = sessionScope.mySource;
+sessionScope.mySource = null;
+
+viewScope.allowedFileTypes = sessionScope.allowedFileTypes;
+sessionScope.allowedFileTypes = null;
+
+
+viewScope.postUploadProcessMethod = sessionScope.postUploadProcessMethod;
+sessionScope.postUploadProcessMethod = null;
+
+             
+}]]></xp:this.beforePageLoad>
+	<xe:restService id="fileService" pathInfo="file">
+		<xe:this.service>
+			<xe:customRestService serviceBean="ccBean">
+			</xe:customRestService>
+		</xe:this.service>
+	</xe:restService>
+	<xp:panel id="pnlUploadControl">
+		<xp:message id="message1" for="fileUpload1"></xp:message>
+		<xp:br></xp:br>
+		<xp:text escape="true" id="cfAllowedFileTypes">
+			<xp:this.value><![CDATA[#{javascript:	"Allowed File Types: " + viewScope.allowedFileTypes}]]></xp:this.value>
+			<xp:this.rendered><![CDATA[#{javascript:viewScope.allowedFileTypes != null && viewScope.allowedFileTypes != ""}]]></xp:this.rendered>
+		</xp:text>
+		<xp:br>
+			<xp:this.rendered><![CDATA[#{javascript:viewScope.allowedFileTypes != null && viewScope.allowedFileTypes != ""}]]></xp:this.rendered>
+		</xp:br>
+		<xp:fileUpload id="fileUpload1" value="#{viewScope.myFile}"
+			accept="#{javascript:viewScope.allowedFileTypes}" mimetype="#{javascript:viewScope.allowedFileTypes}">
+		</xp:fileUpload>
+		<xp:panel id="pnlUploadBtn" style="margin-top:20px;">
+			<xp:button value="Upload" id="btn">
+
+				<xp:eventHandler event="onclick" submit="true"
+					refreshMode="complete">
+					<xp:this.action><![CDATA[#{javascript:var objFile = viewScope.myFile;
+var objSource = viewScope.mySource;
+var strPostUploadProcessMethod = viewScope.postUploadProcessMethod;
+var strField = ""+ paramValues.field;
+var strId= ""+ paramValues.ccId;
+var strNewId= ""+ paramValues.newId;
+
+ccBean.uploadFile(objFile, objSource, strField, strId, strNewId, strPostUploadProcessMethod);
+/*view.postScript("window.returnValue='" + objFile +"'")
+view.postScript("window.close()")*/
+view.postScript("parent.hideDialog_fileupload()")
+
+}]]></xp:this.action>
+				</xp:eventHandler>
+			</xp:button>
+			<xp:button value="Cancel" id="btnCancel">
+				<xp:eventHandler event="onclick" submit="true"
+					refreshMode="complete">
+					<xp:this.action><![CDATA[#{javascript:view.postScript("parent.hideDialog_fileupload()")
+
+}]]></xp:this.action>
+				</xp:eventHandler>
+			</xp:button>
+		</xp:panel>
+	</xp:panel>
+</xp:view>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view xmlns:xp="http://www.ibm.com/xsp/core" xmlns:xe="http://www.ibm.com/xsp/coreex"
+	xmlns:xc="http://www.ibm.com/xsp/custom">
+
+	<xp:this.resources>
+		<xp:dojoModule name="dijit.form.DateTextBox"></xp:dojoModule>
+	</xp:this.resources>
+
+	<xe:dialog id="dlgEditCustomer" style="width:600px;" title="Customer">
+		<xp:panel>
+			<xp:this.data>
+				<xe:objectData var="editCustomer" scope="view">
+					<xe:this.createObject><![CDATA[#{javascript:var id = viewScope.editCustomerId;
+if(id == "" || id == null){
+	editCustomer = customerBean.createNewCustomer();
+	editCustomer.setCreatedAt(new Date());
+}else{
+	editCustomer = customerBean.getCustomerById(id);
+}
+editCustomer}]]></xe:this.createObject>
+				</xe:objectData>
+			</xp:this.data>
+
+			<xe:formTable id="ftaCustomerEdit" labelWidth="110px;"
+				style="margin-top:10px;" styleClass="ftEditDialog">
+
+				<xp:this.facets>
+					<xe:dialogButtonBar id="dbbCustomer" xp:key="footer">
+						<xp:button id="btSaveCustomer" value="Save">
+							<xp:eventHandler event="onclick" submit="true"
+								refreshMode="partial" refreshId="tblCustomers">
+								<xp:this.action><![CDATA[#{javascript:ccBean.updateMultiValueData(editCustomer, "customerAlias");
+editCustomer.setModifiedAt(new Date());
+customerBean.saveCustomer(editCustomer);
+getComponent("dlgEditCustomer").hide();}]]></xp:this.action>
+							</xp:eventHandler>
+						</xp:button>
+
+						<xp:button value="Close" id="btCloseCustomer">
+							<xp:eventHandler event="onclick" submit="true"
+								refreshMode="complete" immediate="true">
+								<xp:this.action><![CDATA[#{javascript:getComponent("dlgEditCustomer").hide();}]]></xp:this.action>
+							</xp:eventHandler>
+						</xp:button>
+					</xe:dialogButtonBar>
+				</xp:this.facets>
+
+				<xe:formRow id="froCustomerID" for="cfCustomerID" label="ID"
+					rendered="false">
+					<xp:text escape="true" id="cfCustomerID" value="#{editCustomer.id}">
+					</xp:text>
+				</xe:formRow>
+
+				<xe:formRow id="froCustomerName" for="iptCustomerName"
+					label="Name">
+					<xp:inputText id="iptCustomerName" value="#{editCustomer.name}"
+						style="width:450px;" required="true">
+						<xp:this.validators>
+							<xp:validateRequired message="Please enter the customer's name!">
+							</xp:validateRequired>
+						</xp:this.validators>
+					</xp:inputText>
+				</xe:formRow>
+
+				<xe:formRow id="froCustomerMembers" for="cnpMembers"
+					label="Members">
+					<xc:ccNamePicker dirIsLookup="true" dirMultiValue="true"
+						dirReturnFieldFormula="true" dirPath="mywebgate/mywebgate.nsf"
+						dirView="($VIMPeople)" pickerFieldName="Members" pickerId="MembersId"
+						pickerObject="#{javascript:editCustomer}" pickerObjectAlias="customerAlias"
+						id="cnpMembers" dirFTSearchFieldInView="FullName" mvSeparator=","
+						dirRefreshId="ftaCustomerEdit">
+						<xc:this.dirReturnFields>
+							<xp:value>
+								@Name([Abbreviate];FullName)
+							</xp:value>
+							<xp:value>FirstName</xp:value>
+							<xp:value>LastName</xp:value>
+						</xc:this.dirReturnFields>
+						<xc:this.dirReturnField><![CDATA[@Name([ABBREVIATE];FullName)]]></xc:this.dirReturnField>
+					</xc:ccNamePicker>
+				</xe:formRow>
+			</xe:formTable>
+		</xp:panel>
+	</xe:dialog>
+
+</xp:view>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view xmlns:xp="http://www.ibm.com/xsp/core" xmlns:xe="http://www.ibm.com/xsp/coreex"
+	xmlns:xc="http://www.ibm.com/xsp/custom">
+
+	<xe:dialog id="dlgEditSettings" style="width:600px;"
+		title="Scrum - Cockpit Settings">
+
+		<xp:panel id="pnlSettingsContent">
+
+			<xp:this.data>
+				<xe:objectData var="welcomePage"
+					createObject="#{javascript:adminBean.getWelcomePage()}" scope="request">
+				</xe:objectData>
+			</xp:this.data>
+			<xe:formTable id="ftEditSettings" labelWidth="140px;"
+				style="margin-top:10px;">
+				<xp:this.facets>
+					<xe:dialogButtonBar id="dialogButtonBar1"
+						xp:key="footer">
+						<xp:panel id="pnlButtons">
+							<xp:button id="btSave" value="Save">
+								<xp:eventHandler event="onclick" submit="true"
+									refreshMode="complete">
+									<xp:this.action><![CDATA[#{javascript:adminBean.saveSettings(welcomePage);
+getComponent("dlgEditSettings").hide("panContainer");}]]></xp:this.action>
+								</xp:eventHandler>
+							</xp:button>
+							<xp:button value="cancel" id="btCancel">
+								<xp:eventHandler event="onclick" submit="true"
+									refreshMode="complete" immediate="true">
+									<xp:this.action><![CDATA[#{javascript:getComponent("dlgEditSettings").hide();}]]></xp:this.action>
+								</xp:eventHandler>
+							</xp:button>
+						</xp:panel>
+					</xe:dialogButtonBar>
+				</xp:this.facets>
+
+				<xe:formRow id="frInfoText" for="InfoText" labelPosition="left"
+					label="Infotext">
+					<xp:inputTextarea id="InfoText" style="width:450px;"
+						value="#{welcomePage.infoText}">
+					</xp:inputTextarea>
+				</xe:formRow>
+
+			</xe:formTable>
+		</xp:panel>
+	</xe:dialog>
+
+</xp:view>

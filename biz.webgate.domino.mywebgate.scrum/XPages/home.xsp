@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view xmlns:xp="http://www.ibm.com/xsp/core" xmlns:xe="http://www.ibm.com/xsp/coreex"
+	xmlns:xc="http://www.ibm.com/xsp/custom" pageIcon="wgc.ico" pageTitle="Scrum - my Cockpit">
+	<xp:this.beforePageLoad><![CDATA[#{javascript:var selection = context.getUrlParameter("sel");
+if (selection == null || selection == "") {
+	var up = adminBean.getUserProfile(session.getEffectiveUserName());
+	if (up == null) {
+		viewScope.put("selectedContent","myTasksAndBugs");
+	} else {
+		var area = up.getDefaultArea();
+		if (area == 0) {
+			viewScope.put("selectedContent","myProjects");
+		} else if (area == 2) {
+			viewScope.put("selectedContent","news");
+		} else {
+			viewScope.put("selectedContent","myTasksAndBugs");
+		}
+	}
+} else if (selection == "p") {
+	viewScope.put("selectedContent","myProjects");
+} else if (selection == "n") {
+	viewScope.put("selectedContent","news");
+} else if (selection == "t") {
+	viewScope.put("selectedContent","myTasksAndBugs");
+} else {
+	viewScope.put("selectedContent","tag");
+}}]]></xp:this.beforePageLoad>
+
+	<xp:this.data>
+		<xe:objectData var="welcomePage"
+			createObject="#{javascript:adminBean.getWelcomePage()}" scope="request">
+		</xe:objectData>
+		<xe:objectData var="userProfile" scope="request"
+			createObject="#{javascript:return adminBean.getUserProfile(session.getEffectiveUserName());}">
+		</xe:objectData>
+	</xp:this.data>
+
+	<xc:ccApplication title="Scrum - The Project Planning Tool">
+		<xc:this.navigationPath><![CDATA[#{javascript:var selection = context.getUrlParameter("sel");
+if (selection == null || selection == "") {
+	var up = adminBean.getUserProfile(session.getEffectiveUserName());
+	var area = up.getDefaultArea();
+	if (area == 0) {
+		"/home/p";
+	} else if (area == 2) {
+		"/home/n";
+	} else {
+		"/home/t";
+	}
+} else {
+	"/home/" + context.getUrlParameter("sel");
+}}]]></xc:this.navigationPath>
+		<xp:this.facets>
+			<xp:panel xp:key="facetLeft">
+				<xc:ccNavigationHome></xc:ccNavigationHome>
+			</xp:panel>
+			<xp:panel xp:key="facetMiddle" id="pnlContent">
+				<xp:panel id="panWelcome">
+					<xp:panel styleClass="lotusWelcomeBox" id="panWelcomeBox"
+						rendered="#{javascript:userProfile.getShowHPInfo() != 0}">
+						<xp:table style="width:100.0%">
+							<xp:tr>
+								<xp:td style="width:120px;vertical-align:top;">
+									<xp:link escape="true" id="link3" target="_blank">
+										<xp:this.value><![CDATA[#{javascript://var docHPInfo:NotesDocument = session.getCurrentDatabase().getView("vwHPInfo").getDocumentByKey("frmHPInfo", true);
+//if (docHPInfo) return docHPInfo.getItemValueString("Link");}]]></xp:this.value>
+										<xp:image id="image1" url="/WGCScrum.png">
+										</xp:image>
+									</xp:link>
+								</xp:td>
+								<xp:td style="vertical-align:top;">
+									<header>
+										<xp:text escape="false" id="cfHPInfotitle" style="float:left;">
+											<xp:this.value><![CDATA[#{javascript:"<h2>Scrum - The Project Planning Tool</h2>"}]]></xp:this.value>
+										</xp:text>
+
+										<xp:link escape="false" id="lnkClose" styleClass="lotusBtnImg lotusClose"
+											style="float:right;">
+											<xp:this.text><![CDATA[<img src="close16.png">]]></xp:this.text>
+											<xp:eventHandler event="onclick" submit="true"
+												refreshMode="partial" disableValidators="true" refreshId="panWelcome">
+												<xp:this.action><![CDATA[#{javascript:userProfile.setShowHPInfo(0);
+adminBean.saveUserProfile(userProfile);}]]></xp:this.action>
+											</xp:eventHandler>
+										</xp:link>
+									</header>
+									<br style="clear:both;" />
+									<xp:text escape="true" id="cfHPInfotext" value="#{welcomePage.infoText}">
+									</xp:text>
+									<xp:panel styleClass="lotusBtnContainer">
+
+									</xp:panel>
+								</xp:td>
+							</xp:tr>
+						</xp:table>
+					</xp:panel>
+
+					<xp:panel id="panNoWelcome"
+						rendered="#{javascript:userProfile.getShowHPInfo() == 0}">
+						<xp:table style="width:100.0%">
+							<xp:tr>
+								<xp:td style="width:120px;vertical-align:top;">
+									<xp:link escape="true" id="lnkTheater" style="float:left;margin: 10px;"
+										target="_blank">
+										<xp:this.value><![CDATA[#{javascript://var docHPInfo:NotesDocument = session.getCurrentDatabase().getView("vwHPInfo").getDocumentByKey("frmHPInfo", true);
+//if (docHPInfo) return docHPInfo.getItemValueString("Link");}]]></xp:this.value>
+										<xp:image id="image3" url="/WGCScrum_small.png">
+										</xp:image>
+									</xp:link>
+
+									<xp:link escape="false" id="lnkShowWelcomeInfo" style="float:right;">
+										<xp:this.text><![CDATA[> show Welcome Info]]></xp:this.text>
+										<xp:eventHandler event="onclick" submit="true"
+											refreshMode="partial" disableValidators="true" refreshId="panWelcome">
+											<xp:this.action><![CDATA[#{javascript:userProfile.setShowHPInfo(1);
+adminBean.saveUserProfile(userProfile);}]]></xp:this.action>
+										</xp:eventHandler>
+									</xp:link>
+								</xp:td>
+							</xp:tr>
+						</xp:table>
+					</xp:panel>
+				</xp:panel>
+
+				<xp:panel id="pnlMyProjects">
+					<xp:this.rendered><![CDATA[#{javascript:viewScope.get("selectedContent") == "myProjects"}]]></xp:this.rendered>
+					<xe:widgetContainer id="wcProjects"
+						titleBarText="My Projects">
+						<xp:link escape="true" id="lnkSetProjects"
+							style="float:right;position:relative;top:-26px;" rendered="#{javascript:userProfile.getDefaultArea() != 0;}">
+							<xp:this.text><![CDATA[> Set as Start Area]]></xp:this.text>
+							<xp:eventHandler event="onclick" submit="true"
+								refreshMode="complete">
+								<xp:this.action><![CDATA[#{javascript:userProfile.setDefaultArea(0);
+adminBean.saveUserProfile(userProfile);}]]></xp:this.action>
+							</xp:eventHandler>
+						</xp:link>
+						<xc:ccProjectOverview UserOnly="true"></xc:ccProjectOverview>
+					</xe:widgetContainer>
+				</xp:panel>
+				<xp:panel id="pnlMyTasksAndBugs">
+					<xp:this.rendered><![CDATA[#{javascript:viewScope.get("selectedContent") == "myTasksAndBugs"}]]></xp:this.rendered>
+					<xe:widgetContainer id="widgetContainer1"
+						titleBarText="My Tasks &amp; Bugs">
+						<xp:link escape="true" id="lnkSetTasks"
+							style="float:right;position:relative;top:-26px;" rendered="#{javascript:userProfile.getDefaultArea() != 1;}">
+							<xp:this.text><![CDATA[> Set as Start Area]]></xp:this.text>
+							<xp:eventHandler event="onclick" submit="true"
+								refreshMode="complete">
+								<xp:this.action><![CDATA[#{javascript:userProfile.setDefaultArea(1);
+adminBean.saveUserProfile(userProfile);}]]></xp:this.action>
+							</xp:eventHandler>
+						</xp:link>
+
+
+						<xp:table style="width:100.0%">
+							<xp:tr>
+								<xp:td style="width:48%;vertical-align:top;">
+
+									<xe:widgetContainer id="wcTasks"
+										titleBarText="My Tasks" style="width:100%;">
+
+										<div class="lotusTabContainer">
+											<ul class="lotusTabs" id="home_myTasks">
+												<li class="lotusSelected">
+													<a href="#"
+														onclick='tabClickTasks(this);XSP.showContent("#{id:dynContTasks}","dynContTAssigned")'
+														id="mwg-vt1">
+														Assigned to me
+													</a>
+												</li>
+												<li>
+													<a href="#"
+														onclick='tabClickTasks(this);XSP.showContent("#{id:dynContTasks}","dynContTCreated")'
+														id="mwg-vt2">
+														Created by me
+													</a>
+												</li>
+											</ul>
+										</div>
+
+
+										<xe:dynamicContent id="dynContTasks"
+											defaultFacet="dynContTAssigned">
+											<xp:this.facets>
+												<xp:panel xp:key="dynContTAssigned">
+													<xc:ccTaskOverview UserOnly="true"
+														involvedType="0" showAuthor="false" showAssignedTo="false"
+														showUserstory="false" showIteration="false" showCustomer="false"
+														showProject="true" ProjectIsNew="false" showCompleted="false">
+													</xc:ccTaskOverview>
+												</xp:panel>
+												<xp:panel xp:key="dynContTCreated">
+													<xc:ccTaskOverview UserOnly="true"
+														involvedType="1" showAuthor="false" showAssignedTo="true"
+														showUserstory="false" showIteration="false" showCustomer="false"
+														showProject="true" ProjectIsNew="false" showCompleted="true">
+													</xc:ccTaskOverview>
+												</xp:panel>
+											</xp:this.facets>
+										</xe:dynamicContent>
+
+									</xe:widgetContainer>
+
+								</xp:td>
+								<xp:td>
+
+								</xp:td>
+								<xp:td style="width:48%;vertical-align:top;">
+
+									<xe:widgetContainer id="wcBugs"
+										titleBarText="My Bugs" style="width:100%;">
+
+										<div class="lotusTabContainer">
+											<ul class="lotusTabs" id="home_myBugs">
+												<li class="lotusSelected">
+													<a href="#"
+														onclick='tabClickBugs(this);XSP.showContent("#{id:dynContBugs}","dynContBAssigned")'
+														id="a1">
+														Assigned to me
+													</a>
+												</li>
+												<li>
+													<a href="#"
+														onclick='tabClickBugs(this);XSP.showContent("#{id:dynContBugs}","dynContBCreated")'
+														id="a2">
+														Created by me
+												</a>
+												</li>
+											</ul>
+										</div>
+
+
+										<xe:dynamicContent id="dynContBugs"
+											defaultFacet="dynContBAssigned">
+											<xp:this.facets>
+												<xp:panel xp:key="dynContBAssigned">
+													<xc:ccBugOverview UserOnly="true"
+														involvedType="0" showAssignedTo="false" showAuthor="false"
+														showCustomer="false" showProject="true" showUserstory="false"
+														ProjectIsNew="false" showCompleted="false">
+													</xc:ccBugOverview>
+												</xp:panel>
+												<xp:panel xp:key="dynContBCreated">
+													<xc:ccBugOverview UserOnly="true"
+														involvedType="1" showAssignedTo="false" showAuthor="false"
+														showCustomer="false" showProject="true" showUserstory="false"
+														ProjectIsNew="false" showCompleted="true">
+													</xc:ccBugOverview>
+												</xp:panel>
+											</xp:this.facets>
+										</xe:dynamicContent>
+
+									</xe:widgetContainer>
+
+								</xp:td>
+							</xp:tr>
+						</xp:table>
+
+					</xe:widgetContainer>
+				</xp:panel>
+				<xp:panel id="pnlNews">
+					<xp:this.rendered><![CDATA[#{javascript:viewScope.get("selectedContent") == "news"}]]></xp:this.rendered>
+					<xe:widgetContainer id="wcNews"
+						titleBarText="Latest News - 25 entries">
+						<xp:link escape="true" id="lnkSetNews"
+							style="float:right; position:relative; top:-26px;" rendered="#{javascript:userProfile.getDefaultArea() != 2;}">
+							<xp:this.text><![CDATA[> Set as Start Area]]></xp:this.text>
+							<xp:eventHandler event="onclick" submit="true"
+								refreshMode="complete">
+								<xp:this.action><![CDATA[#{javascript:userProfile.setDefaultArea(2);
+adminBean.saveUserProfile(userProfile);}]]></xp:this.action>
+							</xp:eventHandler>
+						</xp:link>
+						<br style="clear:both" />
+						<xp:panel style="text-align:right; margin-bottom:5px;">
+							<xp:label value="Show new entries since: " id="lblNewsLimiter"></xp:label>
+							<xp:inputText id="iptNewsLimiter" value="#{viewScope.newsLimiter}">
+								<xp:this.converter>
+									<xp:convertDateTime type="date">
+									</xp:convertDateTime>
+								</xp:this.converter>
+								<xp:dateTimeHelper dojoType="dijit.form.DateTextBox">
+								</xp:dateTimeHelper>
+								<xp:eventHandler event="onchange" submit="true"
+									refreshMode="partial" refreshId="pnlNews">
+								</xp:eventHandler>
+							</xp:inputText>
+							<xp:link escape="true" text="clear" id="lnkClear"
+								style="margin-left:10px;">
+								<xp:eventHandler event="onclick" submit="true"
+									refreshMode="partial" refreshId="pnlNews">
+									<xp:this.action><![CDATA[#{javascript:viewScope.remove("newsLimiter");}]]></xp:this.action>
+								</xp:eventHandler>
+							</xp:link>
+						</xp:panel>
+
+						<xc:ccDocumentOverview parent="news"
+							limit="#{viewScope.newsLimiter}"></xc:ccDocumentOverview>
+					</xe:widgetContainer>
+
+
+				</xp:panel>
+				<xp:panel id="pnlTags">
+					<xp:this.rendered><![CDATA[#{javascript:viewScope.get("selectedContent") == "tag"}]]></xp:this.rendered>
+					<xe:widgetContainer id="wcTag">
+						<xe:this.titleBarText><![CDATA[#{javascript:"By Tag: " + paramValues.tag}]]></xe:this.titleBarText>
+						<xc:ccDocumentOverview filterTag="#{paramValues.tag}">
+						</xc:ccDocumentOverview>
+					</xe:widgetContainer>
+				</xp:panel>
+
+			</xp:panel>
+		</xp:this.facets>
+	</xc:ccApplication>
+	
+	<xc:dlgEditBug refreshId="tblData"></xc:dlgEditBug>
+	<xc:dlgEditTask refreshId="tblTasks"></xc:dlgEditTask>
+	<xc:dlgEditMailOut></xc:dlgEditMailOut>
+</xp:view>

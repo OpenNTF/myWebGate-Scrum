@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view xmlns:xp="http://www.ibm.com/xsp/core"
+	xmlns:xe="http://www.ibm.com/xsp/coreex">
+	<xp:this.afterPageLoad><![CDATA[#{javascript:
+ccBean.removeCustomControl(compositeData.textArrayObjectAlias,compositeData.textArrayId,ccBean.CC_TYPE_MV)
+
+var scopeKey = "textArrayValue"+compositeData.textArrayId;
+
+
+values = ccBean.getValue(compositeData.textArrayObject,compositeData.textArrayFieldName);
+
+viewScope.put(scopeKey,values);
+
+var valueBinding = facesContext.getApplication().createValueBinding( "#{viewScope." + scopeKey + "}");
+
+var field = getComponent("djltbValues" + compositeData.textArrayId);
+
+if(field != null){
+	field.setValueBinding("value", valueBinding);
+}
+
+viewScope.put(scopeKey,values);
+
+ccBean.addCustomControl(compositeData.textArrayId,compositeData.textArrayObject,compositeData.textArrayObjectAlias,compositeData.textArrayFieldName,ccBean.CC_TYPE_MV)
+
+}]]></xp:this.afterPageLoad>
+
+	<xp:this.resources>
+		<xp:script src="/biz.webgate.tools.customcontrol.jss"
+			clientSide="false">
+		</xp:script>
+	</xp:this.resources>
+	<xp:panel>
+		<xp:this.id><![CDATA[${javascript:"pnlTextArray" + compositeData.textArrayId}]]></xp:this.id>
+		<xp:inputText id="itTextArray">
+			<xp:eventHandler event="onkeypress" submit="true"
+				refreshMode="partial"
+				refreshId='#{javascript:"pnlTextArray"+ compositeData.textArrayId }'
+				execMode="partial">
+				<xp:this.action><![CDATA[#{javascript:var value = getComponent("itTextArray").getValue();
+var scopeKey = "textArrayValue"+compositeData.textArrayId;
+var tmpTextArray = viewScope.get(scopeKey);
+
+addValue(tmpTextArray,  value, scopeKey, compositeData.mvSeparator)
+
+getComponent("itTextArray").setValue("");
+ 
+}]]></xp:this.action>
+				<xp:this.script><![CDATA[if (document.getElementById("#{id:itTextArray}").value == "") { return false };
+if (thisEvent.keyCode != '13') { return false; }
+]]></xp:this.script>
+				<xp:this.execId><![CDATA[#{javascript:"pnlTextArray"+ compositeData.textArrayId }]]></xp:this.execId>
+			</xp:eventHandler>
+			<xp:typeAhead mode="partial" minChars="1"
+				tokens="#{javascript:compositeData.mvSeparator}" ignoreCase="true"
+				valueMarkup="true" var="key">
+				<xp:this.valueList><![CDATA[#{javascript:var server = @Subset(@DbName(),1);
+var path = @Subset(@Subset(@DbName(),2),-1);
+var isLookup = true;
+var FTSearch = null;
+var inputString = null;
+var returnFields = null;
+var returnFieldFormula = false;
+var addFunction = "updateMVValue" + compositeData.textArrayId;
+return ccBean.getTypeAhead(key, "",path,isLookup,compositeData.typeAheadView,FTSearch, inputString, returnFields, compositeData.typeAheadReturnField, returnFieldFormula, 0, addFunction, "");
+
+//return ccBean.getTypeAhead(key, "",path, isLookup,compositeData.typeAheadView, FTSearch, inputString, returnFields, compositeData.typeAheadReturnField, returnFieldFormula, 0);
+
+}]]></xp:this.valueList>
+				<xp:this.rendered><![CDATA[#{javascript:compositeData.typeAheadReturnField != null && 
+compositeData.typeAheadReturnField != "" &&
+compositeData.typeAheadView != null && 
+compositeData.typeAheadView != ""}]]></xp:this.rendered>
+			</xp:typeAhead>
+		</xp:inputText>
+		<xp:link escape="true" text="Add" id="lnkAddIT">
+
+			<xp:eventHandler event="onclick" submit="true"
+				refreshMode="partial" execMode="partial"
+				refreshId='#{javascript:"pnlTextArray"+ compositeData.textArrayId }'>
+
+
+				<xp:this.action><![CDATA[#{javascript:var value = getComponent("itTextArray").getValue();
+var scopeKey = "textArrayValue"+compositeData.textArrayId;
+var tmpTextArray = viewScope.get(scopeKey);
+
+addValue(tmpTextArray,  value, scopeKey, compositeData.mvSeparator)
+
+getComponent("itTextArray").setValue("");
+
+}]]></xp:this.action>
+				<xp:this.execId><![CDATA[#{javascript:"pnlTextArray"+ compositeData.textArrayId }]]></xp:this.execId>
+
+			</xp:eventHandler>
+		</xp:link>
+		<xp:br style="clear:both;"></xp:br>
+		<xe:djextListTextBox
+			multipleSeparator="#{javascript:compositeData.mvSeparator}"
+			multipleTrim="true">
+
+
+			<xe:this.id><![CDATA[${javascript:"djltbValues" + compositeData.textArrayId}]]></xe:this.id>
+
+
+		</xe:djextListTextBox>
+
+		<xp:scriptBlock id="scriptBlock1">
+			<xp:this.value><![CDATA[/*function updateMVValue(){
+refreshOptions={"mvvalue":document.getElementById("#{id:itTextArray}").value}
+var id = "#{javascript:getClientId('updateValue')}";XSP.partialRefreshPost(id,{params: refreshOptions, onComplete: partialRefreshOnComplete});
+}
+
+function partialRefreshOnComplete(){
+
+	var id = "#{javascript:getClientId('pnlTextArray' + compositeData.textArrayId)}";
+
+	XSP.partialRefreshPost(id,{});
+
+}*/
+
+
+var thisId = "#{javascript:compositeData.textArrayId}";
+var updateMVValueCode = "XSP.addOnLoad(function() {updateMVValue" + thisId + " = function(){refreshOptions={\"mvvalue\":document.getElementById(\"#{id:itTextArray}\").value}; id=\"#{javascript:getClientId('updateValue')}\"; XSP.partialRefreshPost(id,{params: refreshOptions, onComplete: partialRefreshOnComplete" + thisId + "});};});";
+eval(updateMVValueCode);
+
+var partialRefreshOnCompleteCode = "XSP.addOnLoad(function() {partialRefreshOnComplete" + thisId + " = function(){id=\"#{javascript:getClientId('pnlTextArray' + compositeData.textArrayId)}\"; XSP.partialRefreshPost(id,{});};});";
+eval(partialRefreshOnCompleteCode);
+]]></xp:this.value>
+		</xp:scriptBlock>
+
+		<xp:text escape="true" id="updateValue" style="display:none">
+			<xp:this.value>
+				<![CDATA[#{javascript:if(!param.isEmpty() && param.mvvalue != null && param.mvvalue != "")
+{
+var value = param.mvvalue
+var scopeKey = "textArrayValue"+compositeData.textArrayId;
+var tmpTextArray = viewScope.get(scopeKey);
+
+addValue(tmpTextArray,  value, scopeKey, compositeData.mvSeparator)
+
+getComponent("itTextArray").setValue("");
+
+}
+return param.values()}]]>
+			</xp:this.value>
+		</xp:text>
+	</xp:panel>
+	<xp:span rendered="false" style="color:rgb(255,0,0)">
+		Needed Elements: Java
+		Files:biz.webgate.mywebgate.components.ComponentSessionFacade
+		(as session Bean 'ccBean')
+	</xp:span>
+	<xp:br></xp:br>
+	<xp:span rendered="false" style="color:rgb(255,0,0)">
+		call&#160;ccBean.updateMulitValueData(&lt;textArrayObject&gt;,
+		&lt;textArrayObjectAlias&gt;) to ensure that the data are in
+		sync with the Object. (e.g. in the save button)&#160;
+	</xp:span>
+	</xp:view>
+

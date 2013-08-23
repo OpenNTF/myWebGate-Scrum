@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view xmlns:xp="http://www.ibm.com/xsp/core" xmlns:xe="http://www.ibm.com/xsp/coreex">
+
+	<xe:navigator id="navBoards">
+		<xe:this.treeNodes>
+			<xe:pageTreeNode label="Overview" selection="/tb/home"></xe:pageTreeNode>
+			<xe:basicContainerNode label="Tasks">
+				<xe:this.children>
+					<xe:pageTreeNode label="by Status"></xe:pageTreeNode>
+				</xe:this.children>
+				<xe:this.children>
+					<xe:pageTreeNode label="by Assignee"></xe:pageTreeNode>
+				</xe:this.children>
+			</xe:basicContainerNode>
+
+			<xe:separatorTreeNode></xe:separatorTreeNode>
+
+			<xe:basicContainerNode label="Bugs">
+				<xe:this.children>
+					<xe:pageTreeNode label="By Status"></xe:pageTreeNode>
+				</xe:this.children>
+				<xe:this.children>
+					<xe:pageTreeNode label="by Assignee"></xe:pageTreeNode>
+				</xe:this.children>
+			</xe:basicContainerNode>
+
+		</xe:this.treeNodes>
+	</xe:navigator>
+
+
+</xp:view>

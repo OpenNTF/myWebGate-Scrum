@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view xmlns:xp="http://www.ibm.com/xsp/core">
+
+	<xp:this.beforePageLoad><![CDATA[#{javascript:var id = paramValues.id.toString();
+var doc = documentBean.getDocumentById(id);
+if (doc != null) {
+	sessionScope.id = id;
+	sessionScope.type = doc.getForm().toLowerCase();	//watch case!
+	if (doc.getForm() == "Project") {
+		var projectId = doc.getId();
+	} else {
+		var projectId = doc.getProjectId();
+	}	
+	context.redirectToPage("/ProjectDetails.xsp?id="+projectId)
+} else {
+	context.redirectToPage("/home.xsp")
+}}]]></xp:this.beforePageLoad>
+	<xp:text escape="true" id="computedField1"><xp:this.value><![CDATA[#{javascript:"redirecting to " + paramValues.id.toString() + "..."}]]></xp:this.value></xp:text>
+	
+	
+</xp:view>

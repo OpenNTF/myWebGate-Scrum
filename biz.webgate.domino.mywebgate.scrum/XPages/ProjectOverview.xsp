@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view xmlns:xp="http://www.ibm.com/xsp/core" xmlns:xc="http://www.ibm.com/xsp/custom"
+	xmlns:xe="http://www.ibm.com/xsp/coreex" pageIcon="wgc.ico"
+	pageTitle="Scrum - Project Overview">
+
+	<xc:ccApplication navigationPath="/project/overview"
+		title="Project Overview">
+		<xp:this.facets>
+			<xp:panel xp:key="facetLeft" rendered="true"></xp:panel>
+			<xp:panel xp:key="facetMiddle">
+				
+				<xc:ccProjectOverview>
+				</xc:ccProjectOverview>
+				
+			</xp:panel>
+			<xp:panel xp:key="facetRight"></xp:panel>
+		</xp:this.facets>
+	</xc:ccApplication>
+	<xc:dlgEditBug refreshId="tblData"></xc:dlgEditBug>
+</xp:view>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view xmlns:xp="http://www.ibm.com/xsp/core"
+	xmlns:xe="http://www.ibm.com/xsp/coreex">
+	<xp:this.data>
+		<xe:objectData var="mwgSettings">
+			<xe:this.createObject><![CDATA[#{javascript:
+var mwg =mywebgateBean.getMWGSettings();
+print ("mwg.path = "+mwg.getPath())
+return mwg;}]]></xe:this.createObject>
+		</xe:objectData>
+	</xp:this.data>
+
+	<xe:widgetContainer id="wcMyWebGate"
+		titleBarText="myWebGate Integration" dropDownRendered="true"
+		type="sidebar" titleBar="true">
+
+		
+		<xp:panel>
+			
+			<xp:button value="Edit settings" id="button1">
+				<xp:eventHandler event="onclick" submit="false">
+					<xp:this.script><![CDATA[XSP.openDialog("#{id:dlgMWGSettings}")]]></xp:this.script>
+				</xp:eventHandler></xp:button>
+			<xp:panel id="noConnection"
+				rendered="#{javascript:!mywebgateBean.getAppSettings().isAvailable()}">
+				No Connection to myWebGate
+			</xp:panel>
+			<xp:panel id="connected"
+				rendered="#{javascript:mywebgateBean.getAppSettings().isAvailable()}">
+			<xp:table>
+				<xp:tr>
+					<xp:td style="font-weight:bold">Server</xp:td>
+					<xp:td>
+						<xp:text escape="true" id="cfServer" value="#{javascript:appSetting.getServer()}"></xp:text></xp:td>
+				</xp:tr>
+				<xp:tr>
+					<xp:td style="font-weight:bold">Path</xp:td>
+					<xp:td>
+						<xp:text escape="true" id="cfPath" value="#{javascript:appSetting.getPath()}"></xp:text></xp:td>
+				</xp:tr>
+				<xp:tr>
+					<xp:td style="font-weight:bold">GlobalID</xp:td>
+					<xp:td>
+						<xp:text escape="true" id="cfGlobalID" value="#{javascript:appSetting.getGlobalID()}"></xp:text></xp:td>
+				</xp:tr>
+				<xp:tr>
+					<xp:td style="font-weight:bold">FQDN</xp:td>
+					<xp:td>
+						<xp:text escape="true" id="cfFQDN" value="#{javascript:appSetting.getFQDN()}"></xp:text></xp:td>
+				</xp:tr>
+				<xp:tr>
+					<xp:td></xp:td>
+					<xp:td></xp:td>
+				</xp:tr>
+				<xp:tr>
+					<xp:td></xp:td>
+					<xp:td></xp:td>
+				</xp:tr>
+			</xp:table>
+			<xp:this.data>
+				<xe:objectData var="appSetting"
+					createObject="#{javascript:mywebgateBean.getAppSettings()}">
+				</xe:objectData>
+			</xp:this.data></xp:panel>
+		</xp:panel>
+	</xe:widgetContainer>
+
+	<xe:dialog id="dlgMWGSettings" title="myWebGate API Integration">
+		
+		<xe:dialogContent id="dialogContent1">
+			<xp:table style="width:479.0px">
+				<xp:tr>
+					<xp:td style="font-weight:bold" valign="top">Server</xp:td>
+					<xp:td valign="top">
+						<xp:inputText id="itServer"
+							value="#{mwgSettings.server}" style="width:362.0px">
+						</xp:inputText>
+						<xp:br></xp:br>
+						Blank for current server
+						<xp:br></xp:br>
+						<xp:br></xp:br>
+					</xp:td>
+				</xp:tr>
+				<xp:tr>
+					<xp:td valign="top">
+						<xp:span style="font-weight:bold">Path</xp:span>
+					</xp:td>
+					<xp:td valign="top">
+						<xp:inputText id="inputText2"
+							value="#{mwgSettings.path}" style="width:362.0px">
+						</xp:inputText>
+						<xp:br></xp:br>e.g.CloudApps\mywebgate.nsf</xp:td>
+				</xp:tr>
+			</xp:table>
+		</xe:dialogContent>
+		<xe:dialogButtonBar id="dialogButtonBar1">
+			<xp:button value="Save" id="btSave">
+				<xp:eventHandler event="onclick" submit="true"
+					refreshMode="partial" refreshId="wcMyWebGate">
+					<xp:this.action><![CDATA[#{javascript:mywebgateBean.saveMWGSettings(mwgSettings);
+getComponent("dlgMWGSettings").hide()}]]></xp:this.action>
+				</xp:eventHandler></xp:button>
+			<xp:button value="Cancel" id="button2">
+				<xp:eventHandler event="onclick" submit="true"
+					refreshMode="complete">
+					<xp:this.action><![CDATA[#{javascript:getComponent("dlgMWGSettings").hide()}]]></xp:this.action>
+				</xp:eventHandler></xp:button></xe:dialogButtonBar>
+	</xe:dialog>
+</xp:view>

@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='C1257BD000474D7F'>
+<noteinfo noteid='2f6' unid='91B0AD1F58D57B14C1257B9700347FCB' sequence='8'>
+<created><datetime dst='true'>20130627T113325,87+02</datetime></created>
+<modified><datetime dst='true'>20130823T145900,90+02</datetime></modified>
+<revised><datetime dst='true'>20130711T102150,32+02</datetime></revised>
+<lastaccessed><datetime dst='true'>20130823T145900,90+02</datetime></lastaccessed>
+<addedtofile><datetime dst='true'>20130823T145900,90+02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Marco Baumann/O=WGC/C=CH</name><name>CN=Simeon Hafner/O=WGC/C=CH</name><name
+>CN=Marco Baumann/O=WGC/C=CH</name></updatedby>
+<wassignedby><name>CN=Marco Baumann/O=WGC/C=CH</name></wassignedby>
+<item name='OriginalModTime' sign='true'><datetime>20080109T144304,89+01</datetime></item>
+<item name='$HTMLCode' sign='true'>
+<rawitemdata type='1'>
+X/8QAAIADwAHAAAAAAAAAA==
+</rawitemdata></item>
+<item name='$TITLE'><text>pgWebStart</text></item>
+<item name='$Info' sign='true'>
+<rawitemdata type='1'>
+hhgBAIAAAAAAgAAAAQABAP///wAQAAAA
+</rawitemdata></item>
+<item name='$WindowTitle' sign='true'><formula>@DbTitle</formula></item>
+<item name='$HTMLHeadTag' sign='true'><formula>"&lt;meta http-equiv=\"refresh\" content=\"0; url=/" +@WebDbName  +"/home.xsp\"&gt;&lt;META HTTP-EQUIV=\"PRAGMA\" content=\"NO-CACHE\"&gt;" +
+"&lt;style&gt;a { text-decoration: none; color: #105CB6; }&lt;/style&gt;"</formula></item>
+<item name='$Flags'><text>C34WQP</text></item>
+<item name='$DesignerVersion' sign='true'><text>8.5.3</text></item>
+<item name='$Fonts'>
+<rawitemdata type='1'>
+i/8oAAEABSZWZXJkYW5hAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==
+</rawitemdata></item>
+<item name='$$ScriptName' summary='false' sign='true'><text>pgWebStart</text></item>
+<item name='$Body' sign='true'>
+<rawitemdata type='1'>
+gQKC/1oAAQAAAAAAAAAAAKAFAACgBQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAABAAAAAJSHAAAAAAAAAAAAAAAAAQAAAAQAAACDBAEAhf8IAAUAAAjdBgAArf+p/14A
+AQAYAAQAUgBSAAoABAAAADwAAQALAFs8YSBocmVmPSIvAPsAMAEiAgEAGgAvaG9tZS54c3AiPkxv
+YWRpbmcuLi48L2E+XSICAwAHABAACQAJMVMyUzNTMkUAhf8IAAUAAAiqAt4GAACuAIX/CAABAgAK
+</rawitemdata></item>
+<item name='$PublicAccess' sign='true'><text>1</text></item></note>
+

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view xmlns:xp="http://www.ibm.com/xsp/core" xmlns:xe="http://www.ibm.com/xsp/coreex">
+	<xp:this.resources>
+		<xp:script src="/biz.webgate.mywebgate.api.core.ui.js"
+			clientSide="true">
+		</xp:script>
+
+		<xp:script src="/biz.webgate.scrum.application.jss"
+			clientSide="false">
+		</xp:script>
+		<xp:styleSheet href="/biz.webgate.scrum.application.css"></xp:styleSheet>
+		<xp:script src="/biz.webgate.scrum.client.js" clientSide="true">
+		</xp:script>
+		<xp:styleSheet href="/mywebgate.api.core.ui.v3.css"></xp:styleSheet>
+	</xp:this.resources>
+
+	<xe:applicationLayout id="applicationLayout1">
+		<xp:callback facetName="facetMiddle" id="facetMiddle"></xp:callback>
+		<xe:this.facets>
+			<xp:callback facetName="facetRight" id="facetRight"
+				xp:key="RightColumn">
+			</xp:callback>
+			<xp:callback facetName="facetLeft" id="facetLeft" xp:key="LeftColumn">
+			</xp:callback>
+		</xe:this.facets>
+		<xe:this.configuration>
+			<xe:oneuiApplication navigationPath="#{javascript:compositeData.navigationPath}"
+				placeBarName="#{javascript:compositeData.title}" productLogo="/mwgapi_mywebgate.gif">
+
+				<xe:this.placeBarActions>
+
+				</xe:this.placeBarActions>
+
+				<xe:this.titleBarTabs>
+					<xe:pageTreeNode label="My Cockpit" selection="/home/.*"
+						page="/home.xsp">
+					</xe:pageTreeNode>
+					<xe:pageTreeNode label="Projects" selection="/project/overview"
+						page="/ProjectOverview.xsp">
+					</xe:pageTreeNode>
+					<xe:pageTreeNode label="Tasks &amp; Bugs"
+						selection="/tb/.*" page="/tbHome.xsp">
+					</xe:pageTreeNode>
+					<xe:pageTreeNode label="Administration" selection="/administration/.*"
+						page="/adminHome.xsp">
+						<xe:this.rendered><![CDATA[#{javascript:database.queryAccessRoles(session.getEffectiveUserName()).contains('[Admin]')}]]></xe:this.rendered>
+					</xe:pageTreeNode>
+				</xe:this.titleBarTabs>
+
+				<xe:this.bannerApplicationLinks>
+					<xe:basicLeafNode label="My News Stream">
+						<xe:this.href><![CDATA[#{javascript:mywebgateBean.getMyWebGateURL()+"/home.xsp"}]]></xe:this.href>
+					</xe:basicLeafNode>
+
+					<xe:basicContainerNode label="Profiles"
+						styleClass="myWebGate-menu-profiles">
+					</xe:basicContainerNode>
+
+					<xe:basicContainerNode label="Notifications"
+						styleClass="myWebGate-menu-notifications">
+					</xe:basicContainerNode>
+
+					<xe:basicContainerNode label="Apps"
+						styleClass="myWebGate-menu-apps">
+					</xe:basicContainerNode>
+				</xe:this.bannerApplicationLinks>
+
+				<xe:this.bannerUtilityLinks>
+					<xe:basicContainerNode imageHeight="14em"
+						imageWidth="14em">
+						<xe:this.children>
+							<xe:basicLeafNode image="icn_edituser.png"
+								imageHeight="14px" imageWidth="14px" label="Edit my profile">
+								<xe:this.href><![CDATA[#{javascript:mywebgateBean.getMyWebGateURL()+"/editprofile.xsp"}]]></xe:this.href>
+							</xe:basicLeafNode>
+							<xe:basicLeafNode label="Change my password"
+								image="icn_pwd.png" imageHeight="14px" imageWidth="14px">
+								<xe:this.href><![CDATA[#{javascript:mywebgateBean.getMyWebGateURL()+"/directory.xsp?passwordChange=showDialog"}]]></xe:this.href>
+							</xe:basicLeafNode>
+							<xe:basicLeafNode label="Logout" href="/names.nsf?logout"
+								imageHeight="14px" imageWidth="14px" image="icn_logout.png">
+							</xe:basicLeafNode>
+						</xe:this.children>
+						<xe:this.label><![CDATA[#{javascript:@Name("[CN]",context.getUser().getDistinguishedName()) }]]></xe:this.label>
+					</xe:basicContainerNode>
+					<xe:basicLeafNode image="/loader2.gif"
+						imageHeight="14px" imageWidth="14px" styleClass="mwgProgressImg"
+						role="mwgProgressImg">
+					</xe:basicLeafNode>
+				</xe:this.bannerUtilityLinks>
+			</xe:oneuiApplication>
+		</xe:this.configuration>
+	</xe:applicationLayout>
+	<xp:scriptBlock id="scriptBlock1">
+		<xp:this.value><![CDATA[#{javascript:
+			"XSP.addOnLoad( function() {" + 
+			"initDropdownMenu('"+ mywebgateBean.getMyWebGateURL()+"');" +
+			"setTimeout('chronos()', 2000);" +
+			"setTimeout( 'mwgProgress(0)', 2500);" +
+			"})"
+		}]]></xp:this.value>
+	</xp:scriptBlock>
+</xp:view>
