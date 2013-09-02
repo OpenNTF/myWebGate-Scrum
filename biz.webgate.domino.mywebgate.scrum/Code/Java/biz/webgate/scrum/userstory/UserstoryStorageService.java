@@ -91,7 +91,7 @@ public class UserstoryStorageService {
 		boolean noException = true;
 		for (Task task : TaskSessionFacade.get().getTasksOfProject(
 				TaskSessionFacade.SORT_BY_CREATEDAT, true, curUserstory
-						.getProjectId(), "", curUserstory.getId(), "")) {
+						.getProjectId(), "", curUserstory.getId(), "", false)) {
 			noException = TaskSessionFacade.get().deleteTask(task);
 			if (!noException)
 				break;
@@ -99,7 +99,7 @@ public class UserstoryStorageService {
 		if (noException) {
 			for (Bug bug : BugSessionFacade.get().getBugsOfProject(
 					BugSessionFacade.SORT_BY_CREATEDAT, true, curUserstory
-							.getProjectId(), "", curUserstory.getId(), "")) {
+							.getProjectId(), "", curUserstory.getId(), "", false)) {
 				noException = BugSessionFacade.get().deleteBug(bug);
 				if (!noException)
 					break;

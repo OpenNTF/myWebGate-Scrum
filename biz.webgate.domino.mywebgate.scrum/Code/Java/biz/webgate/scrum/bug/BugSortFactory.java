@@ -40,6 +40,8 @@ public class BugSortFactory {
 			BugSessionFacade.SORT_BY_DUE);
 	private static Comparator<Bug> m_StatusComp = new BugComparator(
 			BugSessionFacade.SORT_BY_STATUS);
+	private static Comparator<Bug> m_IdComp = new BugComparator(
+			BugSessionFacade.SORT_BY_ID);
 
 	public static void sortBugs(List<Bug> lstBugs, int sortOrder, boolean reverse) {
 		switch (sortOrder) {
@@ -72,6 +74,9 @@ public class BugSortFactory {
 			break;
 		case BugSessionFacade.SORT_BY_STATUS:
 			Collections.sort(lstBugs, m_StatusComp);
+			break;
+		case BugSessionFacade.SORT_BY_ID:
+			Collections.sort(lstBugs, m_IdComp);
 			break;
 		}
 		if (reverse) {Collections.reverse(lstBugs);}

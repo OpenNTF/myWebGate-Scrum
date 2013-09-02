@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?><note class="form" replicaid="C1257BD000474D7F" version="9.0" xmlns="http://www.lotus.com/dxl">
-<noteinfo noteid="35a" sequence="34" unid="BEFA5A9D72B60F93C1257BA3004A8958">
-<created><datetime dst="true">20130709T153408,24+02</datetime></created>
-<modified><datetime dst="true">20130823T145903,03+02</datetime></modified>
-<revised><datetime dst="true">20130711T102157,31+02</datetime></revised>
-<lastaccessed><datetime dst="true">20130823T145903,03+02</datetime></lastaccessed>
-<addedtofile><datetime dst="true">20130823T145903,03+02</datetime></addedtofile></noteinfo>
-<updatedby><name>CN=Marco Baumann/O=WGC/C=CH</name></updatedby>
-<wassignedby><name>CN=Marco Baumann/O=WGC/C=CH</name></wassignedby>
+<noteinfo noteid="62a" sequence="8" unid="364B917681809412C1257BDA003B9E49">
+<created><datetime dst="true">20130902T125111,45+02</datetime></created>
+<modified><datetime dst="true">20130902T125213,81+02</datetime></modified>
+<revised><datetime dst="true">20130902T125213,80+02</datetime></revised>
+<lastaccessed><datetime dst="true">20130902T125213,81+02</datetime></lastaccessed>
+<addedtofile><datetime dst="true">20130902T125111,48+02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Christian Guedemann/O=WGC/C=CH</name></updatedby>
+<wassignedby><name>CN=Christian Guedemann/O=WGC/C=CH</name></wassignedby>
+<item name="$TITLE"><text>ccNavigationTB.xsp</text></item>
 <item name="$Flags"><text>gC~4;</text></item>
 
 
-<item name="$TITLE" sign="true"><text>ccNavigationTB.xsp</text></item>
-
-
-
-<item name="$DesignerVersion" sign="true"><text>8.5</text></item>
-
-
 <item name="$FileNames" sign="true"><text>ccNavigationTB.xsp</text></item>
+
+
+<item name="$DesignerVersion"><text>8.5</text></item>
+
+
+
 
 </note>

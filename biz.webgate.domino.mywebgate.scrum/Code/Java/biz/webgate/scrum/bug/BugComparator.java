@@ -84,6 +84,12 @@ public class BugComparator implements Comparator<Bug> {
 			s1 = o1.getStatus().toLowerCase();
 			s2 = o2.getStatus().toLowerCase();
 			break;
+		case BugSessionFacade.SORT_BY_ID:
+			if (o1.getBugId() != null)
+				s1 = o1.getBugId().toLowerCase();
+			if (o2.getBugId() != null)
+				s2 = o2.getBugId().toLowerCase();
+			break;
 		}
 
 		return s1.compareTo(s2);
@@ -91,7 +97,6 @@ public class BugComparator implements Comparator<Bug> {
 
 	@SuppressWarnings("deprecation")
 	int compareDates(Date d1, Date d2) {
-		//TODO: Change to Calendar for Setup
 		if (d1 == null) {
 			d1 = new Date(2099,12,31);
 		}

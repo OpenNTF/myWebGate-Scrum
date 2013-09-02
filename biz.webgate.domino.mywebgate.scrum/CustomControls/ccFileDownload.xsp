@@ -101,10 +101,12 @@ library.saveFile(file);}]]></xp:this.action>
 						<xp:text value="Size" id="cfSize" for="image1" escape="true">
 						</xp:text>
 					</th>
+<!--					
 					<th style="text-align:left" styleClass="xspDataTableFileDownloadType">
 						<xp:text value="File Type" id="cfType" for="image1">
 						</xp:text>
 					</th>
+-->
 					<th style="text-align:left; display:none;" styleClass="xspDataTableFileDownloadCreated">
 						<xp:text value="Created On" id="cfCreated" for="image1">
 						</xp:text>
@@ -123,12 +125,6 @@ library.saveFile(file);}]]></xp:this.action>
 						<xp:link escape="true" text="#{javascript:myFile.getDisplayName()}"
 							id="lnkName">
 							<xp:this.value><![CDATA[#{javascript:"FileUpload.xsp/file/" + compositeData.fileDownloadId + "/" + myFile.getId()}]]></xp:this.value>
-							<xp:eventHandler event="onclick" submit="true"
-								refreshMode="complete">
-								<xp:this.action><![CDATA[#{javascript:file.setDownloads(file.getDownloads()+1);
-library.saveFile(file);
-//context.redirectToPage("FileUpload.xsp/file/" + compositeData.fileDownloadId + "/" + myFile.getId());}]]></xp:this.action>
-							</xp:eventHandler>
 						</xp:link>
 					</xp:td>
 					<xp:td styleClass="xspColumn" style="padding:4px 4px 2px 2px">
@@ -139,7 +135,8 @@ if(size > 1000000)
 else
  return @Round(size / 1000) + " KB"}]]></xp:this.value>
 						</xp:text>
-					</xp:td>
+					</xp:td>				
+<!--					
 					<xp:td styleClass="xspColumn" style="padding:4px 4px 2px 2px">
 						<xp:image id="imgFile">
 							<xp:this.url><![CDATA[#{javascript:var protocol = context.getUrl().getScheme();
@@ -157,6 +154,7 @@ else
 }]]></xp:this.value>
 						</xp:text>
 					</xp:td>
+-->					
 					<xp:td styleClass="xspColumn" style="padding:4px 4px 2px 2px"
 						rendered="false">
 						<xp:text escape="true" id="cfFileCreated"

@@ -17,4 +17,5 @@
 		</xp:this.facets>
 	</xc:ccApplication>
 	<xc:dlgEditBug refreshId="tblData"></xc:dlgEditBug>
+	<xc:dlgEditMailOut></xc:dlgEditMailOut>
 </xp:view>

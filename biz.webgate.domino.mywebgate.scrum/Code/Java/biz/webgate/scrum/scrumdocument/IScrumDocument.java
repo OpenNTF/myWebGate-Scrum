@@ -51,5 +51,7 @@ public interface IScrumDocument {
 	public abstract Date getDueDate();
 	
 	public abstract boolean getIsOverdue();
+	
+	public abstract String getReadableId();
 
 }

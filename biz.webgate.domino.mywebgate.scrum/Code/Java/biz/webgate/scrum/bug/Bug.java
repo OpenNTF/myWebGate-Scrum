@@ -53,6 +53,8 @@ public class Bug implements Serializable, IScrumDocument {
 	private String m_UserstoryId;
 	@DominoEntity(FieldName = "SubjectT")
 	private String m_Subject;
+	@DominoEntity(FieldName = "BugIdT")
+	private String m_BugId;
 	@DominoEntity(FieldName = "EditorNM", showNameAs = "ABBREVIATE")
 	private String m_Editor;
 	@DominoEntity(FieldName = "StatusDL")
@@ -147,9 +149,15 @@ public class Bug implements Serializable, IScrumDocument {
 	public String getSubject() {
 		return m_Subject;
 	}
-
 	public void setSubject(String subject) {
 		m_Subject = subject;
+	}
+	
+	public String getBugId() {
+		return m_BugId;
+	}
+	public void setBugId(String bugId) {
+		m_BugId = bugId;
 	}
 
 	public void setEditor(String editor) {
@@ -258,5 +266,9 @@ public class Bug implements Serializable, IScrumDocument {
 		Customer customer = CustomerSessionFacade.get().getCustomerById(strId);
 		if (customer != null) return customer.getName();
 		return "";
+	}
+
+	public String getReadableId() {
+		return m_BugId;
 	}
 }

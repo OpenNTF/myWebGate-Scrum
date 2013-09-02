@@ -63,13 +63,18 @@ public class ScrumDocumentComparator implements Comparator<IScrumDocument> {
 			break;
 		case ScrumDocumentSessionFacade.SORT_BY_DUEDATE:
 			return compareDates(sd2.getDueDate(), sd1.getDueDate());
+		case ScrumDocumentSessionFacade.SORT_BY_ID:
+			if (sd1.getReadableId() != null)
+				s1 = sd1.getReadableId().toLowerCase();
+			if (sd2.getReadableId() != null)
+				s2 = sd2.getReadableId().toLowerCase();
+			break;
 		}
 		return s1.compareTo(s2);
 	}
 
 	@SuppressWarnings("deprecation")
 	int compareDates(Date d1, Date d2) {
-		//TODO: DateCompare
 		if (d1 == null) {
 			d1 = new Date(2099,12,31);
 		}

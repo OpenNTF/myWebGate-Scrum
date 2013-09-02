@@ -100,6 +100,12 @@ public class TaskComparator implements Comparator<Task> {
 			s1 = o1.getStatus().toLowerCase();
 			s2 = o2.getStatus().toLowerCase();
 			break;
+		case TaskSessionFacade.SORT_BY_ID:
+			if (o1.getTaskId() != null)
+				s1 = o1.getTaskId().toLowerCase();
+			if (o2.getTaskId() != null)
+				s2 = o2.getTaskId().toLowerCase();
+			break;
 		}
 
 		return s1.compareTo(s2);
@@ -107,7 +113,6 @@ public class TaskComparator implements Comparator<Task> {
 
 	@SuppressWarnings("deprecation")
 	int compareDates(Date d1, Date d2) {
-		//TODO: DateComperator
 		if (d1 == null) {
 			d1 = new Date(2099,12,31);
 		}

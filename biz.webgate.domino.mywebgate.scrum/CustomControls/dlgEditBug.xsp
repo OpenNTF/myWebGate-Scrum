@@ -78,7 +78,7 @@ return false;}]]></xp:this.rendered>
 					</xp:text>
 				</xe:formRow>
 
-				<xe:formRow id="froBugAuthor" for="cfBugAuthor" label="Author">
+				<xe:formRow id="froBugAuthor" for="cfBugAuthor" label="Created">
 					<xp:text escape="true" id="cfBugAuthor" value="#{editBug.author}">
 						<xp:this.converter>
 							<xp:customConverter getAsObject="#{javascript:value}">
@@ -86,7 +86,7 @@ return false;}]]></xp:this.rendered>
 							</xp:customConverter>
 						</xp:this.converter>
 					</xp:text>
-					&#160;on&#160;
+					&#160;/&#160;
 					<xp:text escape="true" id="cfBugCreatedAt" value="#{editBug.createdAt}">
 					</xp:text>
 				</xe:formRow>
@@ -118,6 +118,17 @@ if (projectBean.getProjectById(projID) != null) {
 	return "" + projectBean.getProjectById(projID).getSubject();
 }
 return "";}]]></xp:this.value>
+					</xp:text>
+				</xe:formRow>
+
+				<xe:formRow id="froBugIteration" for="cfBugIteration"
+					label="Iteration">
+					<xp:text escape="true" id="cfBugIteration">
+						<xp:this.value><![CDATA[#{javascript:if (userstoryBean.getUserstoryById(editBug.userstoryId) != null) {
+	return "" + userstoryBean.getUserstoryById(editBug.userstoryId).iteration;
+} else {
+	return "";
+}							}]]></xp:this.value>
 					</xp:text>
 				</xe:formRow>
 
@@ -164,11 +175,13 @@ return userstoryBean.getUserstoryValues();}]]></xp:this.value>
 				<xe:formRow id="froBugEditor" for="cnpBugEditor" label="Assigned to">
 					<xe:this.rendered><![CDATA[#{javascript:hasRole("[Intern]")}]]></xe:this.rendered>
 					<xc:ccNamePicker dirIsLookup="true" dirMultiValue="false"
-						dirReturnFieldFormula="true" dirPath="mywebgate/mywebgate.nsf"
+						dirReturnFieldFormula="true" 
 						dirView="($VIMPeople)" pickerFieldName="Editor" pickerId="EditorId"
-						pickerObject="#{javascript:editBug}" pickerObjectAlias="bugAlias"
-						id="cnpBugEditor" dirRefreshId="ftaBugEdit"
-						dirFTSearchFieldInView="FullName">
+						pickerObject="#{javascript:editBug;}" pickerObjectAlias="bugAlias"
+						id="cnpBugEditor" dirRefreshId="cnpBugEditor"
+						dirFTSearchFieldInView="FullName" mvSeparator=",">
+						<xc:this.dirServer><![CDATA[#{javascript:mywebgateBean.getAppSettings().getServer()}]]></xc:this.dirServer>
+						<xc:this.dirPath><![CDATA[#{javascript:mywebgateBean.getAppSettings().getPath()}]]></xc:this.dirPath> 
 						<xc:this.dirReturnFields>
 							<xp:value>
 								@Name([Abbreviate];FullName)
@@ -236,7 +249,6 @@ setTimestamp(toSet, '#{id:itBugBody}');]]></xp:this.script>
 						fileDownloadFieldName="Files" fileDownloadId="Files"
 						fileDownloadObject="#{javascript:editBug}" deletionDisabled="false">
 					</xc:ccFileDownload>
-
 				</xe:formRow>
 			</xe:formTable>
 		</xp:panel>

@@ -200,6 +200,8 @@ public class Project implements Serializable, IScrumDocument {
 	}
 
 	public String getIsDeleted() {
+		if (m_TempSave != null && m_TempSave.equals("1")) 
+			return "true";
 		return m_IsDeleted;
 	}
 
@@ -251,6 +253,10 @@ public class Project implements Serializable, IScrumDocument {
 
 	public boolean getIsOverdue() {
 		return false;
+	}
+
+	public String getReadableId() {
+		return null;
 	}
 
 }

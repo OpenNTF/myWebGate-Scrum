@@ -54,6 +54,7 @@ public class TaskSessionFacade {
 	public static final int SORT_BY_DUE = 10;
 	public static final int SORT_BY_TIME = 11;
 	public static final int SORT_BY_STATUS = 12;
+	public static final int SORT_BY_ID = 13;
 
 	public Task createNewTask(String projID) {		
 		return TaskStorageService.getInstance().createNewTask(projID, ExtLibUtil.getCurrentSession());
@@ -62,25 +63,21 @@ public class TaskSessionFacade {
 	public boolean saveTask(Task curTask) {
 		m_TaskList = null;
 		m_LastAccessed = new Date();
-		return TaskStorageService.getInstance().saveTask(curTask,
-				ExtLibUtil.getCurrentSession());
+		return TaskStorageService.getInstance().saveTask(curTask, ExtLibUtil.getCurrentSession());
 	}
 
 	public boolean deleteTask(Task curTask) {
 		m_TaskList = null;
 		m_LastAccessed = new Date();
-		return TaskStorageService.getInstance().deleteTask(curTask,
-				ExtLibUtil.getCurrentSession());
+		return TaskStorageService.getInstance().deleteTask(curTask, ExtLibUtil.getCurrentSession());
 	}
 
 	public Task getTaskById(String strTaskId) {
 		return loadUserstory(strTaskId);
 	}
 
-	public List<Task> getAllTasks(int sortOrder, boolean reverse,
-			String statusFilter) {
-		List<Task> lstAll = TaskStorageService.getInstance().getAllTasks(
-				ExtLibUtil.getCurrentSession(), statusFilter);
+	public List<Task> getAllTasks(int sortOrder, boolean reverse, String statusFilter) {
+		List<Task> lstAll = TaskStorageService.getInstance().getAllTasks(ExtLibUtil.getCurrentSession(), statusFilter);
 		TaskSortFactory.sortTasks(lstAll, sortOrder, reverse);
 		return lstAll;
 	}
@@ -91,27 +88,19 @@ public class TaskSessionFacade {
 		return lstMy;
 	}
 
-	public List<Task> getTasksOfProject(int sortOrder, boolean reverse,
-			String projectID, String statusFilter, String usFilter,
-			String itFilter) {
-		List<Task> lstTasksOfProject = TaskStorageService.getInstance()
-				.getTasksOfProject(ExtLibUtil.getCurrentSession(), projectID,
-						statusFilter, usFilter, itFilter);
+	public List<Task> getTasksOfProject(int sortOrder, boolean reverse, String projectID, String statusFilter, String usFilter, String itFilter, boolean hideComplete) {
+		List<Task> lstTasksOfProject = TaskStorageService.getInstance().getTasksOfProject(ExtLibUtil.getCurrentSession(), projectID, statusFilter, usFilter, itFilter, hideComplete);
 		TaskSortFactory.sortTasks(lstTasksOfProject, sortOrder, reverse);
 		return lstTasksOfProject;
 	}
 
-	public List<Task> getTasksOfUserstory(int sortOrder, boolean reverse,
-			String userstoryID, String statusFilter) {
-		List<Task> lstTasksOfUserstory = TaskStorageService.getInstance()
-				.getTasksOfUserstory(ExtLibUtil.getCurrentSession(),
-						userstoryID, statusFilter);
+	public List<Task> getTasksOfUserstory(int sortOrder, boolean reverse, String userstoryID, String statusFilter) {
+		List<Task> lstTasksOfUserstory = TaskStorageService.getInstance().getTasksOfUserstory(ExtLibUtil.getCurrentSession(), userstoryID, statusFilter);
 		TaskSortFactory.sortTasks(lstTasksOfUserstory, sortOrder, reverse);
 		return lstTasksOfUserstory;
 	}
 
-	public List<Task> getTasksOfIteration(int sortOrder, boolean reverse,
-			String iterationID, String statusFilter) {
+	public List<Task> getTasksOfIteration(int sortOrder, boolean reverse, String iterationID, String statusFilter) {
 		List<Task> lstTasksOfIteration = new ArrayList<Task>();
 		for (Task task : getAllTasks(sortOrder, reverse, statusFilter)) {
 			if (task.getIterationId().equals(iterationID)) {
@@ -131,15 +120,13 @@ public class TaskSessionFacade {
 	}
 
 	private Task loadUserstory(String strID) {
-		if (m_TaskList == null
-				|| TaskStorageService.getInstance().isDirty(m_LastAccessed)) {
+		if (m_TaskList == null || TaskStorageService.getInstance().isDirty(m_LastAccessed)) {
 			m_TaskList = new HashMap<String, Task>();
 		}
 		if (m_TaskList.containsKey(strID)) {
 			return m_TaskList.get(strID);
 		}
-		Task p = TaskStorageService.getInstance().getTaskById(strID,
-				ExtLibUtil.getCurrentSession());
+		Task p = TaskStorageService.getInstance().getTaskById(strID, ExtLibUtil.getCurrentSession());
 		m_LastAccessed = new Date();
 		if (p != null) {
 			m_TaskList.put(strID, p);

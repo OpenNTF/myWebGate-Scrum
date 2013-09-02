@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
 
 import biz.webgate.scrum.iteration.Iteration;
 import biz.webgate.scrum.iteration.IterationSessionFacade;
@@ -34,8 +33,7 @@ public class UserstorySessionFacade {
 	public static final String BEAN_NAME = "userstoryBean"; //$NON-NLS-1$
 
 	public static UserstorySessionFacade get(FacesContext context) {
-		UserstorySessionFacade bean = (UserstorySessionFacade) context.getApplication().getVariableResolver().resolveVariable(context,
-				BEAN_NAME);
+		UserstorySessionFacade bean = (UserstorySessionFacade) context.getApplication().getVariableResolver().resolveVariable(context, BEAN_NAME);
 		return bean;
 	}
 
@@ -53,7 +51,7 @@ public class UserstorySessionFacade {
 	private Date m_LastAccessed = new Date();
 
 	public Userstory createNewUserstory() {
-		return UserstoryStorageService.getInstance().createNewUserstory(ExtLibUtil.getCurrentSession());
+		return UserstoryStorageService.getInstance().createNewUserstory(ExtLibUtil.getCurrentSession());		
 	}
 
 	public boolean saveUserstory(Userstory curUserstory) {
@@ -79,41 +77,25 @@ public class UserstorySessionFacade {
 	}
 
 	public List<Userstory> getUserstoriesOfProject(int sortOrder, boolean reverse, String projectID) {
-		List<Userstory> lstUserstoriesOfProject = UserstoryStorageService.getInstance().getUserstoriesOfProject(
-				ExtLibUtil.getCurrentSession(), projectID);
+		List<Userstory> lstUserstoriesOfProject = UserstoryStorageService.getInstance().getUserstoriesOfProject(ExtLibUtil.getCurrentSession(), projectID);
 		UserstorySortFactory.sortUserstories(lstUserstoriesOfProject, sortOrder, reverse);
 		return lstUserstoriesOfProject;
 	}
 
 	public List<Userstory> getUserstoriesOfIteration(String iterationID, boolean reverse) {
-		List<Userstory> lstUserstoriesOfProject = UserstoryStorageService.getInstance().getUserstoriesOfIteration(
-				ExtLibUtil.getCurrentSession(), iterationID);
-		UserstorySortFactory.sortUserstories(lstUserstoriesOfProject, SORT_BY_SUBJECT, reverse);
+		List<Userstory> lstUserstoriesOfProject = UserstoryStorageService.getInstance().getUserstoriesOfIteration(ExtLibUtil.getCurrentSession(), iterationID);
+		UserstorySortFactory.sortUserstories(lstUserstoriesOfProject,SORT_BY_SUBJECT, reverse);
 		return lstUserstoriesOfProject;
 	}
-
-	@Deprecated
-	public List<SelectItem> getUserstorySelectItems() throws IOException {
-		List<SelectItem> selectItems = new ArrayList<SelectItem>();
-		for (Userstory userstory : getAllUserstories(SORT_BY_SUBJECT, false)) {
-			selectItems.add(new SelectItem(userstory.getId(), userstory.getSubject()));
-		}
-		return selectItems;
+	
+	public int getUserstoriesOfIterationCount(String iterationID) {
+		return getUserstoriesOfIteration(iterationID, false).size();
 	}
 
 	public List<String> getUserstoryValues() throws IOException {
 		List<String> selectItems = new ArrayList<String>();
 		for (Userstory userstory : getAllUserstories(SORT_BY_SUBJECT, false)) {
 			selectItems.add(userstory.getSubject() + "|" + userstory.getId());
-		}
-		return selectItems;
-	}
-
-	@Deprecated
-	public List<SelectItem> getUserstorySelectItemsOfProject(String projectId) {
-		List<SelectItem> selectItems = new ArrayList<SelectItem>();
-		for (Userstory userstory : getUserstoriesOfProject(SORT_BY_SUBJECT, false, projectId)) {
-			selectItems.add(new SelectItem(userstory.getId(), userstory.getSubject()));
 		}
 		return selectItems;
 	}
@@ -126,38 +108,10 @@ public class UserstorySessionFacade {
 		return selectItems;
 	}
 
-	@Deprecated
-	public List<SelectItem> getAssignedUserstorySelectItemsOfIteration(String iterationId) {
-		List<SelectItem> selectItems = new ArrayList<SelectItem>();
-		for (Userstory userstory : getUserstoriesOfIteration(iterationId, false)) {
-			selectItems.add(new SelectItem(userstory.getId(), userstory.getSubject()));
-		}
-		return selectItems;
-	}
-
 	public List<String> getAssignedUserstoryValuesOfIteration(String iterationId) {
 		List<String> selectItems = new ArrayList<String>();
 		for (Userstory userstory : getUserstoriesOfIteration(iterationId, false)) {
 			selectItems.add(userstory.getSubject() + "|" + userstory.getId());
-		}
-		return selectItems;
-	}
-
-	@Deprecated
-	public List<SelectItem> getAvailableUserstorySelectItemsOfIteration(String iterationId, String projectID) {
-		List<SelectItem> selectItems = new ArrayList<SelectItem>();
-		for (Userstory userstory : getUserstoriesOfProject(SORT_BY_SUBJECT, false, projectID)) {
-			if (userstory.getIterationId() == null || userstory.getIterationId() == "") {
-				selectItems.add(new SelectItem(userstory.getId(), userstory.getSubject()));
-			} else if (!userstory.getIterationId().equals(iterationId)) {
-				if (!(IterationSessionFacade.get().getIterationById(userstory.getIterationId()) == null)) {
-					Iteration iteration = IterationSessionFacade.get().getIterationById(userstory.getIterationId());
-					selectItems.add(new SelectItem(userstory.getId(), userstory.getSubject() + " (" + iteration.getIndex() + " - "
-							+ iteration.getSubject() + ")"));
-				} else {
-					selectItems.add(new SelectItem(userstory.getId(), userstory.getSubject()));
-				}
-			}
 		}
 		return selectItems;
 	}
@@ -170,8 +124,7 @@ public class UserstorySessionFacade {
 			} else if (!userstory.getIterationId().equals(iterationId)) {
 				if (!(IterationSessionFacade.get().getIterationById(userstory.getIterationId()) == null)) {
 					Iteration iteration = IterationSessionFacade.get().getIterationById(userstory.getIterationId());
-					selectItems.add(userstory.getSubject() + " (" + iteration.getIndex() + " - " + iteration.getSubject() + ")" + "|"
-							+ userstory.getId());
+					selectItems.add(userstory.getSubject() + " (" + iteration.getIndex() + " - " + iteration.getSubject() + ")" + "|" + userstory.getId());
 				} else {
 					selectItems.add(userstory.getSubject() + "|" + userstory.getId());
 				}

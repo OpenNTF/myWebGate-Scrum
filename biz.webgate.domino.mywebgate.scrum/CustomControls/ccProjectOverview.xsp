@@ -19,9 +19,9 @@ context.redirectToPage("/ProjectDetails.xsp");}]]></xp:this.action>
 
 		<xp:table style="width:100%" id="tblData" styleClass="content">
 			<xp:tr>
-				<xp:td id="tdCustomerTitle" styleClass="th">
+				<xp:td id="tdCustomerTitle" styleClass="th" style="cursor:pointer;">
 					<xp:label value="Customer" id="lblCustomer" for="cfCustomer"
-						style="cursor:pointer">
+						style="cursor:pointer;">
 					</xp:label>
 					&#160;
 					<xp:image id="imgTwistyProjectCustomer"
@@ -39,9 +39,9 @@ context.redirectToPage("/ProjectDetails.xsp");}]]></xp:this.action>
 viewScope.sort = projectBean.SORT_BY_CUSTOMER;}]]></xp:this.action>
 					</xp:eventHandler>
 				</xp:td>
-				<xp:td id="tdSubjectTitle" styleClass="th">
+				<xp:td id="tdSubjectTitle" styleClass="th" style="cursor:pointer;">
 					<xp:label value="Project name" id="lblSubject" for="cfSubject"
-						style="cursor:pointer">
+						style="cursor:pointer;">
 					</xp:label>
 					&#160;
 					<xp:image id="imgTwistyProjectSubject"
@@ -59,9 +59,9 @@ viewScope.sort = projectBean.SORT_BY_CUSTOMER;}]]></xp:this.action>
 viewScope.sort = projectBean.SORT_BY_SUBJECT;}]]></xp:this.action>
 					</xp:eventHandler>
 				</xp:td>
-				<xp:td id="tdLeaderTitle" styleClass="th">
+				<xp:td id="tdLeaderTitle" styleClass="th" style="cursor:pointer;">
 					<xp:label value="Project leader" id="lblLeader" for="cfLeader"
-						style="cursor:pointer">
+						style="cursor:pointer;">
 					</xp:label>
 					&#160;
 					<xp:image id="imgTwistyProjectLeader"
@@ -79,9 +79,9 @@ viewScope.sort = projectBean.SORT_BY_SUBJECT;}]]></xp:this.action>
 viewScope.sort = projectBean.SORT_BY_LEADER;}]]></xp:this.action>
 					</xp:eventHandler>
 				</xp:td>
-				<xp:td id="tdStartTitle" styleClass="th date">
+				<xp:td id="tdStartTitle" styleClass="th date" style="cursor:pointer;">
 					<xp:label value="Start date" id="lblStart" for="cfStart"
-						style="cursor:pointer">
+						style="cursor:pointer;">
 					</xp:label>
 					&#160;
 					<xp:image id="imgTwistyProjectStart"
@@ -99,9 +99,9 @@ viewScope.sort = projectBean.SORT_BY_LEADER;}]]></xp:this.action>
 viewScope.sort = projectBean.SORT_BY_START;}]]></xp:this.action>
 					</xp:eventHandler>
 				</xp:td>
-				<xp:td id="tdEndTitle" styleClass="th date">
+				<xp:td id="tdEndTitle" styleClass="th date" style="cursor:pointer;">
 					<xp:label value="End date" id="lblEnd" for="cfEnd"
-						style="cursor:pointer">
+						style="cursor:pointer;">
 					</xp:label>
 					&#160;
 					<xp:image id="imgTwistyProjectEnd"
@@ -118,6 +118,8 @@ viewScope.sort = projectBean.SORT_BY_START;}]]></xp:this.action>
 }
 viewScope.sort = projectBean.SORT_BY_END;}]]></xp:this.action>
 					</xp:eventHandler>
+				</xp:td>
+				<xp:td id="tdSendLink" styleClass="th" style="width:20px;">
 				</xp:td>
 				<xp:td id="tdCreateBug" styleClass="th" style="width:20px;">
 				</xp:td>
@@ -164,6 +166,21 @@ context.redirectToPage(strLink);}]]></xp:this.action>
 					<xp:td>
 						<xp:text escape="true" id="cfEnd" value="#{repeatedProject.end}">
 						</xp:text>
+					</xp:td>
+					<xp:td style="text-align:center;">
+						<xp:link escape="true" id="lnkSendLink" text="">
+							<xp:eventHandler event="onclick" submit="true"
+								refreshMode="partial" refreshId="dlgEditMailOut">
+								<xp:this.action><![CDATA[#{javascript:viewScope.put("targetID", repeatedProject.id);
+getComponent("dlgEditMailOut").show();}]]></xp:this.action>
+							</xp:eventHandler>
+							<xp:image id="image4" alt="Send Link" url="/email_link.png"
+								style="margin-bottom:3px;">
+							</xp:image>
+						</xp:link>
+						<xe:tooltip id="tooltip4" for="lnkSendLink">
+							<xe:this.label><![CDATA[#{javascript:"Send Link";}]]></xe:this.label>
+						</xe:tooltip>
 					</xp:td>
 					<xp:td style="text-align:center;">
 						<xp:link escape="true" id="lnkCreateBug" text="">

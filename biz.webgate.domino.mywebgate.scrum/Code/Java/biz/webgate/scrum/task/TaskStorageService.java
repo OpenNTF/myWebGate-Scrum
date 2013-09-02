@@ -80,9 +80,20 @@ public class TaskStorageService {
 			curTask.setReader(lstReader);
 			curTask.setAuthors(lstReader);
 			
+			if (curTask.getTaskId() == null || curTask.getTaskId().equals("")) {
+				Document docTask = sesCurrent.getCurrentDatabase().getView("lupTasksByProject").getDocumentByKey(curTask.getProjectId(), true);
+				if (docTask != null) {
+					if (!docTask.hasItem("TaskIdT") || docTask.getItemValueString("TaskIdT").equals("")) {
+						curTask.setTaskId("T001");	
+					} else {
+						String temp = "00" + (Integer.parseInt(docTask.getItemValueString("TaskIdT").substring(1))+1);
+						curTask.setTaskId("T" + temp.substring(temp.length() - 3));
+					}
+				}
+			}
+			
 			curTask.setTempSave(null);
-			return DominoStorageService.getInstance().saveObject(curTask,
-					sesCurrent.getCurrentDatabase());
+			return DominoStorageService.getInstance().saveObject(curTask, sesCurrent.getCurrentDatabase());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -93,8 +104,7 @@ public class TaskStorageService {
 		try {
 			m_LastModified = new Date();
 			Document docProcess;
-			docProcess = ExtLibUtil.getCurrentDatabase().getView(
-					"lupTasksByID").getDocumentByKey(curTask.getId(), true);
+			docProcess = ExtLibUtil.getCurrentDatabase().getView("lupTasksByID").getDocumentByKey(curTask.getId(), true);
 			if (docProcess != null) {
 				docProcess.removePermanently(true);
 			}
@@ -111,8 +121,7 @@ public class TaskStorageService {
 		curUserstory.setId(strTaskId);
 		try {
 			Database ndbCurrent = sesCurrent.getCurrentDatabase();
-			if (!DominoStorageService.getInstance().getObject(curUserstory,
-					strTaskId, ndbCurrent))
+			if (!DominoStorageService.getInstance().getObject(curUserstory, strTaskId, ndbCurrent))
 				return null;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -130,11 +139,8 @@ public class TaskStorageService {
 				Document docProcess = docNext;
 				docNext = viwTask.getNextDocument(docNext);
 				Task newTask = new Task();
-				if (DominoStorageService.getInstance().getObjectWithDocument(
-						newTask, docProcess)) {
-					if (!newTask.getIsDeleted().equals("true")
-							&& (statusFilter == null || statusFilter.equals("") || statusFilter
-									.equals(newTask.getStatus()))) {
+				if (DominoStorageService.getInstance().getObjectWithDocument(newTask, docProcess)) {
+					if (!newTask.getIsDeleted().equals("true") && (statusFilter == null || statusFilter.equals("") || statusFilter.equals(newTask.getStatus()))) {
 						lstTask.add(newTask);
 					}
 				}
@@ -149,8 +155,7 @@ public class TaskStorageService {
 		return lstTask;
 	}
 
-	public List<Task> getMyTasks(Session sesCurrent, int involvedType,
-			String statusFilter, boolean showCompleted) {
+	public List<Task> getMyTasks(Session sesCurrent, int involvedType, String statusFilter, boolean showCompleted) {
 		List<Task> lstTask = new ArrayList<Task>();
 		try {
 
@@ -199,8 +204,7 @@ public class TaskStorageService {
 		return lstTask;
 	}
 
-	public List<Task> getTasksOfProject(Session sesCurrent, String projectID,
-			String statusFilter, String usFilter, String itFilter) {
+	public List<Task> getTasksOfProject(Session sesCurrent, String projectID, String statusFilter, String usFilter, String itFilter, boolean hideComplete) {
 		List<Task> lstTask = new ArrayList<Task>();
 		try {
 			Database ndbCurrent = sesCurrent.getCurrentDatabase();
@@ -210,17 +214,15 @@ public class TaskStorageService {
 				Document docProcess = docNext;
 				docNext = viwTask.getNextDocument(docNext);
 				Task newTask = new Task();
-				if (DominoStorageService.getInstance().getObjectWithDocument(
-						newTask, docProcess)) {
+				if (DominoStorageService.getInstance().getObjectWithDocument(newTask, docProcess)) {
 					if (newTask.getProjectId().equals(projectID)
 							&& !newTask.getIsDeleted().equals("true")
-							&& (statusFilter == null || statusFilter.equals("") || statusFilter
-									.equals(newTask.getStatus()))
-							&& (usFilter == null || usFilter.equals("") || usFilter
-									.equals(newTask.getUserstoryId()))
-							&& (itFilter == null || itFilter.equals("") || itFilter
-									.equals(newTask.getIterationId()))) {
-						lstTask.add(newTask);
+							&& (statusFilter == null || statusFilter.equals("") || statusFilter.equals(newTask.getStatus()))
+							&& (usFilter == null || usFilter.equals("") || usFilter.equals(newTask.getUserstoryId()))
+							&& (itFilter == null || itFilter.equals("") || itFilter.equals(newTask.getIterationId()))) {
+						if (hideComplete == false || (hideComplete == true && !newTask.getStatus().equals("4"))) {
+							lstTask.add(newTask);
+						}
 					}
 				}
 				docProcess.recycle();
@@ -234,8 +236,7 @@ public class TaskStorageService {
 		return lstTask;
 	}
 
-	public List<Task> getTasksOfUserstory(Session sesCurrent,
-			String userstoryID, String statusFilter) {
+	public List<Task> getTasksOfUserstory(Session sesCurrent, String userstoryID, String statusFilter) {
 		List<Task> lstTasks = new ArrayList<Task>();
 		try {
 			Database ndbCurrent = sesCurrent.getCurrentDatabase();
@@ -245,8 +246,7 @@ public class TaskStorageService {
 				Document docProcess = docNext;
 				docNext = viwTask.getNextDocument(docNext);
 				Task newTask = new Task();
-				if (DominoStorageService.getInstance().getObjectWithDocument(
-						newTask, docProcess)) {
+				if (DominoStorageService.getInstance().getObjectWithDocument(newTask, docProcess)) {
 					if (newTask.getUserstoryId().equals(userstoryID)
 							&& !newTask.getIsDeleted().equals("true")
 							&& (statusFilter == null || statusFilter.equals("") || statusFilter

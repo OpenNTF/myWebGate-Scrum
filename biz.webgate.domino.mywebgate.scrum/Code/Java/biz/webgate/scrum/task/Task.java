@@ -55,6 +55,8 @@ public class Task implements Serializable, IScrumDocument {
 	private String m_UserstoryId;
 	@DominoEntity(FieldName = "SubjectT")
 	private String m_Subject;
+	@DominoEntity(FieldName = "TaskIdT")
+	private String m_TaskId;	
 	@DominoEntity(FieldName = "DueDT", dateOnly = true)
 	private Date m_Due;
 	@DominoEntity(FieldName = "TimeN")
@@ -152,9 +154,15 @@ public class Task implements Serializable, IScrumDocument {
 	public String getSubject() {
 		return m_Subject;
 	}
-
 	public void setSubject(String subject) {
 		m_Subject = subject;
+	}
+	
+	public String getTaskId() {
+		return m_TaskId;
+	}
+	public void setTaskId(String taskId) {
+		m_TaskId = taskId;
 	}
 
 	public void setDue(Date due) {
@@ -277,5 +285,9 @@ public class Task implements Serializable, IScrumDocument {
 		Customer customer = CustomerSessionFacade.get().getCustomerById(strId);
 		if (customer != null) return customer.getName();
 		return "";
+	}
+
+	public String getReadableId() {
+		return m_TaskId;
 	}
 }

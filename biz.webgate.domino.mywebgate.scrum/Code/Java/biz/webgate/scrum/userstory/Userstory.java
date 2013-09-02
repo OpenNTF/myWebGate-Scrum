@@ -257,4 +257,8 @@ public class Userstory implements Serializable, IScrumDocument {
 	public boolean getIsOverdue() {
 		return false;
 	}
+
+	public String getReadableId() {
+		return null;
+	}
 }

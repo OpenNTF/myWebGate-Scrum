@@ -65,14 +65,24 @@ userstoryBean.getUserstoryValues();}]]></xp:this.value>
 						execMode="partial">
 					</xp:eventHandler>
 				</xp:comboBox>
+				<xp:checkBox text="Hide Fixed/No Bug" id="cbHideComplete"
+					value="#{viewScope.hideComplete}" checkedValue="1" style="margin-right:10px"
+					uncheckedValue="0">
+					<xp:this.rendered><![CDATA[#{javascript:compositeData.ProjectId != "" && compositeData.ProjectId != null}]]></xp:this.rendered>
+					<xp:eventHandler event="onchange" submit="true"
+						refreshMode="partial" refreshId="tblData">
+					</xp:eventHandler>
+				</xp:checkBox>
 				<xp:link escape="true" id="lnkClearFilter">
 					<xp:eventHandler event="onclick" submit="true"
 						refreshMode="partial" refreshId="tblData">
 						<xp:this.action><![CDATA[#{javascript:viewScope.remove("filterUSBug");
-viewScope.remove("filterStatusBug");}]]></xp:this.action>
+viewScope.remove("filterStatusBug");
+viewScope.remove("hideComplete");}]]></xp:this.action>
 
 						<xp:this.script><![CDATA[if (document.getElementById('#{id:cfBugFilterUS}')) {
 	document.getElementById('#{id:cfBugFilterUS}').value = "";
+	document.getElementById('#{id:cbHideComplete}').checked = false;
 }
 document.getElementById('#{id:cfBugFilterStatus}').value = "";]]></xp:this.script>
 					</xp:eventHandler>
@@ -89,9 +99,8 @@ document.getElementById('#{id:cfBugFilterStatus}').value = "";]]></xp:this.scrip
 
 		<xp:table style="width:100%" id="tblData" styleClass="content">
 			<xp:tr>
-				<xp:td id="tdBugDue" styleClass="th date">
-					<xp:label value="Due Date" id="lblBugDue" for="cfBugDue"
-						style="cursor:pointer">
+				<xp:td id="tdBugDue" styleClass="th date" style="cursor:pointer;">
+					<xp:label value="Due Date" id="lblBugDue" for="cfBugDue" style="cursor:pointer;">
 					</xp:label>
 					&#160;
 					<xp:image id="imgTwistyBugDue"
@@ -111,9 +120,27 @@ document.getElementById('#{id:cfBugFilterStatus}').value = "";]]></xp:this.scrip
 						}]]></xp:this.action>
 					</xp:eventHandler>
 				</xp:td>
-				<xp:td id="tdBugSubject" styleClass="th">
-					<xp:label value="Subject" id="lblBugSubject" for="cfBugSubject"
-						style="cursor:pointer">
+				<xp:td id="tdId" styleClass="th" style="cursor:pointer;width:40px;">
+					<xp:label value="ID" id="label7" for="cfBugID" style="cursor:pointer;">
+					</xp:label>
+					&#160;
+					<xp:image id="image6"
+						rendered="#{javascript:viewScope.bugSort == bugBean.SORT_BY_ID}">
+						<xp:this.url><![CDATA[#{javascript:@If ( !viewScope.bugSortReverse , "twisty.png" , "twisty_reverse.png")}]]></xp:this.url>
+					</xp:image>
+					<xp:eventHandler event="onclick" submit="true"
+						refreshMode="partial" refreshId="tblData" id="eventHandler1"
+						execId="tblData" execMode="partial">
+						<xp:this.action><![CDATA[#{javascript:if(viewScope.bugSort == bugBean.SORT_BY_ID && !viewScope.bugSortReverse) {
+	viewScope.bugSortReverse = true;
+} else {
+	viewScope.bugSortReverse = false;
+}
+viewScope.bugSort = bugBean.SORT_BY_ID;}]]></xp:this.action>
+					</xp:eventHandler>
+				</xp:td>
+				<xp:td id="tdBugSubject" styleClass="th" style="cursor:pointer;">
+					<xp:label value="Subject" id="lblBugSubject" for="cfBugSubject" style="cursor:pointer;">
 					</xp:label>
 					&#160;
 					<xp:image id="imgTwistyBugSubject"
@@ -133,9 +160,8 @@ document.getElementById('#{id:cfBugFilterStatus}').value = "";]]></xp:this.scrip
 						}]]></xp:this.action>
 					</xp:eventHandler>
 				</xp:td>
-				<xp:td id="tdBugStatus" styleClass="th icon">
-					<xp:label value="Status" id="lblBugStatus" for="cfBugStatus"
-						style="cursor:pointer">
+				<xp:td id="tdBugStatus" styleClass="th icon" style="cursor:pointer;">
+					<xp:label value="Status" id="lblBugStatus" for="cfBugStatus" style="cursor:pointer;">
 					</xp:label>
 					&#160;
 					<xp:image id="imgTwistyBugStatus"
@@ -156,9 +182,8 @@ document.getElementById('#{id:cfBugFilterStatus}').value = "";]]></xp:this.scrip
 					</xp:eventHandler>
 				</xp:td>
 				<xp:td id="tdBugAuthor" styleClass="th"
-					rendered="#{javascript:compositeData.showAuthor}">
-					<xp:label value="Author" id="lblBugAuthor" for="cfBugAuthor"
-						style="cursor:pointer">
+					style="cursor:pointer;width:150px;" rendered="#{javascript:compositeData.showAuthor}">
+					<xp:label value="Author" id="lblBugAuthor" for="cfBugAuthor" style="cursor:pointer;">
 					</xp:label>
 					&#160;
 					<xp:image id="imgTwistyBugAuthor"
@@ -179,9 +204,8 @@ document.getElementById('#{id:cfBugFilterStatus}').value = "";]]></xp:this.scrip
 					</xp:eventHandler>
 				</xp:td>
 				<xp:td id="tdBugEditor" styleClass="th"
-					rendered="#{javascript:compositeData.showAssignedTo}">
-					<xp:label value="Assigned to" id="lblBugEditor" for="cfBugEditor"
-						style="cursor:pointer">
+					style="cursor:pointer;width:150px;" rendered="#{javascript:compositeData.showAssignedTo}">
+					<xp:label value="Assigned to" id="lblBugEditor" for="cfBugEditor" style="cursor:pointer;">
 					</xp:label>
 					&#160;
 					<xp:image id="imgTwistyBugEditor"
@@ -201,11 +225,9 @@ document.getElementById('#{id:cfBugFilterStatus}').value = "";]]></xp:this.scrip
 						}]]></xp:this.action>
 					</xp:eventHandler>
 				</xp:td>
-				<xp:td id="tdBugKunde" styleClass="th"
+				<xp:td id="tdBugKunde" styleClass="th" style="cursor:pointer;"
 					rendered="#{javascript:compositeData.showCustomer}">
-
-					<xp:label value="Customer" id="label1" for="cfBugCustomer"
-						style="cursor:pointer">
+					<xp:label value="Customer" id="label1" for="cfBugCustomer" style="cursor:pointer;">
 					</xp:label>
 					&#160;
 					<xp:image id="imgTwistyBugCustomer"
@@ -225,11 +247,9 @@ document.getElementById('#{id:cfBugFilterStatus}').value = "";]]></xp:this.scrip
 						}]]></xp:this.action>
 					</xp:eventHandler>
 				</xp:td>
-				<xp:td id="tdBugProjekt" styleClass="th"
+				<xp:td id="tdBugProjekt" styleClass="th" style="cursor:pointer;"
 					rendered="#{javascript:compositeData.showProject}">
-
-					<xp:label value="Project" id="label2" for="cfBugProject"
-						style="cursor:pointer">
+					<xp:label value="Project" id="label2" for="cfBugProject" style="cursor:pointer;">
 					</xp:label>
 					&#160;
 					<xp:image id="imgTwistyBugProject"
@@ -249,10 +269,9 @@ document.getElementById('#{id:cfBugFilterStatus}').value = "";]]></xp:this.scrip
 						}]]></xp:this.action>
 					</xp:eventHandler>
 				</xp:td>
-				<xp:td id="tdBugUserstory" styleClass="th"
+				<xp:td id="tdBugUserstory" styleClass="th" style="cursor:pointer;width:200px;"
 					rendered="#{javascript:compositeData.showUserstory}">
-					<xp:label value="Userstory" id="lblBugUserstory" for="cfBugUserstory"
-						style="cursor:pointer">
+					<xp:label value="Userstory" id="lblBugUserstory" for="cfBugUserstory" style="cursor:pointer;">
 					</xp:label>
 					&#160;
 					<xp:image id="imgTwistyBugUserstory"
@@ -272,16 +291,16 @@ document.getElementById('#{id:cfBugFilterStatus}').value = "";]]></xp:this.scrip
 						}]]></xp:this.action>
 					</xp:eventHandler>
 				</xp:td>
-
+				<xp:td id="tdSendLink" styleClass="th" style="width:20px;">
+				</xp:td>
 				<xp:td id="tdEdit" styleClass="th" style="width:20px;">
-
 				</xp:td>
 				<xp:td id="tdDelete" styleClass="th" style="width:20px;">
-
 				</xp:td>
 			</xp:tr>
 			<xp:repeat id="rptBugs" rows="1000" var="repeatedBug">
-				<xp:this.value><![CDATA[#{javascript:var bugSort = viewScope.bugSort;
+				<xp:this.value><![CDATA[#{javascript:var hideComplete = @If (viewScope.hideComplete == "1" , true, false);
+var bugSort = viewScope.bugSort;
 if(bugSort == "" || bugSort == null) bugSort = bugBean.SORT_BY_DUE;
 if(viewScope.bugSortReverse == null) viewScope.bugSortReverse = false;
 if(compositeData.UserOnly) {
@@ -297,15 +316,20 @@ if(compositeData.ProjectId != "" && compositeData.ProjectId != null) {
 		compositeData.ProjectId, 
 		viewScope.filterStatusBug,
 		viewScope.filterUSBug,
-		viewScope.filterIT);
+		viewScope.filterIT,
+		hideComplete);
 }
 return bugBean.getAllBugs(bugSort.intValue(), viewScope.bugSortReverse, viewScope.filterStatusBug);}]]></xp:this.value>
 				<xp:tr>
 					<xp:this.styleClass><![CDATA[#{javascript:if ( repeatedBug.getIsOverdue() ) {"overdue hover"} else
 {if (viewScope.get("bugId") == repeatedBug.getId()) {"selectedTask"} else {"hover"}}}]]></xp:this.styleClass>
-					<xp:td>						
-						<xp:text escape="true" id="cfBugDue"
-							value="#{repeatedBug.due}">
+					<xp:td>
+						<xp:text escape="true" id="cfBugDue" value="#{repeatedBug.due}">
+							<xp:this.styleClass><![CDATA[#{javascript:if (viewScope.get("bugId") == repeatedBug.getId()) {"selectedTaskText"}}]]></xp:this.styleClass>
+						</xp:text>
+					</xp:td>
+					<xp:td>
+						<xp:text escape="true" id="cfBugID" value="#{repeatedBug.bugId}">
 							<xp:this.styleClass><![CDATA[#{javascript:if (viewScope.get("bugId") == repeatedBug.getId()) {"selectedTaskText"}}]]></xp:this.styleClass>
 						</xp:text>
 					</xp:td>
@@ -414,6 +438,21 @@ context.redirectToPage(strLink);}]]></xp:this.action>
 						</xp:text>
 					</xp:td>
 					<xp:td style="text-align:center;">
+						<xp:link escape="true" id="lnkSendLink" text="">
+							<xp:eventHandler event="onclick" submit="true"
+								refreshMode="partial" refreshId="dlgEditMailOut">
+								<xp:this.action><![CDATA[#{javascript:viewScope.put("targetID", repeatedBug.id);
+getComponent("dlgEditMailOut").show();}]]></xp:this.action>
+							</xp:eventHandler>
+							<xp:image id="image4" alt="Send Link" url="/email_link.png"
+								style="margin-bottom:3px;">
+							</xp:image>
+						</xp:link>
+						<xe:tooltip id="tooltip4" for="lnkSendLink">
+							<xe:this.label><![CDATA[#{javascript:"Send Link";}]]></xe:this.label>
+						</xe:tooltip>
+					</xp:td>
+					<xp:td style="text-align:center;">
 						<xp:link escape="true" id="lnkEdit" text="">
 							<xp:this.rendered><![CDATA[#{javascript:hasRole("[Admin]") || 
 repeatedBug.author == @Name("[Abbreviate]",@UserName()) || 
@@ -474,28 +513,15 @@ getComponent("dlgEditBug").show()}]]></xp:this.action>
 							</xp:tr>
 							<xp:tr>
 								<xp:td>
-									<xp:label value="Customer" id="label5" for="dspCustomer">
+									<xp:label value="Iteration" id="label5" for="dspIteration">
 									</xp:label>
 								</xp:td>
 								<xp:td>
-									<xp:text escape="true" id="dspCustomer">
-										<xp:this.value><![CDATA[#{javascript:if(projectBean.getProjectById(repeatedBug.projectId) != null) {
-	var customer = projectBean.getProjectById(repeatedBug.projectId).getCustomer();
-	return repeatedBug.getCustomerName(customer)
-}}]]></xp:this.value>
-									</xp:text>
-								</xp:td>
-							</xp:tr>
-							<xp:tr>
-								<xp:td>
-									<xp:label value="Project" id="label11" for="dspProject">
-									</xp:label>
-								</xp:td>
-								<xp:td>
-									<xp:text escape="true" id="dspProject">
-										<xp:this.value><![CDATA[#{javascript:if(projectBean.getProjectById(repeatedBug.projectId) != null) {
-	return "" + projectBean.getProjectById(repeatedBug.projectId).getSubject();
-}}]]></xp:this.value>
+									<xp:text escape="true" id="dspIteration">
+										<xp:this.value><![CDATA[#{javascript:if (userstoryBean.getUserstoryById(repeatedBug.userstoryId) != null) {
+	return "" + userstoryBean.getUserstoryById(repeatedBug.userstoryId).iteration;
+}
+							}]]></xp:this.value>
 									</xp:text>
 								</xp:td>
 							</xp:tr>
@@ -515,6 +541,20 @@ getComponent("dlgEditBug").show()}]]></xp:this.action>
 							</xp:tr>
 							<xp:tr>
 								<xp:td style="padding-bottom:10px;">
+									<xp:label value="Created" id="label6" for="dspAuthor">
+									</xp:label>
+								</xp:td>
+								<xp:td style="padding-bottom:10px;">
+									<xp:text escape="true" id="dspAuthor">
+										<xp:this.value><![CDATA[#{javascript:@Name("[CN]",repeatedBug.author)}]]></xp:this.value>
+									</xp:text>
+									&#160;/&#160;
+									<xp:text escape="true" id="dspCreated" value="#{repeatedBug.createdAt}">
+									</xp:text>
+								</xp:td>
+							</xp:tr>
+							<xp:tr>
+								<xp:td style="padding-bottom:10px;">
 									<xp:label value="Tags" id="label9" for="dspTags">
 									</xp:label>
 								</xp:td>
@@ -525,41 +565,15 @@ getComponent("dlgEditBug").show()}]]></xp:this.action>
 									</xe:djextListTextBox>
 								</xp:td>
 							</xp:tr>
-							<xp:tr>
-								<xp:td>
-									<xp:label value="Assigned to" id="label7" for="dspEditor">
-									</xp:label>
-								</xp:td>
-								<xp:td>
-									<xp:text escape="true" id="dspEditor">
-										<xp:this.value><![CDATA[#{javascript:@Name("[CN]",repeatedBug.editor)}]]></xp:this.value>
-									</xp:text>
-								</xp:td>
-							</xp:tr>
-							<xp:tr>
-								<xp:td>
-									<xp:label value="Created" id="label6" for="dspAuthor">
-									</xp:label>
-								</xp:td>
-								<xp:td>
-									<xp:text escape="true" id="dspAuthor">
-										<xp:this.value><![CDATA[#{javascript:@Name("[CN]",repeatedBug.author)}]]></xp:this.value>
-									</xp:text>
-									&#160;/&#160;
-									<xp:text escape="true" id="dspCreated" value="#{repeatedBug.createdAt}">
-									</xp:text>
-								</xp:td>
-							</xp:tr>
 						</xp:table>
 
-						<xp:link escape="true" id="lnkSendLink">
-							<xp:this.text><![CDATA[> send link]]></xp:this.text>
-							<xp:eventHandler event="onclick"
-								submit="true" refreshMode="partial" refreshId="dlgEditMailOut">
-								<xp:this.action><![CDATA[#{javascript:viewScope.put("targetID", repeatedBug.id);
-getComponent("dlgEditMailOut").show();}]]></xp:this.action>
-							</xp:eventHandler>
-						</xp:link>
+						<xp:panel style="width:500px;">
+							<xp:this.rendered><![CDATA[#{javascript:@Elements(repeatedBug.files) > 1}]]></xp:this.rendered>
+							<xc:ccFileDownload fileDownloadFieldName="Files"
+								fileDownloadId="Files" fileDownloadObject="#{javascript:repeatedBug}"
+								uploadDisabled="true" deletionDisabled="true">
+							</xc:ccFileDownload>
+						</xp:panel>
 
 						<hr style="width:90%;color:#eeeeee;" />
 

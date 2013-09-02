@@ -18,6 +18,8 @@ package biz.webgate.scrum.project;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
+import java.util.Vector;
 
 import com.ibm.xsp.extlib.util.ExtLibUtil;
 
@@ -25,6 +27,7 @@ import lotus.domino.Database;
 import lotus.domino.Document;
 import lotus.domino.Session;
 import lotus.domino.View;
+import lotus.domino.DocumentCollection;
 import biz.webgate.scrum.bug.Bug;
 import biz.webgate.scrum.bug.BugSessionFacade;
 import biz.webgate.scrum.customer.Customer;
@@ -53,6 +56,24 @@ public class ProjectStorageService {
 		}
 		return m_ProjectSS;
 	}
+	
+	public Project createNewProject(Session sesCurrent) {
+		try {
+			Project newProject = new Project();
+			newProject.setId(UUID.randomUUID().toString());
+			newProject.setAuthor(sesCurrent.createName(sesCurrent.getEffectiveUserName()).getAbbreviated());
+			newProject.setCreatedAt(new Date());
+
+			//temporary save to allow attachments
+			newProject.setTempSave("1");
+			DominoStorageService.getInstance().saveObject(newProject, sesCurrent.getCurrentDatabase());
+			return newProject;
+		} catch (Exception e) {
+			System.out.println("fehler in createNewProject");
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	public boolean saveProject(Project curProject, Session sesCurrent) {
 		try {
@@ -69,9 +90,42 @@ public class ProjectStorageService {
 			curProject.setAuthors(lstReader);
 			
 			curProject.setTempSave(null);
-			return DominoStorageService.getInstance().saveObject(curProject,
-					sesCurrent.getCurrentDatabase());
+			DominoStorageService.getInstance().saveObject(curProject, sesCurrent.getCurrentDatabase());
+			
+			//update readers on related documents
+			return updateDocuments(curProject);
+			
+			
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	private boolean updateDocuments(Project curProject) {
+		try {
+			Session sesCurrent = ExtLibUtil.getCurrentSessionAsSigner();
+			View viw = sesCurrent.getCurrentDatabase().getView("lupAllByProjectId");
+			DocumentCollection ndcCurrent = null;
+			Document doc = null;
+			Document docTmp = null;
+			ndcCurrent = viw.getAllDocumentsByKey(curProject.getId());				
+			doc = ndcCurrent.getFirstDocument();				
+			while (null != doc) {
+				//recalculate readers field
+				List<String> readers = new ArrayList<String>();
+				readers.addAll(curProject.getReader());
+				
+				doc.replaceItemValue("ReaderR", new Vector<String>(readers));
+				doc.save(true,false,true);
+				
+				docTmp = ndcCurrent.getNextDocument(doc);
+				doc.recycle();
+				doc = docTmp;
+			}
+			return true;
+		} catch (Exception e) {
+			System.out.println("fehler in updateDocuments");
 			e.printStackTrace();
 		}
 		return false;
@@ -82,7 +136,7 @@ public class ProjectStorageService {
 		boolean noException = true;
 		for (Task task : TaskSessionFacade.get().getTasksOfProject(
 				TaskSessionFacade.SORT_BY_CREATEDAT, true, curProject.getId(),
-				"", "", "")) {
+				"", "", "", false)) {
 			noException = TaskSessionFacade.get().deleteTask(task);
 			if (!noException)
 				break;
@@ -90,7 +144,7 @@ public class ProjectStorageService {
 		if (noException) {
 			for (Bug bug : BugSessionFacade.get().getBugsOfProject(
 					BugSessionFacade.SORT_BY_CREATEDAT, true, curProject
-							.getId(), "", "", "")) {
+							.getId(), "", "", "", false)) {
 				noException = BugSessionFacade.get().deleteBug(bug);
 				if (!noException)
 					break;

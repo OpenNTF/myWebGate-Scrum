@@ -84,15 +84,26 @@ userstoryBean.getUserstoryValues();}]]></xp:this.value>
 						execMode="partial">
 					</xp:eventHandler>
 				</xp:comboBox>
+				<xp:checkBox text="Hide Completed" id="cbHideComplete"
+					value="#{viewScope.hideComplete}" checkedValue="1" style="margin-right:10px"
+					uncheckedValue="0">
+					<xp:this.rendered><![CDATA[#{javascript:compositeData.ProjectId != "" && compositeData.ProjectId != null}]]></xp:this.rendered>
+					<xp:eventHandler event="onchange" submit="true"
+						refreshMode="partial" refreshId="tblTasks">
+					</xp:eventHandler>
+				</xp:checkBox>
 				<xp:link escape="true" id="lnkClearFilter">
 					<xp:eventHandler event="onclick" submit="true"
 						refreshMode="partial" refreshId="tblTasks">
-						<xp:this.action><![CDATA[#{javascript:viewScope.remove("filterUS");
-viewScope.remove("filterStatus");}]]></xp:this.action>
+						<xp:this.action><![CDATA[#{javascript:viewScope.remove("filterIt");
+viewScope.remove("filterUS");
+viewScope.remove("filterStatus");
+viewScope.remove("hideComplete");}]]></xp:this.action>
 
 						<xp:this.script><![CDATA[if (document.getElementById('#{id:cfTaskFilterIteration}')) {
 	document.getElementById('#{id:cfTaskFilterIteration}').value = "";
 	document.getElementById('#{id:cfTaskFilterUS}').value = "";
+	document.getElementById('#{id:cbHideComplete}').checked = false;
 }
 document.getElementById('#{id:cfFilterStatus}').value = "";]]></xp:this.script>
 					</xp:eventHandler>
@@ -109,9 +120,9 @@ document.getElementById('#{id:cfFilterStatus}').value = "";]]></xp:this.script>
 
 		<xp:table style="width:100%" id="tblTasks" styleClass="content">
 			<xp:tr>
-				<xp:td id="tdTaskDue" styleClass="th date">
+				<xp:td id="tdTaskDue" styleClass="th date" style="cursor:pointer;">
 					<xp:label value="Due Date" id="lblDueDate" for="cfTaskDue"
-						style="cursor:pointer">
+						style="cursor:pointer;">
 					</xp:label>
 					&#160;
 					<xp:image id="imgTwistyTaskDue"
@@ -129,9 +140,28 @@ document.getElementById('#{id:cfFilterStatus}').value = "";]]></xp:this.script>
 viewScope.taskSort = taskBean.SORT_BY_DUE;}]]></xp:this.action>
 					</xp:eventHandler>
 				</xp:td>
-				<xp:td id="tdTaskSubject" styleClass="th">
+				<xp:td id="tdId" styleClass="th" style="cursor:pointer;width:40px;">
+					<xp:label value="ID" id="label5" for="cfTaskID" style="cursor:pointer;">
+					</xp:label>
+					&#160;
+					<xp:image id="image6"
+						rendered="#{javascript:viewScope.taskSort == taskBean.SORT_BY_ID}">
+						<xp:this.url><![CDATA[#{javascript:@If ( !viewScope.taskSortReverse , "twisty.png" , "twisty_reverse.png")}]]></xp:this.url>
+					</xp:image>
+					<xp:eventHandler event="onclick" submit="true"
+						refreshMode="partial" refreshId="tblTasks" id="eventHandler1"
+						execId="tblTasks" execMode="partial">
+						<xp:this.action><![CDATA[#{javascript:if(viewScope.taskSort == taskBean.SORT_BY_ID && !viewScope.taskSortReverse) {
+	viewScope.taskSortReverse = true;
+} else {
+	viewScope.taskSortReverse = false;
+}
+viewScope.taskSort = taskBean.SORT_BY_ID;}]]></xp:this.action>
+					</xp:eventHandler>
+				</xp:td>
+				<xp:td id="tdTaskSubject" styleClass="th" style="cursor:pointer;">
 					<xp:label value="Task" id="lblTaskSubject" for="cfTaskSubject"
-						style="cursor:pointer">
+						style="cursor:pointer;">
 					</xp:label>
 					&#160;
 					<xp:image id="imgTwistyTaskSubject"
@@ -149,9 +179,9 @@ viewScope.taskSort = taskBean.SORT_BY_DUE;}]]></xp:this.action>
 viewScope.taskSort = taskBean.SORT_BY_SUBJECT;}]]></xp:this.action>
 					</xp:eventHandler>
 				</xp:td>
-				<xp:td id="tdTaskStatus" styleClass="th icon">
+				<xp:td id="tdTaskStatus" styleClass="th icon" style="cursor:pointer;">
 					<xp:label value="Status" id="lblTaskStatus" for="cfTaskStatus"
-						style="cursor:pointer">
+						style="cursor:pointer;">
 					</xp:label>
 					&#160;
 					<xp:image id="imgTwistyTaskStatus"
@@ -170,9 +200,9 @@ viewScope.taskSort = taskBean.SORT_BY_STATUS;}]]></xp:this.action>
 					</xp:eventHandler>
 				</xp:td>
 				<xp:td id="tdTaskAuthor" rendered="#{javascript:compositeData.showAuthor}"
-					styleClass="th">
+					styleClass="th" style="cursor:pointer;width:150px;">
 					<xp:label value="Author" id="lblTaskAuthor" for="cfTaskAuthor"
-						style="cursor:pointer">
+						style="cursor:pointer;">
 					</xp:label>
 					&#160;
 					<xp:image id="imgTwistyTaskAuthor"
@@ -191,9 +221,9 @@ viewScope.taskSort = taskBean.SORT_BY_AUTHOR;}]]></xp:this.action>
 					</xp:eventHandler>
 				</xp:td>
 				<xp:td id="tdTaskEditor" rendered="#{javascript:compositeData.showAssignedTo}"
-					styleClass="th">
+					styleClass="th" style="cursor:pointer;width:150px;">
 					<xp:label value="Assigned to" id="imgTwistyTaskEditor"
-						for="cfTaskEditor" style="cursor:pointer">
+						for="cfTaskEditor" style="cursor:pointer;">
 					</xp:label>
 					&#160;
 					<xp:image id="image4"
@@ -211,11 +241,11 @@ viewScope.taskSort = taskBean.SORT_BY_AUTHOR;}]]></xp:this.action>
 viewScope.taskSort = taskBean.SORT_BY_EDITOR;}]]></xp:this.action>
 					</xp:eventHandler>
 				</xp:td>
-				<xp:td id="tdTaskKunde" styleClass="th"
+				<xp:td id="tdTaskKunde" styleClass="th" style="cursor:pointer;"
 					rendered="#{javascript:compositeData.showCustomer}">
 
 					<xp:label value="Customer" id="label1" for="cfTaskCustomer"
-						style="cursor:pointer">
+						style="cursor:pointer;">
 					</xp:label>
 					&#160;
 					<xp:image id="imgTwistyTaskCustomer"
@@ -235,10 +265,10 @@ viewScope.taskSort = taskBean.SORT_BY_CUSTOMER;}]]></xp:this.action>
 					<xp:span rendered="#{javascript:compositeData.showCustomer}">
 					</xp:span>
 				</xp:td>
-				<xp:td id="tdTaskProjekt" styleClass="th"
+				<xp:td id="tdTaskProjekt" styleClass="th" style="cursor:pointer;"
 					rendered="#{javascript:compositeData.showProject}">
 					<xp:label value="Project" id="label2" for="cfTaskProject"
-						style="cursor:pointer">
+						style="cursor:pointer;">
 					</xp:label>
 					&#160;
 					<xp:image id="imgTwistyTaskProject"
@@ -257,9 +287,9 @@ viewScope.taskSort = taskBean.SORT_BY_PROJECT;}]]></xp:this.action>
 					</xp:eventHandler>
 				</xp:td>
 				<xp:td id="tdTaskIteration" rendered="#{javascript:compositeData.showIteration}"
-					styleClass="th icon">
+					styleClass="th icon" style="cursor:pointer;">
 					<xp:label value="Iteration" id="lblTaskIteration" for="cfTaskIteration"
-						style="cursor:pointer">
+						style="cursor:pointer;">
 					</xp:label>
 					&#160;
 					<xp:image id="imgTwistyTaskIteration"
@@ -278,9 +308,9 @@ viewScope.taskSort = taskBean.SORT_BY_ITERATION;}]]></xp:this.action>
 					</xp:eventHandler>
 				</xp:td>
 				<xp:td id="tdTaskUserstory" rendered="#{javascript:compositeData.showUserstory}"
-					styleClass="th">
+					styleClass="th" style="cursor:pointer;width:200px;">
 					<xp:label value="Userstory" id="lblTaskUserstory" for="cfTaskUserstory"
-						style="cursor:pointer">
+						style="cursor:pointer;">
 					</xp:label>
 					&#160;
 					<xp:image id="imgTwistyTaskUserstory"
@@ -298,15 +328,16 @@ viewScope.taskSort = taskBean.SORT_BY_ITERATION;}]]></xp:this.action>
 viewScope.taskSort = taskBean.SORT_BY_USERSTORY;}]]></xp:this.action>
 					</xp:eventHandler>
 				</xp:td>
+				<xp:td id="tdSendLink" styleClass="th" style="width:20px;">
+				</xp:td>
 				<xp:td id="tdEdit" styleClass="th" style="width:20px;">
-
 				</xp:td>
 				<xp:td id="tdDelete" styleClass="th" style="width:20px;">
-
 				</xp:td>
 			</xp:tr>
 			<xp:repeat id="rptTasks" var="repeatedTask" rows="1000">
-				<xp:this.value><![CDATA[#{javascript:var sort = viewScope.taskSort;
+				<xp:this.value><![CDATA[#{javascript:var hideComplete = @If (viewScope.hideComplete == "1" , true, false);
+var sort = viewScope.taskSort;
 if (sort == "" || sort == null) sort = taskBean.SORT_BY_DUE;
 if(viewScope.taskSortReverse == null) viewScope.taskSortReverse = false;
 if (compositeData.UserOnly) {
@@ -322,7 +353,8 @@ if (compositeData.ProjectId != "" && compositeData.ProjectId != null) {
 		compositeData.ProjectId, 
 		viewScope.filterStatus, 
 		viewScope.filterUS,
-		viewScope.filterIt);
+		viewScope.filterIt,
+		hideComplete);
 }
 return taskBean.getAllTasks(sort.intValue(), viewScope.taskSortReverse, viewScope.filterStatus);}]]></xp:this.value>
 				<xp:tr>
@@ -330,6 +362,11 @@ return taskBean.getAllTasks(sort.intValue(), viewScope.taskSortReverse, viewScop
 {if (viewScope.get("taskId") == repeatedTask.getId()) {"selectedTask"} else {"hover"}}}]]></xp:this.styleClass>
 					<xp:td>
 						<xp:text escape="true" id="cfDueDate" value="#{repeatedTask.due}">
+							<xp:this.styleClass><![CDATA[#{javascript:if (viewScope.get("taskId") == repeatedTask.getId()) {"selectedTaskText"}}]]></xp:this.styleClass>
+						</xp:text>
+					</xp:td>
+					<xp:td>
+						<xp:text escape="true" id="cfTaskID" value="#{repeatedTask.taskId}">
 							<xp:this.styleClass><![CDATA[#{javascript:if (viewScope.get("taskId") == repeatedTask.getId()) {"selectedTaskText"}}]]></xp:this.styleClass>
 						</xp:text>
 					</xp:td>
@@ -432,6 +469,21 @@ context.redirectToPage(strLink);}]]></xp:this.action>
 						</xp:text>
 					</xp:td>
 					<xp:td style="text-align:center;">
+						<xp:link escape="true" id="lnkSendLink" text="">
+							<xp:eventHandler event="onclick" submit="true"
+								refreshMode="partial" refreshId="dlgEditMailOut">
+								<xp:this.action><![CDATA[#{javascript:viewScope.put("targetID", repeatedTask.id);
+getComponent("dlgEditMailOut").show();}]]></xp:this.action>
+							</xp:eventHandler>
+							<xp:image id="image5" alt="Send Link" url="/email_link.png"
+								style="margin-bottom:3px;">
+							</xp:image>
+						</xp:link>
+						<xe:tooltip id="tooltip4" for="lnkSendLink">
+							<xe:this.label><![CDATA[#{javascript:"Send Link";}]]></xe:this.label>
+						</xe:tooltip>
+					</xp:td>
+					<xp:td style="text-align:center;">
 						<xp:link escape="true" id="lnkEdit" text="">
 							<xp:this.rendered><![CDATA[#{javascript:(hasRole("[Admin]") || hasRole("[Intern]"))}]]></xp:this.rendered>
 							<xp:eventHandler event="onclick" submit="true"
@@ -471,7 +523,7 @@ getComponent("dlgEditTask").show()}]]></xp:this.action>
 					<xp:td style="padding:0;" styleClass="selectedTask">
 
 					</xp:td>
-					<xp:td colspan="10" style="padding:0;" styleClass="selectedTask">
+					<xp:td colspan="11" style="padding:0;" styleClass="selectedTask">
 
 						<hr style="width:90%;color:#eeeeee;" />
 
@@ -484,33 +536,6 @@ getComponent("dlgEditTask").show()}]]></xp:this.action>
 								</xp:td>
 								<xp:td style="padding-bottom:10px;">
 									<xp:text escape="true" id="dspDescription" value="#{repeatedTask.body}">
-									</xp:text>
-								</xp:td>
-							</xp:tr>
-							<xp:tr>
-								<xp:td>
-									<xp:label value="Customer" id="label5" for="dspCustomer">
-									</xp:label>
-								</xp:td>
-								<xp:td>
-									<xp:text escape="true" id="dspCustomer">
-										<xp:this.value><![CDATA[#{javascript:if(projectBean.getProjectById(repeatedTask.projectId) != null) {
-	var customer = projectBean.getProjectById(repeatedTask.projectId).getCustomer();
-	return repeatedTask.getCustomerName(customer)
-}}]]></xp:this.value>
-									</xp:text>
-								</xp:td>
-							</xp:tr>
-							<xp:tr>
-								<xp:td>
-									<xp:label value="Project" id="label11" for="dspProject">
-									</xp:label>
-								</xp:td>
-								<xp:td>
-									<xp:text escape="true" id="dspProject">
-										<xp:this.value><![CDATA[#{javascript:if(projectBean.getProjectById(repeatedTask.projectId) != null) {
-	return "" + projectBean.getProjectById(repeatedTask.projectId).getSubject();
-}}]]></xp:this.value>
 									</xp:text>
 								</xp:td>
 							</xp:tr>
@@ -543,29 +568,6 @@ getComponent("dlgEditTask").show()}]]></xp:this.action>
 								</xp:td>
 							</xp:tr>
 							<xp:tr>
-								<xp:td style="padding-bottom:10px;">
-									<xp:label value="Tags" id="label9" for="dspTags">
-									</xp:label>
-								</xp:td>
-								<xp:td style="padding-bottom:10px;">
-									<xe:djextListTextBox multipleSeparator=","
-										multipleTrim="true" value="#{javascript:repeatedTask.getTags()}"
-										disabled="true" showReadonlyAsDisabled="true" id="dspTags">
-									</xe:djextListTextBox>
-								</xp:td>
-							</xp:tr>
-							<xp:tr>
-								<xp:td>
-									<xp:label value="Assigned to" id="label7" for="dspEditor">
-									</xp:label>
-								</xp:td>
-								<xp:td>
-									<xp:text escape="true" id="dspEditor">
-										<xp:this.value><![CDATA[#{javascript:@Name("[CN]",repeatedTask.editor)}]]></xp:this.value>
-									</xp:text>
-								</xp:td>
-							</xp:tr>
-							<xp:tr>
 								<xp:td>
 									<xp:label value="Expected Effort" id="label8" for="dspEffort">
 									</xp:label>
@@ -577,11 +579,11 @@ getComponent("dlgEditTask").show()}]]></xp:this.action>
 								</xp:td>
 							</xp:tr>
 							<xp:tr>
-								<xp:td>
+								<xp:td style="padding-bottom:10px;">
 									<xp:label value="Created" id="label6" for="dspAuthor">
 									</xp:label>
 								</xp:td>
-								<xp:td>
+								<xp:td style="padding-bottom:10px;">
 									<xp:text escape="true" id="dspAuthor">
 										<xp:this.value><![CDATA[#{javascript:@Name("[CN]",repeatedTask.author)}]]></xp:this.value>
 									</xp:text>
@@ -590,16 +592,27 @@ getComponent("dlgEditTask").show()}]]></xp:this.action>
 									</xp:text>
 								</xp:td>
 							</xp:tr>
+							<xp:tr>
+								<xp:td style="padding-bottom:10px;">
+									<xp:label value="Tags" id="label9" for="dspTags">
+									</xp:label>
+								</xp:td>
+								<xp:td style="padding-bottom:10px;">
+									<xe:djextListTextBox multipleSeparator=","
+										multipleTrim="true" value="#{javascript:repeatedTask.getTags()}"
+										disabled="true" showReadonlyAsDisabled="true" id="dspTags">
+									</xe:djextListTextBox>
+								</xp:td>
+							</xp:tr>
 						</xp:table>
 
-						<xp:link escape="true" id="lnkSendLink">
-							<xp:this.text><![CDATA[> send link]]></xp:this.text>
-							<xp:eventHandler event="onclick" submit="true"
-								refreshMode="partial" refreshId="dlgEditMailOut">
-								<xp:this.action><![CDATA[#{javascript:viewScope.put("targetID", repeatedTask.id);
-getComponent("dlgEditMailOut").show();}]]></xp:this.action>
-							</xp:eventHandler>
-						</xp:link>
+						<xp:panel style="width:500px;">
+							<xp:this.rendered><![CDATA[#{javascript:@Elements(repeatedTask.files) > 1}]]></xp:this.rendered>
+							<xc:ccFileDownload fileDownloadFieldName="Files"
+								fileDownloadId="Files" fileDownloadObject="#{javascript:repeatedTask}"
+								uploadDisabled="true" deletionDisabled="true">
+							</xc:ccFileDownload>
+						</xp:panel>
 
 						<hr style="width:90%;color:#eeeeee;" />
 

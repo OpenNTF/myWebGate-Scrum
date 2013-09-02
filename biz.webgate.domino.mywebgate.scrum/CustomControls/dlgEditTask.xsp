@@ -73,7 +73,7 @@ return false;}]]></xp:this.rendered>
 					</xp:text>
 				</xe:formRow>
 
-				<xe:formRow id="froTaskAuthor" for="cfTaskAuthor" label="Author">
+				<xe:formRow id="froTaskAuthor" for="cfTaskAuthor" label="Created">
 					<xp:text escape="true" id="cfTaskAuthor" value="#{editTask.author}">
 						<xp:this.converter>
 							<xp:customConverter getAsObject="#{javascript:value}">
@@ -81,7 +81,7 @@ return false;}]]></xp:this.rendered>
 							</xp:customConverter>
 						</xp:this.converter>
 					</xp:text>
-					&#160;on&#160;
+					&#160;/&#160;
 					<xp:text escape="true" id="cfTaskCreatedAt" value="#{editTask.createdAt}">
 					</xp:text>
 				</xe:formRow>
@@ -153,14 +153,13 @@ return "";
 
 				<xe:formRow id="froTaskEditor" for="cnpTaskEditor" label="Assigned to">
 
-					<xc:ccNamePicker dirIsLookup="true"
-						dirMultiValue="false" dirReturnFieldFormula="true"
-						dirPath="mywebgate/mywebgate.nsf" dirView="($VIMPeople)"
-						pickerFieldName="Editor" pickerId="EditorId"
-						pickerObjectAlias="taskAlias" id="cnpTaskEditor"
-						pickerObject="#{javascript:editTask;}"
-						dirFTSearchFieldInView="FullName" mvSeparator=","
-						dirRefreshId="cnpTaskEditor">
+					<xc:ccNamePicker dirIsLookup="true" dirMultiValue="false"
+						dirReturnFieldFormula="true" 
+						dirView="($VIMPeople)" pickerFieldName="Editor" pickerId="EditorId"
+						pickerObjectAlias="taskAlias" id="cnpTaskEditor" pickerObject="#{javascript:editTask;}"
+						dirFTSearchFieldInView="FullName" mvSeparator="," dirRefreshId="cnpTaskEditor">
+						<xc:this.dirServer><![CDATA[#{javascript:mywebgateBean.getAppSettings().getServer()}]]></xc:this.dirServer>
+						<xc:this.dirPath><![CDATA[#{javascript:mywebgateBean.getAppSettings().getPath()}]]></xc:this.dirPath> 
 						<xc:this.dirReturnFields>
 							<xp:value>
 								@Name([Abbreviate];FullName)
@@ -225,7 +224,8 @@ setTimestamp(toSet, '#{id:itBody}');]]></xp:this.script>
 				</xe:formRow>
 				<xe:formRow label="Files" id="froTaskFiles">
 					<xc:ccFileDownload fileDownloadFieldName="Files"
-						fileDownloadId="Files" fileDownloadObject="#{javascript:editTask}">
+						fileDownloadId="Files" fileDownloadObject="#{javascript:editTask}"
+						deletionDisabled="false" uploadDisabled="false">
 					</xc:ccFileDownload>
 				</xe:formRow>
 

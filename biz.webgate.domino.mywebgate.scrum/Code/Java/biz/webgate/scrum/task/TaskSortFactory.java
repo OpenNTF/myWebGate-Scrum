@@ -44,6 +44,8 @@ public class TaskSortFactory {
 			TaskSessionFacade.SORT_BY_TIME);
 	private static Comparator<Task> m_StatusComp = new TaskComparator(
 			TaskSessionFacade.SORT_BY_STATUS);
+	private static Comparator<Task> m_IdComp = new TaskComparator(
+			TaskSessionFacade.SORT_BY_ID);
 
 	public static void sortTasks(List<Task> lstTasks, int sortOrder, boolean reverse) {
 		switch (sortOrder) {
@@ -82,6 +84,9 @@ public class TaskSortFactory {
 			break;
 		case TaskSessionFacade.SORT_BY_STATUS:
 			Collections.sort(lstTasks, m_StatusComp);
+			break;
+		case TaskSessionFacade.SORT_BY_ID:
+			Collections.sort(lstTasks, m_IdComp);
 			break;
 		}
 		if (reverse) {Collections.reverse(lstTasks);}

@@ -120,12 +120,14 @@ return "";
 					label="Responsible">
 					<xc:ccNamePicker dirIsLookup="true"
 						dirMultiValue="false" dirReturnFieldFormula="true"
-						dirPath="mywebgate/mywebgate.nsf" dirView="($VIMPeople)"
+						dirView="($VIMPeople)"
 						pickerFieldName="Responsible" pickerId="ResponsibleId"
 						pickerObject="#{javascript:editUserstory}"
 						pickerObjectAlias="userstoryAlias" id="cnpResponsible"
 						dirReadOnly="false" dirFTSearchFieldInView="FullName"
 						mvSeparator="," dirRefreshId="cnpResponsible">
+						<xc:this.dirServer><![CDATA[#{javascript:mywebgateBean.getAppSettings().getServer()}]]></xc:this.dirServer>
+						<xc:this.dirPath><![CDATA[#{javascript:mywebgateBean.getAppSettings().getPath()}]]></xc:this.dirPath> 
 						<xc:this.dirReturnFields>
 							<xp:value>
 								@Name([Abbreviate];FullName)

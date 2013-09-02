@@ -40,6 +40,8 @@ public class ScrumDocumentSortFactory {
 			ScrumDocumentSessionFacade.SORT_BY_RESPONSIBLE);
 	private static Comparator<IScrumDocument> m_DueDateComp = new ScrumDocumentComparator(
 			ScrumDocumentSessionFacade.SORT_BY_DUEDATE);
+	private static Comparator<IScrumDocument> m_IdComp = new ScrumDocumentComparator(
+			ScrumDocumentSessionFacade.SORT_BY_ID);
 	
 	public static void sortDocuments(List<IScrumDocument> lstDocument,
 			int sortOrder, boolean reverse) {
@@ -73,6 +75,9 @@ public class ScrumDocumentSortFactory {
 			break;
 		case ScrumDocumentSessionFacade.SORT_BY_DUEDATE:
 			Collections.sort(lstDocument, m_DueDateComp);
+			break;
+		case ScrumDocumentSessionFacade.SORT_BY_ID:
+			Collections.sort(lstDocument, m_IdComp);
 			break;
 		}
 		if (reverse) {

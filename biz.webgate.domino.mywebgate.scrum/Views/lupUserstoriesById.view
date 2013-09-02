@@ -1,13 +1,12 @@
 <?xml version='1.0' encoding='utf-8'?>
 <note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='C1257BD000474D7F'>
-<noteinfo noteid='22e' unid='751F8A7684E695ACC1257B3B00487930' sequence='15'>
-<created><datetime>20130327T141136,16+01</datetime></created>
-<modified><datetime dst='true'>20130823T145856,64+02</datetime></modified>
-<revised><datetime dst='true'>20130711T102147,03+02</datetime></revised>
-<lastaccessed><datetime dst='true'>20130823T145856,64+02</datetime></lastaccessed>
-<addedtofile><datetime dst='true'>20130823T145856,64+02</datetime></addedtofile></noteinfo>
-<updatedby><name>CN=Simeon Hafner/O=WGC/C=CH</name><name>CN=Marco Baumann/O=WGC/C=CH</name><name
->CN=Simeon Hafner/O=WGC/C=CH</name><name>CN=Marco Baumann/O=WGC/C=CH</name></updatedby>
+<noteinfo noteid='6ba' unid='400191A99B4DF2FFC1257BDA00419187' sequence='1'>
+<created><datetime dst='true'>20130902T135610,95+02</datetime></created>
+<modified><datetime dst='true'>20130902T135612,30+02</datetime></modified>
+<revised><datetime dst='true'>20130902T135612,29+02</datetime></revised>
+<lastaccessed><datetime dst='true'>20130902T135612,30+02</datetime></lastaccessed>
+<addedtofile><datetime dst='true'>20130902T135612,30+02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Marco Baumann/O=WGC/C=CH</name><name>CN=Christian Guedemann/O=WGC/C=CH</name></updatedby>
 <wassignedby><name>CN=Marco Baumann/O=WGC/C=CH</name></wassignedby>
 <item name='$FormatNote' summary='true' sign='true'>
 <rawitemdata type='4'>
@@ -26,8 +25,8 @@ EAABAABEgGYAAAADAElkVA==
 </rawitemdata></item>
 <item name='$ViewFormat' summary='true' sign='true'>
 <rawitemdata type='5'>
-AQADABUAiAQAAFZDAQADAAsAAAAAAFAAAQAACgAAAAAAAAAAAAICAAAAVkMAAAgACwAAAAAAUAAB
-AAAKAAAAAAAAAAAAAgIAAABWQwAACAAGAAAAAABQAAEAAAoAAAAAAAAAAAACAgAAAElkVFVzZXJz
+AQADABUAiAQAAFZDAQADAAsAAAAAAMgAAQAACgAAAAAAAAAAAAICAAAAVkMAAAgACwAAAAAAoAAB
+AAAKAAAAAAAAAAAAAgIAAABWQwAACAAGAAAAAAAoAAEAAAoAAAAAAAAAAAACAgAAAElkVFVzZXJz
 dG9yeUlEU3ViamVjdFRCZXplaWNobnVuZ1N0YXR1c0RMU3RhdHVzJgABAAAAAQEACQEAAAoBAQ4K
 AAA/AK0rAQABAAEAAAAAAAAAAABXQwEBAAkAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAD//wAAAAAA
 AAAAAAAAAAAAV0MBAQAJAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAA//8AAAAAAAAAAAAAAAAAAFdD
@@ -36,7 +35,8 @@ AO/v7wABAAAAAAAAAAAAAAAAAAEA////AAEA9/f3AAAAAQAAAAAAAQAAAAAAAQAAAAAAAAAIAAAA
 AAABAA==
 </rawitemdata></item>
 <item name='$Comment' sign='true'><text/></item>
-<item name='$DesignerVersion' sign='true'><text>8.5.3</text></item>
+<item name='$Flags'><text>Y</text></item>
+<item name='$DesignerVersion'><text>8.5.3</text></item>
 <item name='$V5ACTIONS' sign='true'>
 <rawitemdata type='1'>
 vRzYAAAAAQABAAAAJSAAAAAAAAABAJcJCAACAHn/bAABALGx0gABAAAAAAABAABAgAABAOHh4QAA
@@ -49,7 +49,7 @@ nQEAAAsAAAAAAAAAQ2F0ZWdvcmlfemUAAQBOfL7/KAAAAAUABQCdAQAADgAAAAAAAABfRWRpdCBE
 b2N1bWVudAIAAgq+/ygAAAAFAAAAnQEAAA4AAAAAAAAAX1NlbmQgRG9jdW1lbnQDAAMKvv8iAAAA
 BQAAAJ0BAAAIAAAAAAAAAF9Gb3J3YXJkBAAECr7/LAAAAAUAAACdAQAAEgAAAAAAAABfTW92ZSBU
 byBGb2xkZXIuLi4FAD18vv8uAAAABQAAAJ0BAAATAAAAAAAAAF9SZW1vdmUgRnJvbSBGb2xkZXIA
-BgA+fL7/OAAAAAEAZQCeQRAFAQAAAAAAAAAgWSAAAAASAAIAkBcAAAAAAADtAQMABwAMAAUACTBT
+BgA+fL7/OAAAAAEAZQCeQRAFAQAAAAAAAAAgLyAAAAASAAIAkBcAAAAAAADtAQMABwAMAAUACTBT
 MEUA9v8tAAAAAAADABMACwAAAAAAAAAAAAAAAAAAAAAAAAAAAG5kOHNyY2guZ2lmPw==
 </rawitemdata></item>
 <item name='$ACTIONS' sign='true'>
@@ -58,8 +58,7 @@ vRzYAAAAAQABAAAAJSAAAAAAAAABAJcJCAACAL7/JgAAAAUAAACdAQAACwAAAAAAAABDYXRlZ29y
 aV96ZQABAE58vv8oAAAABQAFAJ0BAAAOAAAAAAAAAF9FZGl0IERvY3VtZW50AgACCr7/KAAAAAUA
 AACdAQAADgAAAAAAAABfU2VuZCBEb2N1bWVudAMAAwq+/yIAAAAFAAAAnQEAAAgAAAAAAAAAX0Zv
 cndhcmQEAAQKvv8sAAAABQAAAJ0BAAASAAAAAAAAAF9Nb3ZlIFRvIEZvbGRlci4uLgUAPXy+/y4A
-AAAFAAAAnQEAABMAAAAAAAAAX1JlbW92ZSBGcm9tIEZvbGRlcjMGAD58vv84AAAAAQBlAJ5BEAUB
-AAAAAAAAACAAIAAAABIAAgCQFwAAAAAAAO0BAwAHAAwABQAJMFMwRQA=
-</rawitemdata></item>
-<item name='$Flags'><text>Y</text></item></note>
+AAAFAAAAnQEAABMAAAAAAAAAX1JlbW92ZSBGcm9tIEZvbGRlcmMGAD58vv84AAAAAQBlAJ5BEAUB
+AAAAAAAAACASIAAAABIAAgCQFwAAAAAAAO0BAwAHAAwABQAJMFMwRQA=
+</rawitemdata></item></note>
 

@@ -27,9 +27,9 @@ getComponent("dlgEditUserstory").show();}]]></xp:this.action>
 
 		<xp:table style="width:100%" id="tblUserstories" styleClass="content">
 			<xp:tr>
-				<xp:td id="tdUserstoryIteration" styleClass="th" style="width:200px;">
+				<xp:td id="tdUserstoryIteration" styleClass="th" style="cursor:pointer;width:200px;">
 					<xp:label value="Iteration" id="lblIteration" for="cfUserstoryIteration"
-						style="cursor:pointer">
+						style="cursor:pointer;">
 					</xp:label>
 					&#160;
 					<xp:image id="imgTwistyUserstoryIteration"
@@ -46,9 +46,9 @@ getComponent("dlgEditUserstory").show();}]]></xp:this.action>
 viewScope.userstorySort = userstoryBean.SORT_BY_ITERATION;}]]></xp:this.action>
 					</xp:eventHandler>
 				</xp:td>
-				<xp:td id="tdUserstorySubject" styleClass="th">
+				<xp:td id="tdUserstorySubject" styleClass="th" style="cursor:pointer;">
 					<xp:label value="Subject" id="lblSubject" for="cfUserstorySubject"
-						style="cursor:pointer">
+						style="cursor:pointer;">
 					</xp:label>
 					&#160;
 					<xp:image id="imgTwistyUserstorySubject"
@@ -68,9 +68,9 @@ viewScope.userstorySort = userstoryBean.SORT_BY_SUBJECT;}]]></xp:this.action>
 				<xp:td id="td1" styleClass="th" style="width:50px">
 
 				</xp:td>
-				<xp:td id="tdUserstoryStatus" styleClass="th icon">
+				<xp:td id="tdUserstoryStatus" styleClass="th icon" style="cursor:pointer;">
 					<xp:label value="Status" id="lblStatus" for="cfUserstoryStatus"
-						style="cursor:pointer">
+						style="cursor:pointer;">
 					</xp:label>
 					&#160;
 					<xp:image id="imgTwistyUserstoryStatus"
@@ -87,9 +87,9 @@ viewScope.userstorySort = userstoryBean.SORT_BY_SUBJECT;}]]></xp:this.action>
 viewScope.userstorySort = userstoryBean.SORT_BY_STATUS;}]]></xp:this.action>
 					</xp:eventHandler>
 				</xp:td>
-				<xp:td id="tdUserstoryDue" styleClass="th date">
+				<xp:td id="tdUserstoryDue" styleClass="th date" style="cursor:pointer;">
 					<xp:label value="Due Date" id="label1" for="cfUserstoryDue"
-						style="cursor:pointer">
+						style="cursor:pointer;">
 					</xp:label>
 					&#160;
 					<xp:image id="image1"
@@ -105,6 +105,8 @@ viewScope.userstorySort = userstoryBean.SORT_BY_STATUS;}]]></xp:this.action>
 }
 viewScope.userstorySort = userstoryBean.SORT_BY_DUE;}]]></xp:this.action>
 					</xp:eventHandler>
+				</xp:td>
+				<xp:td id="tdSendLink" styleClass="th" style="width:20px;">
 				</xp:td>
 				<xp:td id="tdEdit" styleClass="th" style="width:20px;">
 				</xp:td>
@@ -213,6 +215,21 @@ return userstoryBean.getUserstoriesOfProject(sort.intValue(), viewScope.sortReve
 						</xp:text>
 					</xp:td>
 					<xp:td style="text-align:center;">
+						<xp:link escape="true" id="lnkSendLink" text="">
+							<xp:eventHandler event="onclick" submit="true"
+								refreshMode="partial" refreshId="dlgEditMailOut">
+								<xp:this.action><![CDATA[#{javascript:viewScope.put("targetID", repeatedUserstory.id);
+getComponent("dlgEditMailOut").show();}]]></xp:this.action>
+							</xp:eventHandler>
+							<xp:image id="image4" alt="Send Link" url="/email_link.png"
+								style="margin-bottom:3px;">
+							</xp:image>
+						</xp:link>
+						<xe:tooltip id="tooltip4" for="lnkSendLink">
+							<xe:this.label><![CDATA[#{javascript:"Send Link";}]]></xe:this.label>
+						</xe:tooltip>
+					</xp:td>
+					<xp:td style="text-align:center;">
 						<xp:link escape="true" id="lnkEdit" text="">
 							<xp:this.rendered><![CDATA[#{javascript:(hasRole("[Admin]") || hasRole("[Intern]"))}]]></xp:this.rendered>
 							<xp:eventHandler event="onclick" submit="true"
@@ -251,7 +268,7 @@ getComponent("dlgEditUserstory").show()}]]></xp:this.action>
 					<xp:td styleClass="selectedTask">
 
 					</xp:td>
-					<xp:td colspan="6" styleClass="selectedTask">
+					<xp:td colspan="7" styleClass="selectedTask">
 
 						<hr style="width:90%;color:#eeeeee;" />
 
@@ -261,7 +278,7 @@ getComponent("dlgEditUserstory").show()}]]></xp:this.action>
 							<xp:table style="width:100%;margin-bottom:10px;"
 								styleClass="selectedTask">
 								<xp:tr>
-									<xp:td style="padding-bottom:10px;">
+									<xp:td style="padding-bottom:10px;width:100px;">
 										<xp:label value="Description" id="label7" for="dspBody">
 										</xp:label>
 									</xp:td>
@@ -304,32 +321,15 @@ getComponent("dlgEditUserstory").show()}]]></xp:this.action>
 										</xe:djextListTextBox>
 									</xp:td>
 								</xp:tr>
-								<xp:tr>
-									<xp:td style="padding-bottom:10px;width:100px;">
-										<xp:label value="Author" id="label10" for="dspAuthor">
-										</xp:label>
-									</xp:td>
-									<xp:td style="padding-bottom:10px;">
-										<xp:text escape="true" id="dspAuthor">
-											<xp:this.value><![CDATA[#{javascript:@Name("[CN]",repeatedUserstory.author)}]]></xp:this.value>
-										</xp:text>
-										&#160;/&#160;
-										<xp:text escape="true" id="dspCreated"
-											value="#{repeatedUserstory.createdAt}">
-										</xp:text>
-									</xp:td>
-								</xp:tr>
 							</xp:table>
 
-							<xp:link escape="true" id="lnkSendLink">
-								<xp:this.text><![CDATA[> send link]]></xp:this.text>
-								<xp:eventHandler event="onclick" submit="true"
-									refreshMode="partial" refreshId="dlgEditMailOut">
-									<xp:this.action><![CDATA[#{javascript:viewScope.put("targetID", repeatedUserstory.id);
-getComponent("dlgEditMailOut").show();}]]></xp:this.action>
-								</xp:eventHandler>
-							</xp:link>
-
+							<xp:panel style="width:500px;">
+								<xp:this.rendered><![CDATA[#{javascript:@Elements(repeatedUserstory.files) > 1}]]></xp:this.rendered>
+								<xc:ccFileDownload fileDownloadFieldName="Files"
+									fileDownloadId="Files" fileDownloadObject="#{javascript:repeatedUserstory}"
+									uploadDisabled="true" deletionDisabled="true">
+								</xc:ccFileDownload>
+							</xp:panel>
 
 							<hr style="width:90%;color:#eeeeee;" />
 						</xp:panel>

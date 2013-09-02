@@ -24,20 +24,20 @@ getComponent("dlgEditCustomer").show();}]]></xp:this.action>
 						</xp:panel>
 						<br style="clear:both;" />
 
-						<xp:table style="width:100%" id="tblCustomers" styleClass="content">
+						<xp:table style="width:100%" id="tblCustomers"
+							styleClass="content">
 							<xp:tr>
-								<xp:td id="tdCustomerName" styleClass="th">
+								<xp:td id="tdCustomerName" styleClass="th" style="cursor:pointer;">
 									<xp:label value="Name" id="lblCustomerName" for="cfCustomerName"
-										style="cursor:pointer">
+										style="cursor:pointer;">
 									</xp:label>
 									&#160;
 									<xp:image id="imgTwistyCustomerName"
 										rendered="#{javascript:viewScope.customerSort == customerBean.SORT_BY_NAME}">
 										<xp:this.url><![CDATA[#{javascript:@If ( !viewScope.sortReverse , "twisty.png" , "twisty_reverse.png")}]]></xp:this.url>
 									</xp:image>
-									<xp:eventHandler event="onclick"
-										submit="true" refreshMode="partial" refreshId="tblCustomers"
-										id="evhSortCustomersbyName">
+									<xp:eventHandler event="onclick" submit="true"
+										refreshMode="partial" refreshId="tblCustomers" id="evhSortCustomersbyName">
 										<xp:this.action><![CDATA[#{javascript:if(viewScope.customerSort == customerBean.SORT_BY_NAME && !viewScope.sortReverse) {
 	viewScope.sortReverse = true;
 } else {

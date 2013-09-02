@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
 <note default='true' class='icon' xmlns='http://www.lotus.com/dxl' version='9.0'
  replicaid='C1257BD000474D7F'>
-<noteinfo noteid='116' unid='71BCB132CECA908EC1257A76004CFD9A' sequence='69'>
+<noteinfo noteid='116' unid='71BCB132CECA908EC1257A76004CFD9A' sequence='70'>
 <created><datetime dst='true'>20120911T160056,58+02</datetime></created>
-<modified><datetime dst='true'>20130823T145913,72+02</datetime></modified>
-<revised><datetime dst='true'>20130823T145913,71+02</datetime></revised>
-<lastaccessed><datetime dst='true'>20130823T145913,72+02</datetime></lastaccessed>
+<modified><datetime dst='true'>20130902T130224,22+02</datetime></modified>
+<revised><datetime dst='true'>20130902T130224,21+02</datetime></revised>
+<lastaccessed><datetime dst='true'>20130902T130224,22+02</datetime></lastaccessed>
 <addedtofile><datetime dst='true'>20130823T145849,66+02</datetime></addedtofile></noteinfo>
 <updatedby><name>CN=Simeon Hafner/O=WGC/C=CH</name><name>CN=Peter Luder/O=WGC/C=CH</name><name
 >CN=Marco Baumann/O=WGC/C=CH</name><name>CN=Christian Guedemann/O=WGC/C=CH</name></updatedby>
@@ -37,5 +37,5 @@ AAAAAAAAAAAAAAAAAAAAAAAAAA==
 <item name='$DefaultWebLaunchPage' sign='true'><text>pgWebStart</text></item>
 <item name='$Daos'><text>0</text></item>
 <item name='$TITLE'><text>T: Scrum
-#1scrum</text></item></note>
+#1mywebgate.scrum</text></item></note>
 

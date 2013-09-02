@@ -19,11 +19,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
 import javax.faces.context.FacesContext;
-
-import lotus.domino.Session;
 import biz.webgate.scrum.scrumdocument.IScrumDocument;
 
 import com.ibm.xsp.extlib.util.ExtLibUtil;
@@ -52,34 +49,20 @@ public class ProjectSessionFacade {
 	private HashMap<String, Project> m_ProjectList;
 	private Date m_LastAccessed = new Date();
 
-	public Project createNewProject() {
-		try {
-			Session sesCurrent = ExtLibUtil.getCurrentSession();
-			Project newProject = new Project();
-			newProject.setId(UUID.randomUUID().toString());
-			newProject.setAuthor(sesCurrent.createName(sesCurrent.getEffectiveUserName()).getAbbreviated());
-			newProject.setCreatedAt(new Date());
-
-			return newProject;
-		} catch (Exception e) {
-			System.out.println("fehler in createNewProject");
-			e.printStackTrace();
-		}
-		return null;
+	public Project createNewProject() {		
+		return ProjectStorageService.getInstance().createNewProject(ExtLibUtil.getCurrentSession());		
 	}
 
 	public boolean saveProject(Project curProject) {
 		m_ProjectList = null;
 		m_LastAccessed = new Date();
-		return ProjectStorageService.getInstance().saveProject(curProject,
-				ExtLibUtil.getCurrentSession());
+		return ProjectStorageService.getInstance().saveProject(curProject, ExtLibUtil.getCurrentSession());
 	}
 
 	public boolean deleteProject(Project curProject) {
 		m_ProjectList = null;
 		m_LastAccessed = new Date();
-		return ProjectStorageService.getInstance().deleteProject(curProject,
-				ExtLibUtil.getCurrentSession());
+		return ProjectStorageService.getInstance().deleteProject(curProject, ExtLibUtil.getCurrentSession());
 	}
 
 	public Project getProjectById(String strProjectId) {
@@ -87,15 +70,13 @@ public class ProjectSessionFacade {
 	}
 
 	public List<Project> getAllProjects(int sortOrder, boolean reverse) {
-		List<Project> lstAll = ProjectStorageService.getInstance()
-				.getAllProjects(ExtLibUtil.getCurrentSession());
+		List<Project> lstAll = ProjectStorageService.getInstance().getAllProjects(ExtLibUtil.getCurrentSession());
 		ProjectSortFactory.sortProjects(lstAll, sortOrder, reverse);
 		return lstAll;
 	}
 
 	public List<Project> getMyProjects(int sortOrder, boolean reverse) {
-		List<Project> lstMy = ProjectStorageService.getInstance()
-				.getMyProjects(ExtLibUtil.getCurrentSession());
+		List<Project> lstMy = ProjectStorageService.getInstance().getMyProjects(ExtLibUtil.getCurrentSession());
 		ProjectSortFactory.sortProjects(lstMy, sortOrder, reverse);
 		return lstMy;
 	}
@@ -125,15 +106,13 @@ public class ProjectSessionFacade {
 	}
 
 	private Project loadProject(String strID) {
-		if (m_ProjectList == null
-				|| ProjectStorageService.getInstance().isDirty(m_LastAccessed)) {
+		if (m_ProjectList == null || ProjectStorageService.getInstance().isDirty(m_LastAccessed)) {
 			m_ProjectList = new HashMap<String, Project>();
 		}
 		if (m_ProjectList.containsKey(strID)) {
 			return m_ProjectList.get(strID);
 		}
-		Project p = ProjectStorageService.getInstance().getProjectById(strID,
-				ExtLibUtil.getCurrentSession());
+		Project p = ProjectStorageService.getInstance().getProjectById(strID, ExtLibUtil.getCurrentSession());
 		m_LastAccessed = new Date();
 		if (p != null) {
 			m_ProjectList.put(strID, p);

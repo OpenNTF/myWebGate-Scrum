@@ -54,6 +54,10 @@ public class BugStorageService {
 			newBug.setId(UUID.randomUUID().toString());
 			
 			newBug.setAuthor(sesCurrent.createName(sesCurrent.getEffectiveUserName()).getAbbreviated());
+			List<String> lstAuthors = new ArrayList<String>();
+			lstAuthors.add(sesCurrent.createName(sesCurrent.getEffectiveUserName()).getAbbreviated());
+			newBug.setAuthors(lstAuthors);
+			
 			newBug.setCreatedAt(new Date());
 			newBug.setStatus("1");
 			newBug.setProjectId(projID);
@@ -78,6 +82,18 @@ public class BugStorageService {
 			curBug.setReader(lstReader);
 			curBug.setAuthors(lstReader);
 			
+			if (curBug.getBugId() == null || curBug.getBugId().equals("")) {
+				Document docBug = sesCurrent.getCurrentDatabase().getView("lupBugsByProject").getDocumentByKey(curBug.getProjectId(), true);
+				if (docBug != null) {
+					if (!docBug.hasItem("BugIdT") || docBug.getItemValueString("BugIdT").equals("")) {
+						curBug.setBugId("B001");	
+					} else {
+						String temp = "00" + (Integer.parseInt(docBug.getItemValueString("BugIdT").substring(1))+1);
+						curBug.setBugId("B" + temp.substring(temp.length() - 3));
+					}
+				}
+			}
+			
 			curBug.setTempSave(null);
 			return DominoStorageService.getInstance().saveObject(curBug, sesCurrent.getCurrentDatabase());
 		} catch (Exception e) {
@@ -89,8 +105,7 @@ public class BugStorageService {
 	public boolean deleteBug(Bug curBug, Session sesCurrent) {
 		try {
 			Document docProcess;
-			docProcess = ExtLibUtil.getCurrentDatabase().getView(
-					"lupBugsByID").getDocumentByKey(curBug.getId(), true);
+			docProcess = ExtLibUtil.getCurrentDatabase().getView("lupBugsByID").getDocumentByKey(curBug.getId(), true);
 			if (docProcess != null) {
 				docProcess.removePermanently(true);
 			}
@@ -107,8 +122,7 @@ public class BugStorageService {
 		curBug.setId(strBugId);
 		try {
 			Database ndbCurrent = sesCurrent.getCurrentDatabase();
-			if (!DominoStorageService.getInstance().getObject(curBug, strBugId,
-					ndbCurrent))
+			if (!DominoStorageService.getInstance().getObject(curBug, strBugId, ndbCurrent))
 				return null;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -189,8 +203,7 @@ public class BugStorageService {
 		return lstBug;
 	}
 
-	public List<Bug> getBugsOfProject(Session sesCurrent, String projectID,
-			String statusFilter, String usFilter, String itFilter) {
+	public List<Bug> getBugsOfProject(Session sesCurrent, String projectID, String statusFilter, String usFilter, String itFilter, boolean hideComplete) {
 		List<Bug> lstBug = new ArrayList<Bug>();
 		try {
 			Database ndbCurrent = sesCurrent.getCurrentDatabase();
@@ -200,17 +213,15 @@ public class BugStorageService {
 				Document docProcess = docNext;
 				docNext = viwBug.getNextDocument(docNext);
 				Bug newBug = new Bug();
-				if (DominoStorageService.getInstance().getObjectWithDocument(
-						newBug, docProcess)) {
+				if (DominoStorageService.getInstance().getObjectWithDocument(newBug, docProcess)) {
 					if (newBug.getProjectId().equals(projectID)
 							&& !newBug.getIsDeleted().equals("true")
-							&& (statusFilter == null || statusFilter.equals("") || statusFilter
-									.equals(newBug.getStatus()))
-							&& (usFilter == null || usFilter.equals("") || usFilter
-									.equals(newBug.getUserstoryId()))
-							&& (itFilter == null || itFilter == "" || itFilter
-									.equals(newBug.getIterationId()))) {
-						lstBug.add(newBug);
+							&& (statusFilter == null || statusFilter.equals("") || statusFilter.equals(newBug.getStatus()))
+							&& (usFilter == null || usFilter.equals("") || usFilter.equals(newBug.getUserstoryId()))
+							&& (itFilter == null || itFilter == "" || itFilter.equals(newBug.getIterationId()))) {
+						if (hideComplete == false || (hideComplete == true && !newBug.getStatus().equals("4") && !newBug.getStatus().equals("9"))) {
+							lstBug.add(newBug);
+						}
 					}
 				}
 				docProcess.recycle();

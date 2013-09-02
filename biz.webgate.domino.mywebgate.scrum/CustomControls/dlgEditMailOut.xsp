@@ -11,12 +11,12 @@
 				<xp:this.facets>
 					<xe:dialogButtonBar id="dbbMailOut" xp:key="footer">
 						<xp:button id="btSendMail" value="Send Link">
-							<xp:eventHandler event="onclick"
-								submit="true" refreshMode="complete">
+							<xp:eventHandler event="onclick" submit="true"
+								refreshMode="complete">
 								<xp:this.action><![CDATA[#{javascript:var sendTo = asVector(getComponent("iptSendTo").getValue());
 var url = context.getUrl();
 url = url.getScheme() + "://" + url.getHost() + "/" + database.getFilePath() + "/show.xsp?id=" + viewScope.get("targetID");
-adminBean.sendLink(url, sendTo, getComponent("iptComment").getValue());
+adminBean.sendLink(url, viewScope.get("targetID"), sendTo, getComponent("iptComment").getValue());
 getComponent("dlgEditMailOut").hide();}]]></xp:this.action>
 							</xp:eventHandler>
 						</xp:button>
@@ -29,6 +29,12 @@ getComponent("dlgEditMailOut").hide();}]]></xp:this.action>
 						</xp:button>
 					</xe:dialogButtonBar>
 				</xp:this.facets>
+
+				<xe:formRow id="froSendFor" for="cfSendFor" label="">
+					<xp:text escape="true" id="cfSendFor">
+						<xp:this.value><![CDATA[#{javascript:documentBean.getDocumentById(viewScope.get("targetID")).subject}]]></xp:this.value>
+					</xp:text>
+				</xe:formRow>
 
 				<xe:formRow id="froMailOutSendTo" for="iptSendTo" label="Send To">
 					<xp:inputText id="iptSendTo" style="width:450px;"

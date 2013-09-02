@@ -21,6 +21,7 @@ import java.util.List;
 
 import biz.webgate.scrum.customer.Customer;
 import biz.webgate.scrum.customer.CustomerSessionFacade;
+import biz.webgate.scrum.project.ProjectSessionFacade;
 import biz.webgate.scrum.scrumdocument.IScrumDocument;
 import biz.webgate.xpages.dss.annotations.DominoEntity;
 import biz.webgate.xpages.dss.annotations.DominoStore;
@@ -203,7 +204,7 @@ public class Iteration implements Serializable, IScrumDocument {
 	}
 
 	public String getProject() {
-		return null;
+		return ProjectSessionFacade.get().getProjectNameByProjectID(m_ProjectId);
 	}
 
 	public String getResponsible() {
@@ -217,5 +218,9 @@ public class Iteration implements Serializable, IScrumDocument {
 
 	public boolean getIsOverdue() {
 		return false;
+	}
+
+	public String getReadableId() {
+		return null;
 	}
 }

@@ -53,6 +53,7 @@ public class ScrumDocumentSessionFacade {
 	public static final int SORT_BY_STATUS = 8;
 	public static final int SORT_BY_RESPONSIBLE = 9;
 	public static final int SORT_BY_DUEDATE = 10;
+	public static final int SORT_BY_ID = 11;
 
 	public IScrumDocument getDocumentById(String strId) {
 		if (ProjectSessionFacade.get().getProjectById(strId) != null) {
@@ -75,8 +76,7 @@ public class ScrumDocumentSessionFacade {
 	public List<IScrumDocument> getAllDocuments(int sortOrder, boolean reverse) {
 		List<IScrumDocument> lstAll = new ArrayList<IScrumDocument>();
 		lstAll.addAll(ProjectSessionFacade.get().getProjectsAsScrumDocuments());
-		lstAll.addAll(UserstorySessionFacade.get()
-				.getUserstoriesAsScrumDocuments(reverse));
+		lstAll.addAll(UserstorySessionFacade.get().getUserstoriesAsScrumDocuments(reverse));
 		lstAll.addAll(TaskSessionFacade.get().getTasksAsScrumDocuments(false));
 		lstAll.addAll(BugSessionFacade.get().getBugsAsScrumDocuments(reverse));
 		ScrumDocumentSortFactory.sortDocuments(lstAll, sortOrder, reverse);
@@ -90,25 +90,19 @@ public class ScrumDocumentSessionFacade {
 			List<IScrumDocument> lstAll = new ArrayList<IScrumDocument>();
 
 			if ((filterType.equals("") || filterType.equals("Tasks"))) {
-				for (IScrumDocument task : TaskSessionFacade.get()
-						.getTasksAsScrumDocuments(false)) {
+				for (IScrumDocument task : TaskSessionFacade.get().getTasksAsScrumDocuments(false)) {
 					if ((complete == false && !task.getStatus().equals("4") || complete == true)
-							&& (filterStatus.equals("") || filterStatus
-									.equals(task.getStatus()))
-							&& (filterAssignee.equals("") || filterAssignee
-									.equals(task.getResponsible()))) {
+							&& (filterStatus.equals("") || filterStatus.equals(task.getStatus()))
+							&& (filterAssignee.equals("") || filterAssignee.equals(task.getResponsible()))) {
 						lstAll.add(task);
 					}
 				}
 			}
 			if ((filterType.equals("") || filterType.equals("Bugs"))) {
-				for (IScrumDocument bug : BugSessionFacade.get()
-						.getBugsAsScrumDocuments(false)) {
+				for (IScrumDocument bug : BugSessionFacade.get().getBugsAsScrumDocuments(false)) {
 					if ((complete == false && !bug.getStatus().equals("4") || complete == true)
-							&& (filterStatus.equals("") || filterStatus
-									.equals(bug.getStatus()))
-							&& (filterAssignee.equals("") || filterAssignee
-									.equals(bug.getResponsible()))) {
+							&& (filterStatus.equals("") || filterStatus.equals(bug.getStatus()))
+							&& (filterAssignee.equals("") || filterAssignee.equals(bug.getResponsible()))) {
 						lstAll.add(bug);
 					}
 				}
@@ -124,17 +118,13 @@ public class ScrumDocumentSessionFacade {
 	public List<String> getTBAssignees() throws IOException {
 		List<String> myList = new ArrayList<String>();
 
-		for (IScrumDocument task : TaskSessionFacade.get()
-				.getTasksAsScrumDocuments(false)) {
-			if (!task.getResponsible().equals("")
-					&& !myList.contains(task.getResponsible())) {
+		for (IScrumDocument task : TaskSessionFacade.get().getTasksAsScrumDocuments(false)) {
+			if (!task.getResponsible().equals("") && !myList.contains(task.getResponsible())) {
 				myList.add(task.getResponsible());
 			}
 		}
-		for (IScrumDocument bug : BugSessionFacade.get()
-				.getBugsAsScrumDocuments(false)) {
-			if (!bug.getResponsible().equals("")
-					&& !myList.contains(bug.getResponsible())) {
+		for (IScrumDocument bug : BugSessionFacade.get().getBugsAsScrumDocuments(false)) {
+			if (!bug.getResponsible().equals("") && !myList.contains(bug.getResponsible())) {
 				myList.add(bug.getResponsible());
 			}
 		}
@@ -143,8 +133,7 @@ public class ScrumDocumentSessionFacade {
 		return myList;
 	}
 
-	public List<IScrumDocument> getDocumentsByTag(int sortOrder,
-			boolean reverse, String tag) {
+	public List<IScrumDocument> getDocumentsByTag(int sortOrder, boolean reverse, String tag) {
 		List<IScrumDocument> lstByTag = new ArrayList<IScrumDocument>();
 		for (IScrumDocument doc : getAllDocuments(sortOrder, reverse)) {
 			if (doc.getTags().contains(tag)) {
@@ -154,8 +143,7 @@ public class ScrumDocumentSessionFacade {
 		return lstByTag;
 	}
 
-	public List<IScrumDocument> getDocumentsSinceDate(int sortOrder,
-			boolean reverse, Date limit) {
+	public List<IScrumDocument> getDocumentsSinceDate(int sortOrder, boolean reverse, Date limit) {
 		if (limit == null) {
 			return getAllDocuments(sortOrder, reverse);
 		}
@@ -179,18 +167,13 @@ public class ScrumDocumentSessionFacade {
 				cal2.set(Calendar.MILLISECOND, 0);
 				t2 = cal2.getTimeInMillis();
 				if (t1 >= t2) {
-					// System.out.println("Comparism successful. " + t1 +
-					// " is not older than " + t2);
 					lstWithLimit.add(doc);
 				} else {
-					// System.out.println("Date " + doc.getCreatedAt() +
-					// " exceeds limit " + limit);
 					break;
 				}
 			}
 		}
-		ScrumDocumentSortFactory
-				.sortDocuments(lstWithLimit, sortOrder, reverse);
+		ScrumDocumentSortFactory.sortDocuments(lstWithLimit, sortOrder, reverse);
 		return lstWithLimit;
 	}
 }

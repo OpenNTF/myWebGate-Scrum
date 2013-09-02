@@ -13,7 +13,7 @@
         <in-palette>true</in-palette>
         <render-markup>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&#xd;
 &lt;xp:view xmlns:xp="http://www.ibm.com/xsp/core"&gt;&#xd;
-dlgEditIteration&#xd;
+dlgEditMailOut&#xd;
 &lt;/xp:view&gt;</render-markup>
       </designer-extension>
     </composite-extension>

@@ -233,12 +233,14 @@ getComponent("dlgEditMailOut").show();}]]></xp:this.action>
 									<xc:ccNamePicker dirIsLookup="true"
 										rendered="#{viewScope.isEdit}" dirMultiValue="false"
 										dirRefreshId="cnpLeader" dirReturnFieldFormula="true"
-										dirPath="mywebgate/mywebgate.nsf" dirView="($VIMPeople)"
+										dirView="($VIMPeople)"
 										pickerFieldName="Leader" pickerId="LeaderId"
 										pickerObject="#{javascript:editProject}"
 										pickerObjectAlias="projectAlias" id="cnpLeader"
 										dirFTSearchFieldInView="FullName" mvSeparator=","
 										dirReadOnly="false">
+										<xc:this.dirServer><![CDATA[#{javascript:mywebgateBean.getAppSettings().getServer()}]]></xc:this.dirServer>
+										<xc:this.dirPath><![CDATA[#{javascript:mywebgateBean.getAppSettings().getPath()}]]></xc:this.dirPath> 
 										<xc:this.dirReturnFields>
 											<xp:value>
 												@Name([Abbreviate];FullName)
@@ -265,11 +267,13 @@ getComponent("dlgEditMailOut").show();}]]></xp:this.action>
 									<xc:ccNamePicker
 										rendered="#{viewScope.isEdit}" dirRefreshId="cnpInternal"
 										dirIsLookup="true" dirMultiValue="true"
-										dirReturnFieldFormula="true" dirPath="mywebgate/mywebgate.nsf"
+										dirReturnFieldFormula="true"
 										dirView="($VIMPeople)" pickerFieldName="Internal"
 										pickerId="InternalId" pickerObject="#{javascript:editProject}"
 										pickerObjectAlias="projectAlias" id="cnpInternal"
 										mvSeparator="," dirFTSearchFieldInView="FullName">
+										<xc:this.dirServer><![CDATA[#{javascript:mywebgateBean.getAppSettings().getServer()}]]></xc:this.dirServer>
+										<xc:this.dirPath><![CDATA[#{javascript:mywebgateBean.getAppSettings().getPath()}]]></xc:this.dirPath> 
 										<xc:this.dirReturnFields>
 											<xp:value>
 												@Name([Abbreviate];FullName)
@@ -295,11 +299,13 @@ getComponent("dlgEditMailOut").show();}]]></xp:this.action>
 									<xc:ccNamePicker dirIsLookup="true"
 										dirRefreshId="cnpExternal" rendered="#{viewScope.isEdit}"
 										dirMultiValue="true" dirReturnFieldFormula="true"
-										dirPath="mywebgate/mywebgate.nsf" dirView="($VIMPeople)"
+										dirView="($VIMPeople)"
 										pickerFieldName="External" pickerId="ExternalId"
 										pickerObject="#{javascript:editProject}"
 										pickerObjectAlias="projectAlias" id="cnpExternal"
 										mvSeparator="," dirFTSearchFieldInView="FullName">
+										<xc:this.dirServer><![CDATA[#{javascript:mywebgateBean.getAppSettings().getServer()}]]></xc:this.dirServer>
+										<xc:this.dirPath><![CDATA[#{javascript:mywebgateBean.getAppSettings().getPath()}]]></xc:this.dirPath> 
 										<xc:this.dirReturnFields>
 											<xp:value>
 												@Name([Abbreviate];FullName)

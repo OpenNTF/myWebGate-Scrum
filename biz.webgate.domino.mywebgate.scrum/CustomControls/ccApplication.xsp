@@ -25,7 +25,8 @@
 		</xe:this.facets>
 		<xe:this.configuration>
 			<xe:oneuiApplication navigationPath="#{javascript:compositeData.navigationPath}"
-				placeBarName="#{javascript:compositeData.title}" productLogo="/mwgapi_mywebgate.gif">
+				placeBarName="#{javascript:compositeData.title}" productLogo="/mwgapi_mywebgate.gif"
+				legalText="WebGate Consulting AG, 2013">
 
 				<xe:this.placeBarActions>
 
@@ -88,6 +89,22 @@
 						role="mwgProgressImg">
 					</xe:basicLeafNode>
 				</xe:this.bannerUtilityLinks>
+				<xe:this.footerLinks>
+					<xe:basicContainerNode label=" ">
+						<xe:this.children>
+							<xe:basicLeafNode label="Documentation"
+								href="http://my.webgate.biz/scrum.documentation">
+							</xe:basicLeafNode>
+							<xe:basicLeafNode
+								label="WebGate Consulting AG" href="http://www.webgate.biz">
+							</xe:basicLeafNode>
+							<xe:basicLeafNode
+								label="Project on OpenNTF">
+								<xe:this.href><![CDATA[http://www.openntf.org/Internal/home.nsf/project.xsp?action=openDocument&name=myWebGate%20Scrum]]></xe:this.href>
+							</xe:basicLeafNode>
+						</xe:this.children>
+					</xe:basicContainerNode>
+				</xe:this.footerLinks>
 			</xe:oneuiApplication>
 		</xe:this.configuration>
 	</xe:applicationLayout>

@@ -6,13 +6,15 @@
 
 		<xp:table style="width:100%" id="tblDocuments" styleClass="content">
 			<xp:tr>
-				<xp:td id="tdDocumentForm" styleClass="th icon">
+				<xp:td id="tdDocumentForm" styleClass="th icon" style="cursor:pointer;">
 					<xp:label value="Type" id="lblDocumentForm" for="cfDocumentForm"
-						style="cursor:pointer">
+						style="cursor:pointer;">
 					</xp:label>
 					&#160;
-					<xp:image url="/twisty.png" id="imgTwistyDocumentForm"
-						rendered="#{javascript:viewScope.documentSort == documentBean.SORT_BY_FORM}"></xp:image>
+					<xp:image id="imgTwistyDocumentForm"
+						rendered="#{javascript:viewScope.documentSort == documentBean.SORT_BY_FORM}">
+						<xp:this.url><![CDATA[#{javascript:@If ( !viewScope.documentSortReverse , "twisty.png" , "twisty_reverse.png")}]]></xp:this.url>
+					</xp:image>
 					<xp:eventHandler event="onclick" submit="true"
 						refreshMode="partial" refreshId="tblDocuments" id="evhSortDocumentsByForm">
 						<xp:this.action><![CDATA[#{javascript:
@@ -25,13 +27,15 @@
 						}]]></xp:this.action>
 					</xp:eventHandler>
 				</xp:td>
-				<xp:td id="tdDocumentModifiedAt" styleClass="th date">
+				<xp:td id="tdDocumentModifiedAt" styleClass="th date" style="cursor:pointer;">
 					<xp:label value="Date" id="lblDocumentModifiedAt" for="cfDocumentModifiedAt"
-						style="cursor:pointer">
+						style="cursor:pointer;">
 					</xp:label>
 					&#160;
-					<xp:image url="/twisty.png" id="imgTwistyDocumentModifiedAt"
-						rendered="#{javascript:viewScope.documentSort == documentBean.SORT_BY_MODIFIEDAT}"></xp:image>
+					<xp:image id="imgTwistyDocumentModifiedAt"
+						rendered="#{javascript:viewScope.documentSort == documentBean.SORT_BY_MODIFIEDAT}">
+						<xp:this.url><![CDATA[#{javascript:@If ( !viewScope.documentSortReverse , "twisty.png" , "twisty_reverse.png")}]]></xp:this.url>
+					</xp:image>
 					<xp:eventHandler event="onclick" submit="true"
 						refreshMode="partial" refreshId="tblDocuments" id="evhSortDocumentsByCreatedAt">
 						<xp:this.action><![CDATA[#{javascript:
@@ -44,13 +48,16 @@
 						}]]></xp:this.action>
 					</xp:eventHandler>
 				</xp:td>
-				<xp:td id="tdDocumentAuthor" styleClass="th">
+				<xp:td id="tdDocumentAuthor" styleClass="th"
+					style="cursor:pointer;width:150px;">
 					<xp:label value="Author" id="lblDocumentAuthor" for="cfDocumentAuthor"
-						style="cursor:pointer">
+						style="cursor:pointer;">
 					</xp:label>
 					&#160;
-					<xp:image url="/twisty.png" id="imgTwistyDocumentAuthor"
-						rendered="#{javascript:viewScope.documentSort == documentBean.SORT_BY_AUTHOR}"></xp:image>
+					<xp:image id="imgTwistyDocumentAuthor"
+						rendered="#{javascript:viewScope.documentSort == documentBean.SORT_BY_AUTHOR}">
+						<xp:this.url><![CDATA[#{javascript:@If ( !viewScope.documentSortReverse , "twisty.png" , "twisty_reverse.png")}]]></xp:this.url>
+					</xp:image>
 					<xp:eventHandler event="onclick" submit="true"
 						refreshMode="partial" refreshId="tblDocuments" id="evhSortDocumentsByAuthor">
 						<xp:this.action><![CDATA[#{javascript:
@@ -63,14 +70,16 @@
 						}]]></xp:this.action>
 					</xp:eventHandler>
 				</xp:td>
-				<xp:td id="tdDocumentCustomer" styleClass="th">
+				<xp:td id="tdDocumentCustomer" styleClass="th" style="cursor:pointer;">
 					<xp:this.rendered><![CDATA[#{javascript:(compositeData.ProjectId == '' || compositeData.ProjectId == null) && (viewScope.UserstoryId == '' || viewScope.UserstoryId == null)}]]></xp:this.rendered>
 					<xp:label value="Customer" id="lblDocumentCustomer" for="cfDocumentCustomer"
-						style="cursor:pointer">
+						style="cursor:pointer;">
 					</xp:label>
 					&#160;
-					<xp:image url="/twisty.png" id="imgTwistyDocumentCustomer"
-						rendered="#{javascript:viewScope.documentSort == documentBean.SORT_BY_CUSTOMER}"></xp:image>
+					<xp:image id="imgTwistyDocumentCustomer"
+						rendered="#{javascript:viewScope.documentSort == documentBean.SORT_BY_CUSTOMER}">
+						<xp:this.url><![CDATA[#{javascript:@If ( !viewScope.documentSortReverse , "twisty.png" , "twisty_reverse.png")}]]></xp:this.url>
+					</xp:image>
 					<xp:eventHandler event="onclick" submit="true"
 						refreshMode="partial" refreshId="tblDocuments" id="evhSortDocumentByCustomer">
 						<xp:this.action><![CDATA[#{javascript:
@@ -83,14 +92,15 @@
 						}]]></xp:this.action>
 					</xp:eventHandler>
 				</xp:td>
-				<xp:td id="tdDocumentProject" styleClass="th">
+				<xp:td id="tdDocumentProject" styleClass="th" style="cursor:pointer;">
 					<xp:this.rendered><![CDATA[#{javascript:(compositeData.ProjectId == '' || compositeData.ProjectId == null) && (viewScope.UserstoryId == '' || viewScope.UserstoryId == null)}]]></xp:this.rendered>
 					<xp:label value="Project" id="lblDocumentProject" for="cfDocumentProject"
-						style="cursor:pointer">
+						style="cursor:pointer;">
 					</xp:label>
 					&#160;
-					<xp:image url="/twisty.png" id="imgTwistyDocumentProject"
+					<xp:image id="imgTwistyDocumentProject"
 						rendered="#{javascript:viewScope.documentSort == documentBean.SORT_BY_PROJECT}">
+						<xp:this.url><![CDATA[#{javascript:@If ( !viewScope.documentSortReverse , "twisty.png" , "twisty_reverse.png")}]]></xp:this.url>
 					</xp:image>
 					<xp:eventHandler event="onclick" submit="true"
 						refreshMode="partial" refreshId="tblDocuments" id="evhSortDocumentByProject">
@@ -104,13 +114,15 @@
 						}]]></xp:this.action>
 					</xp:eventHandler>
 				</xp:td>
-				<xp:td id="tdDocumentSubject" styleClass="th">
+				<xp:td id="tdDocumentSubject" styleClass="th" style="cursor:pointer;">
 					<xp:label value="Subject" id="lblDocumentSubject" for="cfDocumentSubject"
-						style="cursor:pointer">
+						style="cursor:pointer;">
 					</xp:label>
 					&#160;
-					<xp:image url="/twisty.png" id="imgTwistyDocumentSubject"
-						rendered="#{javascript:viewScope.documentSort == documentBean.SORT_BY_SUBJECT}"></xp:image>
+					<xp:image id="imgTwistyDocumentSubject"
+						rendered="#{javascript:viewScope.documentSort == documentBean.SORT_BY_SUBJECT}">
+						<xp:this.url><![CDATA[#{javascript:@If ( !viewScope.documentSortReverse , "twisty.png" , "twisty_reverse.png")}]]></xp:this.url>
+					</xp:image>
 					<xp:eventHandler event="onclick" submit="true"
 						refreshMode="partial" refreshId="tblDocuments" id="evhSortDocumentsBySubject">
 						<xp:this.action><![CDATA[#{javascript:
@@ -128,31 +140,31 @@
 					</xp:label>
 				</xp:td>
 			</xp:tr>
-			<xp:repeat id="rptDocuments" rows="25" var="repeatedDocument">
-				<xp:this.value><![CDATA[#{javascript:
-					var documentSort = viewScope.documentSort;
-					if(documentSort == "" || documentSort == null) {
-						if(compositeData.sort != "" && compositeData.sort != null) {
-							documentSort = compositeData.sort;
-						} else {
-							documentSort = documentBean.SORT_BY_MODIFIEDAT;
-						}
-					}
-					if(viewScope.documentSortReverse == null)
-						viewScope.documentSortReverse = false;
-					if(compositeData.filterTag != "" && compositeData.filterTag != null) {
-						return documentBean.getDocumentsByTag(documentSort.intValue(), viewScope.documentSortReverse,  "" + compositeData.filterTag);
-					} else {
-						if(compositeData.limit != "" && compositeData.limit != null) {
-							return documentBean.getDocumentsSinceDate(documentSort.intValue(), viewScope.documentSortReverse, compositeData.limit);
-						} else {
-							return documentBean.getAllDocuments(documentSort.intValue(), viewScope.documentSortReverse);
-						}
-					}
-				}]]></xp:this.value>
+			<xp:repeat id="rptDocuments" rows="25"
+				var="repeatedDocument">
+				<xp:this.value><![CDATA[#{javascript:var documentSort = viewScope.documentSort;
+if(documentSort == "" || documentSort == null) {
+	if(compositeData.sort != "" && compositeData.sort != null) {
+		documentSort = compositeData.sort;
+	} else {
+		documentSort = documentBean.SORT_BY_MODIFIEDAT;
+	}
+}
+if(viewScope.documentSortReverse == null)
+	viewScope.documentSortReverse = false;
+if(compositeData.filterTag != "" && compositeData.filterTag != null) {
+	return documentBean.getDocumentsByTag(documentSort.intValue(), viewScope.documentSortReverse,  "" + compositeData.filterTag);
+} else {
+	if(compositeData.limit != "" && compositeData.limit != null) {
+		return documentBean.getDocumentsSinceDate(documentSort.intValue(), viewScope.documentSortReverse, compositeData.limit);
+	} else {
+		return documentBean.getAllDocuments(documentSort.intValue(), viewScope.documentSortReverse);
+	}
+}}]]></xp:this.value>
 				<xp:tr styleClass="hover">
 					<xp:td styleClass="icon">
-						<xp:image id="imgForm" style="margin-top:2px;">
+						<xp:image id="imgForm"
+							style="margin-top:2px;">
 							<xp:this.url><![CDATA[#{javascript:if (repeatedDocument.form == "Project") {
 	"/box.png"
 } else if (repeatedDocument.form == "Iteration") {
@@ -170,7 +182,8 @@
 						</xe:tooltip>
 					</xp:td>
 					<xp:td>
-						<xp:text escape="true" id="cfDocumentModifiedAt" value="#{repeatedDocument.modifiedAt}">
+						<xp:text escape="true" id="cfDocumentModifiedAt"
+							value="#{repeatedDocument.modifiedAt}">
 						</xp:text>
 					</xp:td>
 					<xp:td>
@@ -187,8 +200,8 @@
 						<xp:link escape="true" id="lnkProject"
 							text="#{javascript:repeatedDocument.project}">
 							<xp:this.rendered><![CDATA[#{repeatedDocument.form != "Projekt"}]]></xp:this.rendered>
-							<xp:eventHandler event="onclick" submit="true"
-								refreshMode="partial" refreshId="pnlDocuments">
+							<xp:eventHandler event="onclick"
+								submit="true" refreshMode="partial" refreshId="pnlDocuments">
 								<xp:this.action><![CDATA[#{javascript:var paramString = "";
 if(compositeData.parent != null) {
 	paramString += "&parentNode=" + compositeData.parent;
@@ -205,10 +218,11 @@ context.redirectToPage("/ProjectDetails.xsp?id=" + id + paramString);}]]></xp:th
 
 					</xp:td>
 					<xp:td>
-						<xp:link escape="true" id="lnkShowDetails" text="#{repeatedDocument.subject}">
+						<xp:link escape="true" id="lnkShowDetails"
+							text="#{repeatedDocument.subject}">
 							<xp:this.rendered><![CDATA[#{javascript:repeatedDocument.form != "Project"}]]></xp:this.rendered>
-							<xp:eventHandler event="onclick" submit="true"
-								refreshMode="partial" refreshId="pnlDocuments">
+							<xp:eventHandler event="onclick"
+								submit="true" refreshMode="partial" refreshId="pnlDocuments">
 								<xp:this.action><![CDATA[#{javascript:if (viewScope.get("curId") != repeatedDocument.getId()) {
 	viewScope.put("curId", repeatedDocument.getId());	
 } else {
@@ -216,47 +230,57 @@ context.redirectToPage("/ProjectDetails.xsp?id=" + id + paramString);}]]></xp:th
 }}]]></xp:this.action>
 							</xp:eventHandler>
 						</xp:link>
-						<xp:text escape="true" id="cfShowSubjectProject" value="#{repeatedDocument.subject}">
+						<xp:text escape="true" id="cfShowSubjectProject"
+							value="#{repeatedDocument.subject}">
 							<xp:this.rendered><![CDATA[#{javascript:repeatedDocument.form == "Project"}]]></xp:this.rendered>
 						</xp:text>
 					</xp:td>
 					<xp:td>
-						<xp:text escape="true" id="cfDocumentTags" value="#{repeatedDocument.tags}">
+						<xp:text escape="true" id="cfDocumentTags"
+							value="#{repeatedDocument.tags}">
 						</xp:text>
 					</xp:td>
 				</xp:tr>
 				<xp:tr>
 					<xp:this.rendered><![CDATA[#{javascript:viewScope.get("curId") == repeatedDocument.getId()}]]></xp:this.rendered>
-					<xp:td style="padding:0;" styleClass="selectedTask">
+					<xp:td style="padding:0;"
+						styleClass="selectedTask">
 
 					</xp:td>
-					<xp:td colspan="10" style="padding:0;" styleClass="selectedTask">
+					<xp:td colspan="10" style="padding:0;"
+						styleClass="selectedTask">
 
 						<hr style="width:90%;color:#eeeeee;" />
 
 						<xp:panel>
 							<xp:this.rendered><![CDATA[#{javascript:repeatedDocument.form == "Task"}]]></xp:this.rendered>
 
-							<xp:table style="width:100%;margin-bottom:10px;"
+							<xp:table
+								style="width:100%;margin-bottom:10px;"
 								styleClass="selectedTask">
 								<xp:tr>
-									<xp:td style="padding-bottom:10px;width:100px;">
-										<xp:label value="Description" id="label10" for="dspDescription">
+									<xp:td
+										style="padding-bottom:10px;width:100px;">
+										<xp:label value="Description"
+											id="label10" for="dspDescription">
 										</xp:label>
 									</xp:td>
-									<xp:td style="padding-bottom:10px;">
-										<xp:text id="dspDescription" value="#{repeatedDocument.body}"
-											escape="true">
+									<xp:td
+										style="padding-bottom:10px;">
+										<xp:text id="dspDescription"
+											value="#{repeatedDocument.body}" escape="true">
 										</xp:text>
 									</xp:td>
 								</xp:tr>
 								<xp:tr>
 									<xp:td>
-										<xp:label value="Customer" id="label5" for="dspCustomer">
+										<xp:label value="Customer"
+											id="label5" for="dspCustomer">
 										</xp:label>
 									</xp:td>
 									<xp:td>
-										<xp:text escape="true" id="dspCustomer">
+										<xp:text escape="true"
+											id="dspCustomer">
 											<xp:this.value><![CDATA[#{javascript:if(projectBean.getProjectById(repeatedDocument.projectId) != null) {
 	var customer = projectBean.getProjectById(repeatedDocument.projectId).getCustomer();
 	return repeatedDocument.getCustomerName(customer);
@@ -266,11 +290,13 @@ context.redirectToPage("/ProjectDetails.xsp?id=" + id + paramString);}]]></xp:th
 								</xp:tr>
 								<xp:tr>
 									<xp:td>
-										<xp:label value="Project" id="label11" for="dspProject">
+										<xp:label value="Project"
+											id="label11" for="dspProject">
 										</xp:label>
 									</xp:td>
 									<xp:td>
-										<xp:text escape="true" id="dspProject">
+										<xp:text escape="true"
+											id="dspProject">
 											<xp:this.value><![CDATA[#{javascript:if(projectBean.getProjectById(repeatedDocument.projectId) != null) {
 	return "" + projectBean.getProjectById(repeatedDocument.projectId).getSubject();
 }}]]></xp:this.value>
@@ -279,11 +305,13 @@ context.redirectToPage("/ProjectDetails.xsp?id=" + id + paramString);}]]></xp:th
 								</xp:tr>
 								<xp:tr>
 									<xp:td>
-										<xp:label value="Iteration" id="label2" for="dspIteration">
+										<xp:label value="Iteration"
+											id="label2" for="dspIteration">
 										</xp:label>
 									</xp:td>
 									<xp:td>
-										<xp:text escape="true" id="dspIteration">
+										<xp:text escape="true"
+											id="dspIteration">
 											<xp:this.value><![CDATA[#{javascript:if (userstoryBean.getUserstoryById(repeatedDocument.userstoryId) != null) {
 	return "" + userstoryBean.getUserstoryById(repeatedDocument.userstoryId).iteration;
 }
@@ -292,12 +320,16 @@ context.redirectToPage("/ProjectDetails.xsp?id=" + id + paramString);}]]></xp:th
 									</xp:td>
 								</xp:tr>
 								<xp:tr>
-									<xp:td style="padding-bottom:10px;">
-										<xp:label value="Userstory" id="label3" for="dspUserstory">
+									<xp:td
+										style="padding-bottom:10px;">
+										<xp:label value="Userstory"
+											id="label3" for="dspUserstory">
 										</xp:label>
 									</xp:td>
-									<xp:td style="padding-bottom:10px;">
-										<xp:text escape="true" id="dspUserstory">
+									<xp:td
+										style="padding-bottom:10px;">
+										<xp:text escape="true"
+											id="dspUserstory">
 											<xp:this.value><![CDATA[#{javascript:if(userstoryBean.getUserstoryById(repeatedDocument.userstoryId) != null) {
 	return "" + userstoryBean.getUserstoryById(repeatedDocument.userstoryId).getSubject();
 }
@@ -306,51 +338,61 @@ context.redirectToPage("/ProjectDetails.xsp?id=" + id + paramString);}]]></xp:th
 									</xp:td>
 								</xp:tr>
 								<xp:tr>
-									<xp:td style="padding-bottom:10px;">
-										<xp:label value="Tags" id="label9" for="dspTags">
+									<xp:td
+										style="padding-bottom:10px;">
+										<xp:label value="Tags"
+											id="label9" for="dspTags">
 										</xp:label>
 									</xp:td>
-									<xp:td style="padding-bottom:10px;">
-										<xe:djextListTextBox multipleSeparator=","
-											multipleTrim="true" value="#{javascript:repeatedDocument.getTags()}"
+									<xp:td
+										style="padding-bottom:10px;">
+										<xe:djextListTextBox
+											multipleSeparator="," multipleTrim="true"
+											value="#{javascript:repeatedDocument.getTags()}"
 											disabled="true" showReadonlyAsDisabled="true" id="dspTags">
 										</xe:djextListTextBox>
 									</xp:td>
 								</xp:tr>
 								<xp:tr>
 									<xp:td>
-										<xp:label value="Assigned to" id="label7" for="dspEditor">
+										<xp:label value="Assigned to"
+											id="label7" for="dspEditor">
 										</xp:label>
 									</xp:td>
 									<xp:td>
-										<xp:text escape="true" id="dspEditor">
+										<xp:text escape="true"
+											id="dspEditor">
 											<xp:this.value><![CDATA[#{javascript:@Name("[CN]",repeatedDocument.editor)}]]></xp:this.value>
 										</xp:text>
 									</xp:td>
 								</xp:tr>
 								<xp:tr>
 									<xp:td>
-										<xp:label value="Expected Effort" id="label8" for="dspEffort">
+										<xp:label
+											value="Expected Effort" id="label8" for="dspEffort">
 										</xp:label>
 									</xp:td>
 									<xp:td>
-										<xp:text escape="true" id="dspEffort" value="#{repeatedDocument.time}">
+										<xp:text escape="true"
+											id="dspEffort" value="#{repeatedDocument.time}">
 										</xp:text>
 										&#160;h
 									</xp:td>
 								</xp:tr>
 								<xp:tr>
 									<xp:td>
-										<xp:label value="Created" id="label6" for="dspAuthor">
+										<xp:label value="Created"
+											id="label6" for="dspAuthor">
 										</xp:label>
 									</xp:td>
 									<xp:td>
-										<xp:text escape="true" id="dspAuthor">
+										<xp:text escape="true"
+											id="dspAuthor">
 											<xp:this.value><![CDATA[#{javascript:@Name("[CN]",repeatedDocument.author)}]]></xp:this.value>
 										</xp:text>
 										&#160;/&#160;
-										<xp:text escape="true" id="dspCreated"
-											value="#{repeatedDocument.createdAt}">
+										<xp:text escape="true"
+											id="dspCreated" value="#{repeatedDocument.createdAt}">
 										</xp:text>
 									</xp:td>
 								</xp:tr>
@@ -358,8 +400,9 @@ context.redirectToPage("/ProjectDetails.xsp?id=" + id + paramString);}]]></xp:th
 
 							<xp:link escape="true" id="lnkSendLink">
 								<xp:this.text><![CDATA[> send link]]></xp:this.text>
-								<xp:eventHandler event="onclick" submit="true"
-									refreshMode="partial" refreshId="dlgEditMailOut">
+								<xp:eventHandler event="onclick"
+									submit="true" refreshMode="partial"
+									refreshId="dlgEditMailOut">
 									<xp:this.action><![CDATA[#{javascript:viewScope.put("targetID", repeatedDocument.id);
 getComponent("dlgEditMailOut").show();}]]></xp:this.action>
 								</xp:eventHandler>
@@ -369,26 +412,33 @@ getComponent("dlgEditMailOut").show();}]]></xp:this.action>
 						<xp:panel>
 							<xp:this.rendered><![CDATA[#{javascript:repeatedDocument.form == "Bug"}]]></xp:this.rendered>
 
-							<xp:table style="width:100%;margin-bottom:10px;"
+							<xp:table
+								style="width:100%;margin-bottom:10px;"
 								styleClass="selectedTask">
 
 								<xp:tr>
-									<xp:td style="padding-bottom:10px;width:100px;">
-										<xp:label value="Description" id="label12" for="dspDescription">
+									<xp:td
+										style="padding-bottom:10px;width:100px;">
+										<xp:label value="Description"
+											id="label12" for="dspDescription">
 										</xp:label>
 									</xp:td>
-									<xp:td style="padding-bottom:10px;">
-										<xp:text escape="true" id="computedField1" value="#{repeatedDocument.body}">
+									<xp:td
+										style="padding-bottom:10px;">
+										<xp:text escape="true"
+											id="computedField1" value="#{repeatedDocument.body}">
 										</xp:text>
 									</xp:td>
 								</xp:tr>
 								<xp:tr>
 									<xp:td>
-										<xp:label value="Customer" id="label13" for="dspCustomer">
+										<xp:label value="Customer"
+											id="label13" for="dspCustomer">
 										</xp:label>
 									</xp:td>
 									<xp:td>
-										<xp:text escape="true" id="computedField2">
+										<xp:text escape="true"
+											id="computedField2">
 											<xp:this.value><![CDATA[#{javascript:if(projectBean.getProjectById(repeatedDocument.projectId) != null) {
 	var customer = projectBean.getProjectById(repeatedDocument.projectId).getCustomer();
 	return repeatedDocument.getCustomerName(customer);
@@ -398,11 +448,13 @@ getComponent("dlgEditMailOut").show();}]]></xp:this.action>
 								</xp:tr>
 								<xp:tr>
 									<xp:td>
-										<xp:label value="Project" id="label15" for="dspProject">
+										<xp:label value="Project"
+											id="label15" for="dspProject">
 										</xp:label>
 									</xp:td>
 									<xp:td>
-										<xp:text escape="true" id="computedField3">
+										<xp:text escape="true"
+											id="computedField3">
 											<xp:this.value><![CDATA[#{javascript:if(projectBean.getProjectById(repeatedDocument.projectId) != null) {
 	return "" + projectBean.getProjectById(repeatedDocument.projectId).getSubject();
 }}]]></xp:this.value>
@@ -410,12 +462,16 @@ getComponent("dlgEditMailOut").show();}]]></xp:this.action>
 									</xp:td>
 								</xp:tr>
 								<xp:tr>
-									<xp:td style="padding-bottom:10px;">
-										<xp:label value="Userstory" id="label16" for="dspUserstory">
+									<xp:td
+										style="padding-bottom:10px;">
+										<xp:label value="Userstory"
+											id="label16" for="dspUserstory">
 										</xp:label>
 									</xp:td>
-									<xp:td style="padding-bottom:10px;">
-										<xp:text escape="true" id="computedField4">
+									<xp:td
+										style="padding-bottom:10px;">
+										<xp:text escape="true"
+											id="computedField4">
 											<xp:this.value><![CDATA[#{javascript:if(userstoryBean.getUserstoryById(repeatedDocument.userstoryId) != null) {
 	return "" + userstoryBean.getUserstoryById(repeatedDocument.userstoryId).getSubject();
 }
@@ -424,40 +480,49 @@ getComponent("dlgEditMailOut").show();}]]></xp:this.action>
 									</xp:td>
 								</xp:tr>
 								<xp:tr>
-									<xp:td style="padding-bottom:10px;">
-										<xp:label value="Tags" id="label17" for="dspTags">
+									<xp:td
+										style="padding-bottom:10px;">
+										<xp:label value="Tags"
+											id="label17" for="dspTags">
 										</xp:label>
 									</xp:td>
-									<xp:td style="padding-bottom:10px;">
-										<xe:djextListTextBox multipleSeparator=","
-											multipleTrim="true" value="#{javascript:repeatedDocument.getTags()}"
-											disabled="true" showReadonlyAsDisabled="true" id="djextListTextBox1">
+									<xp:td
+										style="padding-bottom:10px;">
+										<xe:djextListTextBox
+											multipleSeparator="," multipleTrim="true"
+											value="#{javascript:repeatedDocument.getTags()}"
+											disabled="true" showReadonlyAsDisabled="true"
+											id="djextListTextBox1">
 										</xe:djextListTextBox>
 									</xp:td>
 								</xp:tr>
 								<xp:tr>
 									<xp:td>
-										<xp:label value="Assigned to" id="label18" for="dspEditor">
+										<xp:label value="Assigned to"
+											id="label18" for="dspEditor">
 										</xp:label>
 									</xp:td>
 									<xp:td>
-										<xp:text escape="true" id="computedField5">
+										<xp:text escape="true"
+											id="computedField5">
 											<xp:this.value><![CDATA[#{javascript:@Name("[CN]",repeatedDocument.editor)}]]></xp:this.value>
 										</xp:text>
 									</xp:td>
 								</xp:tr>
 								<xp:tr>
 									<xp:td>
-										<xp:label value="Created" id="label19" for="dspAuthor">
+										<xp:label value="Created"
+											id="label19" for="dspAuthor">
 										</xp:label>
 									</xp:td>
 									<xp:td>
-										<xp:text escape="true" id="computedField6">
+										<xp:text escape="true"
+											id="computedField6">
 											<xp:this.value><![CDATA[#{javascript:@Name("[CN]",repeatedDocument.author)}]]></xp:this.value>
 										</xp:text>
 										&#160;/&#160;
-										<xp:text escape="true" id="computedField7"
-											value="#{repeatedDocument.createdAt}">
+										<xp:text escape="true"
+											id="computedField7" value="#{repeatedDocument.createdAt}">
 										</xp:text>
 									</xp:td>
 								</xp:tr>
@@ -465,8 +530,9 @@ getComponent("dlgEditMailOut").show();}]]></xp:this.action>
 
 							<xp:link escape="true" id="link1">
 								<xp:this.text><![CDATA[> send link]]></xp:this.text>
-								<xp:eventHandler event="onclick" submit="true"
-									refreshMode="partial" refreshId="dlgEditMailOut">
+								<xp:eventHandler event="onclick"
+									submit="true" refreshMode="partial"
+									refreshId="dlgEditMailOut">
 									<xp:this.action><![CDATA[#{javascript:viewScope.put("targetID", repeatedDocument.id);
 getComponent("dlgEditMailOut").show();}]]></xp:this.action>
 								</xp:eventHandler>
@@ -476,64 +542,84 @@ getComponent("dlgEditMailOut").show();}]]></xp:this.action>
 						<xp:panel>
 							<xp:this.rendered><![CDATA[#{javascript:repeatedDocument.form == "Userstory"}]]></xp:this.rendered>
 
-							<xp:table style="width:100%;margin-bottom:10px;"
+							<xp:table
+								style="width:100%;margin-bottom:10px;"
 								styleClass="selectedTask">
 								<xp:tr>
-									<xp:td style="padding-bottom:10px;">
-										<xp:label value="Description" id="label1" for="dspBody">
+									<xp:td
+										style="padding-bottom:10px;">
+										<xp:label value="Description"
+											id="label1" for="dspBody">
 										</xp:label>
 									</xp:td>
-									<xp:td style="padding-bottom:10px;">
-										<xp:text escape="true" id="dspBody" value="#{repeatedDocument.body}">
+									<xp:td
+										style="padding-bottom:10px;">
+										<xp:text escape="true"
+											id="dspBody" value="#{repeatedDocument.body}">
 										</xp:text>
 									</xp:td>
 								</xp:tr>
 								<xp:tr>
 									<xp:td>
-										<xp:label value="Expected Effort" id="label4" for="dspEffort">
+										<xp:label
+											value="Expected Effort" id="label4" for="dspEffort">
 										</xp:label>
 									</xp:td>
 									<xp:td>
-										<xp:text escape="true" id="computedField9">
+										<xp:text escape="true"
+											id="computedField9">
 											<xp:this.value><![CDATA[#{javascript:repeatedDocument.time + " h"}]]></xp:this.value>
 										</xp:text>
 									</xp:td>
 								</xp:tr>
 								<xp:tr>
-									<xp:td style="padding-bottom:10px;">
-										<xp:label value="Responsible" id="label14" for="dspResponsible">
+									<xp:td
+										style="padding-bottom:10px;">
+										<xp:label value="Responsible"
+											id="label14" for="dspResponsible">
 										</xp:label>
 									</xp:td>
-									<xp:td style="padding-bottom:10px;">
-										<xp:text escape="true" id="dspResponsible"
+									<xp:td
+										style="padding-bottom:10px;">
+										<xp:text escape="true"
+											id="dspResponsible"
 											value="#{repeatedDocument.responsible}">
 										</xp:text>
 									</xp:td>
 								</xp:tr>
 								<xp:tr>
-									<xp:td style="padding-bottom:10px;">
-										<xp:label value="Tags" id="label20" for="dspTags">
+									<xp:td
+										style="padding-bottom:10px;">
+										<xp:label value="Tags"
+											id="label20" for="dspTags">
 										</xp:label>
 									</xp:td>
-									<xp:td style="padding-bottom:10px;">
-										<xe:djextListTextBox multipleSeparator=","
-											multipleTrim="true" value="#{javascript:repeatedDocument.getTags()}"
-											disabled="true" showReadonlyAsDisabled="true" id="djextListTextBox2">
+									<xp:td
+										style="padding-bottom:10px;">
+										<xe:djextListTextBox
+											multipleSeparator="," multipleTrim="true"
+											value="#{javascript:repeatedDocument.getTags()}"
+											disabled="true" showReadonlyAsDisabled="true"
+											id="djextListTextBox2">
 										</xe:djextListTextBox>
 									</xp:td>
 								</xp:tr>
 								<xp:tr>
-									<xp:td style="padding-bottom:10px;width:100px;">
-										<xp:label value="Author" id="label21" for="dspAuthor">
+									<xp:td
+										style="padding-bottom:10px;width:100px;">
+										<xp:label value="Author"
+											id="label21" for="dspAuthor">
 										</xp:label>
 									</xp:td>
-									<xp:td style="padding-bottom:10px;">
-										<xp:text escape="true" id="computedField10">
+									<xp:td
+										style="padding-bottom:10px;">
+										<xp:text escape="true"
+											id="computedField10">
 											<xp:this.value><![CDATA[#{javascript:@Name("[CN]",repeatedDocument.author)}]]></xp:this.value>
 										</xp:text>
 										&#160;/&#160;
-										<xp:text escape="true" id="computedField11"
-											value="#{repeatedDocument.createdAt}">
+										<xp:text escape="true"
+											id="computedField11" value="#{repeatedDocument.createdAt}">
 										</xp:text>
 									</xp:td>
 								</xp:tr>
@@ -541,8 +627,9 @@ getComponent("dlgEditMailOut").show();}]]></xp:this.action>
 
 							<xp:link escape="true" id="link2">
 								<xp:this.text><![CDATA[> send link]]></xp:this.text>
-								<xp:eventHandler event="onclick" submit="true"
-									refreshMode="partial" refreshId="dlgEditMailOut">
+								<xp:eventHandler event="onclick"
+									submit="true" refreshMode="partial"
+									refreshId="dlgEditMailOut">
 									<xp:this.action><![CDATA[#{javascript:viewScope.put("targetID", repeatedDocument.id);
 getComponent("dlgEditMailOut").show();}]]></xp:this.action>
 								</xp:eventHandler>

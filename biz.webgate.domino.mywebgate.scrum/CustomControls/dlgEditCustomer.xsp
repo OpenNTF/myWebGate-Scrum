@@ -65,11 +65,13 @@ getComponent("dlgEditCustomer").hide();}]]></xp:this.action>
 				<xe:formRow id="froCustomerMembers" for="cnpMembers"
 					label="Members">
 					<xc:ccNamePicker dirIsLookup="true" dirMultiValue="true"
-						dirReturnFieldFormula="true" dirPath="mywebgate/mywebgate.nsf"
+						dirReturnFieldFormula="true" 
 						dirView="($VIMPeople)" pickerFieldName="Members" pickerId="MembersId"
 						pickerObject="#{javascript:editCustomer}" pickerObjectAlias="customerAlias"
 						id="cnpMembers" dirFTSearchFieldInView="FullName" mvSeparator=","
 						dirRefreshId="ftaCustomerEdit">
+						<xc:this.dirServer><![CDATA[#{javascript:mywebgateBean.getAppSettings().getServer()}]]></xc:this.dirServer>
+						<xc:this.dirPath><![CDATA[#{javascript:mywebgateBean.getAppSettings().getPath()}]]></xc:this.dirPath> 
 						<xc:this.dirReturnFields>
 							<xp:value>
 								@Name([Abbreviate];FullName)

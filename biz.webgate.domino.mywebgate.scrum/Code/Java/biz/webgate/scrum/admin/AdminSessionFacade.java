@@ -40,7 +40,7 @@ public class AdminSessionFacade {
 		return UserProfileStorageService.getInstance().getUserProfile(ExtLibUtil.getCurrentSession(), userName);
 	}
 	
-	public boolean sendLink(String strURL, List<String> sendTo, String strComment) {		
-		return MailerFactory.sendLink(strURL, sendTo, strComment, ExtLibUtil.getCurrentSession());		
+	public boolean sendLink(String strURL, String strID, List<String> sendTo, String strComment) {		
+		return MailerFactory.sendLink(strURL, strID, sendTo, strComment, ExtLibUtil.getCurrentSession());		
 	}
 }

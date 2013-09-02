@@ -53,6 +53,7 @@ public class BugSessionFacade {
 	public static final int SORT_BY_EDITOR = 8;
 	public static final int SORT_BY_DUE = 9;
 	public static final int SORT_BY_STATUS = 10;
+	public static final int SORT_BY_ID = 11;
 	
 	public Bug createNewBug(String projID) {
 		return BugStorageService.getInstance().createNewBug(projID, ExtLibUtil.getCurrentSession());
@@ -61,15 +62,13 @@ public class BugSessionFacade {
 	public boolean saveBug(Bug curBug) {
 		m_BugList = null;
 		m_LastAccessed = new Date();
-		return BugStorageService.getInstance().saveBug(curBug,
-				ExtLibUtil.getCurrentSession());
+		return BugStorageService.getInstance().saveBug(curBug, ExtLibUtil.getCurrentSession());
 	}
 
 	public boolean deleteBug(Bug curBug) {
 		m_BugList = null;
 		m_LastAccessed = new Date();
-		return BugStorageService.getInstance().deleteBug(curBug,
-				ExtLibUtil.getCurrentSession());
+		return BugStorageService.getInstance().deleteBug(curBug, ExtLibUtil.getCurrentSession());
 	}
 
 	public Bug getBugById(String strBugId) {
@@ -77,15 +76,13 @@ public class BugSessionFacade {
 	}
 
 	public List<Bug> getAllBugs(int sortOrder, boolean reverse, String filter) {
-		List<Bug> lstAll = BugStorageService.getInstance().getAllBugs(
-				ExtLibUtil.getCurrentSession(), filter);
+		List<Bug> lstAll = BugStorageService.getInstance().getAllBugs(ExtLibUtil.getCurrentSession(), filter);
 		BugSortFactory.sortBugs(lstAll, sortOrder, reverse);
 		return lstAll;
 	}
 
 	public List<Bug> getMyBugs(int sortOrder, boolean reverse, int involvedType, String filter, boolean showCompleted) {
-		List<Bug> lstMy = BugStorageService.getInstance().getMyBugs(
-				ExtLibUtil.getCurrentSession(), involvedType, filter, showCompleted);
+		List<Bug> lstMy = BugStorageService.getInstance().getMyBugs(ExtLibUtil.getCurrentSession(), involvedType, filter, showCompleted);
 		BugSortFactory.sortBugs(lstMy, sortOrder, reverse);
 		return lstMy;
 	}
@@ -94,27 +91,19 @@ public class BugSessionFacade {
 		return getMyBugs(sortOrder, reverse, Integer.parseInt(involvedType), filter, showCompleted);
 	}
 
-	public List<Bug> getBugsOfProject(int sortOrder, boolean reverse,
-			String projectID, String statusFilter, String usFilter,
-			String itFilter) {
-		List<Bug> lstBugsOfProject = BugStorageService.getInstance()
-				.getBugsOfProject(ExtLibUtil.getCurrentSession(), projectID,
-						statusFilter, usFilter, itFilter);
+	public List<Bug> getBugsOfProject(int sortOrder, boolean reverse, String projectID, String statusFilter, String usFilter, String itFilter, boolean hideComplete) {
+		List<Bug> lstBugsOfProject = BugStorageService.getInstance().getBugsOfProject(ExtLibUtil.getCurrentSession(), projectID, statusFilter, usFilter, itFilter, hideComplete);
 		BugSortFactory.sortBugs(lstBugsOfProject, sortOrder, reverse);
 		return lstBugsOfProject;
 	}
 
-	public List<Bug> getBugsOfUserstory(int sortOrder, boolean reverse,
-			String userstoryID, String filter) {
-		List<Bug> lstBugsOfUserstory = BugStorageService.getInstance()
-				.getBugsOfUserstory(ExtLibUtil.getCurrentSession(),
-						userstoryID, filter);
+	public List<Bug> getBugsOfUserstory(int sortOrder, boolean reverse, String userstoryID, String filter) {
+		List<Bug> lstBugsOfUserstory = BugStorageService.getInstance().getBugsOfUserstory(ExtLibUtil.getCurrentSession(), userstoryID, filter);
 		BugSortFactory.sortBugs(lstBugsOfUserstory, sortOrder, reverse);
 		return lstBugsOfUserstory;
 	}
 
-	public List<Bug> getBugsOfIteration(int sortOrder, boolean reverse,
-			String iterationID, String statusFilter) {
+	public List<Bug> getBugsOfIteration(int sortOrder, boolean reverse, String iterationID, String statusFilter) {
 		List<Bug> lstBugsOfIteration = new ArrayList<Bug>();
 		for (Bug bug : getAllBugs(sortOrder, reverse, statusFilter)) {
 			if (bug.getIterationId().equals(iterationID)) {
@@ -134,15 +123,13 @@ public class BugSessionFacade {
 	}
 
 	private Bug loadUserstory(String strID) {
-		if (m_BugList == null
-				|| BugStorageService.getInstance().isDirty(m_LastAccessed)) {
+		if (m_BugList == null || BugStorageService.getInstance().isDirty(m_LastAccessed)) {
 			m_BugList = new HashMap<String, Bug>();
 		}
 		if (m_BugList.containsKey(strID)) {
 			return m_BugList.get(strID);
 		}
-		Bug b = BugStorageService.getInstance().getBugById(strID,
-				ExtLibUtil.getCurrentSession());
+		Bug b = BugStorageService.getInstance().getBugById(strID, ExtLibUtil.getCurrentSession());
 		m_LastAccessed = new Date();
 		if (b != null) {
 			m_BugList.put(strID, b);
