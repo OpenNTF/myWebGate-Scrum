@@ -10,5 +10,9 @@ List of third party software used in this project:
 myWebGate, Version 2.0 (http://www.openntf.org/internal/home.nsf/release.xsp?databaseName=CN=NotesOSS2/O=NotesOSS!!Projects\pmt.nsf&documentId=2F2D8EC7F13DD40086257A28004D4C0A&action=openDocument) under Apache V2.0 (http://www.apache.org/licenses/)
 
 
+NamePickerPeople.java original Code provided by Ferhat Bulut
+(http://openntf.org/XSnippets.nsf/snippet.xsp?id=sample-about-namepicker-data-provider-databean)
+under Apache V2.0 (http://www.apache.org/licenses/)
+
 Icons: We have used FAMFAMFAM Silk icons V1.3. (http://www.famfamfam.com/lab/icons/silk/) under creativecommons Attribution 3.0 Unported  (http://creativecommons.org/licenses/by/3.0/)
  
