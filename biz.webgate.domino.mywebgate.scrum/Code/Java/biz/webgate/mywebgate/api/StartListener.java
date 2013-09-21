@@ -23,7 +23,7 @@ public class StartListener implements ApplicationListener2 {
 
 	public void applicationRefreshed(ApplicationEx arg0) {
 		try {
-			System.out.println("Refresh of " + arg0.getApplicationId());
+			//System.out.println("Refresh of " + arg0.getApplicationId());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -31,7 +31,7 @@ public class StartListener implements ApplicationListener2 {
 
 	public void applicationCreated(ApplicationEx arg0) {
 		try {
-			System.out.println("Create of " + arg0.getApplicationId());
+			//System.out.println("Create of " + arg0.getApplicationId());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -40,7 +40,8 @@ public class StartListener implements ApplicationListener2 {
 
 	public void applicationDestroyed(ApplicationEx arg0) {
 		try {
-			System.out.println("Destroy of " + arg0.getApplicationId());
+			//TODO: Auf Logger ändern!
+			//System.out.println("Destroy of " + arg0.getApplicationId());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
