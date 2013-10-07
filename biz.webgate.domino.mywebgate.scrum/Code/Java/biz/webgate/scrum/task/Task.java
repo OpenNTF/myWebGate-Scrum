@@ -56,7 +56,11 @@ public class Task implements Serializable, IScrumDocument {
 	@DominoEntity(FieldName = "SubjectT")
 	private String m_Subject;
 	@DominoEntity(FieldName = "TaskIdT")
-	private String m_TaskId;	
+	private String m_TaskId;
+	@DominoEntity(FieldName = "StartDT", dateOnly = true)
+	private Date m_Start;
+	@DominoEntity(FieldName = "EndDT", dateOnly = true)
+	private Date m_End;
 	@DominoEntity(FieldName = "DueDT", dateOnly = true)
 	private Date m_Due;
 	@DominoEntity(FieldName = "TimeN")
@@ -163,6 +167,22 @@ public class Task implements Serializable, IScrumDocument {
 	}
 	public void setTaskId(String taskId) {
 		m_TaskId = taskId;
+	}
+
+	public void setStart(Date start) {
+		m_Start = start;
+	}
+
+	public Date getStart() {
+		return m_Start;
+	}
+
+	public void setEnd(Date end) {
+		m_End = end;
+	}
+
+	public Date getEnd() {
+		return m_End;
 	}
 
 	public void setDue(Date due) {
