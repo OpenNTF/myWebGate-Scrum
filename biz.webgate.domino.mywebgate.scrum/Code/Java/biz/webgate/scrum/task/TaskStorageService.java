@@ -80,6 +80,7 @@ public class TaskStorageService {
 			curTask.setReader(lstReader);
 			curTask.setAuthors(lstReader);
 			
+			//assign task id if needed
 			if (curTask.getTaskId() == null || curTask.getTaskId().equals("")) {
 				Document docTask = sesCurrent.getCurrentDatabase().getView("lupTasksByProject").getDocumentByKey(curTask.getProjectId(), true);
 				if (docTask != null) {
@@ -90,6 +91,13 @@ public class TaskStorageService {
 						curTask.setTaskId("T" + temp.substring(temp.length() - 3));
 					}
 				}
+			}
+			
+			//check if task is executable (must have assigned person and expected effort)
+			if (!curTask.getEditor().equals("") && curTask.getTime() > 0) {
+				curTask.setIsExecutable("1");
+			} else {
+				curTask.setIsExecutable("0");
 			}
 			
 			curTask.setTempSave(null);

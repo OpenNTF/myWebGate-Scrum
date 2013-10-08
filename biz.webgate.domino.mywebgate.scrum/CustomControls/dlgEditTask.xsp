@@ -30,10 +30,25 @@ return thisEditTask;}]]></xe:this.createObject>
 				<xp:this.facets>
 					<xe:dialogButtonBar id="dbbEditTask" xp:key="footer">
 						<xp:button id="btSaveTask" value="Save">
-							<xp:eventHandler event="onclick" submit="true"
-								refreshMode="complete">
-								<xp:this.action><![CDATA[#{javascript:editTask.setIsDeleted("false");
-ccBean.updateMultiValueData(editTask, "taskAlias");
+							<xp:eventHandler event="onclick"
+								submit="true" refreshMode="complete">
+								<xp:this.action><![CDATA[#{javascript:ccBean.updateMultiValueData(editTask, "taskAlias");
+
+if (@TextToNumber(getComponent("cbbTaskStatus").getValue()) > 1) {
+	if (editTask.editor == "" || editTask.time == 0) {		
+		if (editTask.editor == "") {
+			var msg = new javax.faces.application.FacesMessage();
+			facesContext.addMessage("saveError",msg("Please assign this task before continuing"));
+		} 
+		if (editTask.time == 0){
+			var msg = new javax.faces.application.FacesMessage();
+			facesContext.addMessage("msgTaskTime",msg("Please enter the expected effort for this task"));
+		}
+		return false;	
+	}
+}
+
+editTask.setIsDeleted("false");
 editTask.setModifiedAt(new Date());
 taskBean.saveTask(editTask);
 viewScope.isTaskNew = false;
@@ -66,7 +81,10 @@ return false;}]]></xp:this.rendered>
 					</xe:dialogButtonBar>
 				</xp:this.facets>
 
-
+				<xe:formRow id="froErrorTop" label="">
+					<xp:messages id="saveError"></xp:messages>
+				</xe:formRow>
+									
 				<xe:formRow id="froTaskID" for="cfTaskID" label="ID"
 					rendered="false">
 					<xp:text escape="true" id="cfTaskID" value="#{editTask.id}">
@@ -154,12 +172,12 @@ return "";
 				<xe:formRow id="froTaskEditor" for="cnpTaskEditor" label="Assigned to">
 
 					<xc:ccNamePicker dirIsLookup="true" dirMultiValue="false"
-						dirReturnFieldFormula="true" 
-						dirView="($VIMPeople)" pickerFieldName="Editor" pickerId="EditorId"
-						pickerObjectAlias="taskAlias" id="cnpTaskEditor" pickerObject="#{javascript:editTask;}"
+						dirReturnFieldFormula="true" dirView="($VIMPeople)"
+						pickerFieldName="Editor" pickerId="EditorId" pickerObjectAlias="taskAlias"
+						id="cnpTaskEditor" pickerObject="#{javascript:editTask;}"
 						dirFTSearchFieldInView="FullName" mvSeparator="," dirRefreshId="cnpTaskEditor">
 						<xc:this.dirServer><![CDATA[#{javascript:mywebgateBean.getAppSettings().getServer()}]]></xc:this.dirServer>
-						<xc:this.dirPath><![CDATA[#{javascript:mywebgateBean.getAppSettings().getPath()}]]></xc:this.dirPath> 
+						<xc:this.dirPath><![CDATA[#{javascript:mywebgateBean.getAppSettings().getPath()}]]></xc:this.dirPath>
 						<xc:this.dirReturnFields>
 							<xp:value>
 								@Name([Abbreviate];FullName)
@@ -187,6 +205,8 @@ return "";
 						style="width:30px;">
 					</xp:inputText>
 					&#160;h
+
+					
 				</xe:formRow>
 
 				<xe:formRow id="froTaskStatus" for="cbbTaskStatus" label="Status">
@@ -197,7 +217,36 @@ return "";
 						</xp:selectItem>
 						<xp:selectItem itemLabel="Completed" itemValue="4">
 						</xp:selectItem>
+						<xp:eventHandler event="onchange" submit="true"
+							refreshMode="partial" refreshId="ftaTaskEdit" disableValidators="true">
+						</xp:eventHandler>
 					</xp:comboBox>
+				</xe:formRow>
+
+				<xe:formRow id="froTaskEffectiveStart" for="iptTaskStart"
+					label="Effective start date">
+					<xe:this.rendered><![CDATA[#{javascript:@TextToNumber(getComponent("cbbTaskStatus").getValue()) > 1}]]></xe:this.rendered>
+					<xp:inputText id="iptTaskStart" value="#{editTask.start}">
+						<xp:this.converter>
+							<xp:convertDateTime type="date">
+							</xp:convertDateTime>
+						</xp:this.converter>
+						<xp:dateTimeHelper dojoType="dijit.form.DateTextBox">
+						</xp:dateTimeHelper>
+					</xp:inputText>
+				</xe:formRow>
+
+				<xe:formRow id="froTaskEffectiveEnd" for="iptTaskEnd"
+					label="Effective end date">
+					<xe:this.rendered><![CDATA[#{javascript:@TextToNumber(getComponent("cbbTaskStatus").getValue()) > 1}]]></xe:this.rendered>
+					<xp:inputText id="iptTaskEnd" value="#{editTask.end}">
+						<xp:this.converter>
+							<xp:convertDateTime type="date">
+							</xp:convertDateTime>
+						</xp:this.converter>
+						<xp:dateTimeHelper dojoType="dijit.form.DateTextBox">
+						</xp:dateTimeHelper>
+					</xp:inputText>
 				</xe:formRow>
 
 				<xe:formRow id="froTaskTags" label="Tag(s)" for="mvtTaskTags">
@@ -228,7 +277,10 @@ setTimestamp(toSet, '#{id:itBody}');]]></xp:this.script>
 						deletionDisabled="false" uploadDisabled="false">
 					</xc:ccFileDownload>
 				</xe:formRow>
-
+				
+				<xe:formRow id="froErrorBottom" label="">
+					<xp:messages id="messages1"></xp:messages>
+				</xe:formRow>
 
 			</xe:formTable>
 

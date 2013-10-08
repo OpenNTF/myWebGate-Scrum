@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.faces.context.FacesContext;
+import javax.faces.component.UIComponent;
 
 import biz.webgate.scrum.scrumdocument.IScrumDocument;
 
@@ -133,4 +134,5 @@ public class TaskSessionFacade {
 		}
 		return p;
 	}
+		
 }
