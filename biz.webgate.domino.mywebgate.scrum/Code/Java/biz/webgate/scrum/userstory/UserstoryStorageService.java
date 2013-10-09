@@ -32,6 +32,7 @@ import biz.webgate.scrum.project.Project;
 import biz.webgate.scrum.project.ProjectSessionFacade;
 import biz.webgate.scrum.task.Task;
 import biz.webgate.scrum.task.TaskSessionFacade;
+import biz.webgate.scrum.task.TaskStorageService;
 import biz.webgate.xpages.dss.DominoStorageService;
 
 public class UserstoryStorageService {
@@ -50,15 +51,16 @@ public class UserstoryStorageService {
 		}
 		return m_UserstoriesS;
 	}
-	
+
 	public Userstory createNewUserstory(Session sesCurrent) {
 		try {
 			Userstory newUserstory = new Userstory();
 			newUserstory.setId(UUID.randomUUID().toString());
-			
-			//temporary save to allow attachments
+
+			// temporary save to allow attachments
 			newUserstory.setTempSave("1");
-			DominoStorageService.getInstance().saveObject(newUserstory, sesCurrent.getCurrentDatabase());
+			DominoStorageService.getInstance().saveObject(newUserstory,
+					sesCurrent.getCurrentDatabase());
 			return newUserstory;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -70,12 +72,13 @@ public class UserstoryStorageService {
 		try {
 			m_LastModified = new Date();
 			List<String> lstReader = new ArrayList<String>();
-			//get readers from project
-			Project project = ProjectSessionFacade.get().getProjectById(curUserstory.getProjectId());
-			lstReader.addAll(project.getReader());			
+			// get readers from project
+			Project project = ProjectSessionFacade.get().getProjectById(
+					curUserstory.getProjectId());
+			lstReader.addAll(project.getReader());
 			curUserstory.setReader(lstReader);
 			curUserstory.setAuthors(lstReader);
-			
+
 			curUserstory.setTempSave(null);
 			return DominoStorageService.getInstance().saveObject(curUserstory,
 					sesCurrent.getCurrentDatabase());
@@ -90,16 +93,18 @@ public class UserstoryStorageService {
 		m_LastModified = new Date();
 		boolean noException = true;
 		for (Task task : TaskSessionFacade.get().getTasksOfProject(
-				TaskSessionFacade.SORT_BY_CREATEDAT, true, curUserstory
-						.getProjectId(), "", curUserstory.getId(), "", false)) {
+				TaskSessionFacade.SORT_BY_CREATEDAT, true,
+				curUserstory.getProjectId(), "", curUserstory.getId(), "",
+				false)) {
 			noException = TaskSessionFacade.get().deleteTask(task);
 			if (!noException)
 				break;
 		}
 		if (noException) {
 			for (Bug bug : BugSessionFacade.get().getBugsOfProject(
-					BugSessionFacade.SORT_BY_CREATEDAT, true, curUserstory
-							.getProjectId(), "", curUserstory.getId(), "", false)) {
+					BugSessionFacade.SORT_BY_CREATEDAT, true,
+					curUserstory.getProjectId(), "", curUserstory.getId(), "",
+					false)) {
 				noException = BugSessionFacade.get().deleteBug(bug);
 				if (!noException)
 					break;
@@ -213,5 +218,10 @@ public class UserstoryStorageService {
 
 	public boolean isDirty(Date datCheck) {
 		return m_LastModified.after(datCheck);
+	}
+
+	public boolean isExecutable(Session sesCurrent, String strID) {
+		return (TaskStorageService.getInstance().getTasksOfUserstory(
+				sesCurrent, strID, "").size() > 0);
 	}
 }

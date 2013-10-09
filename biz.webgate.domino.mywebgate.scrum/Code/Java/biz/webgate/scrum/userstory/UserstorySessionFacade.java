@@ -33,7 +33,9 @@ public class UserstorySessionFacade {
 	public static final String BEAN_NAME = "userstoryBean"; //$NON-NLS-1$
 
 	public static UserstorySessionFacade get(FacesContext context) {
-		UserstorySessionFacade bean = (UserstorySessionFacade) context.getApplication().getVariableResolver().resolveVariable(context, BEAN_NAME);
+		UserstorySessionFacade bean = (UserstorySessionFacade) context
+				.getApplication().getVariableResolver().resolveVariable(
+						context, BEAN_NAME);
 		return bean;
 	}
 
@@ -51,19 +53,22 @@ public class UserstorySessionFacade {
 	private Date m_LastAccessed = new Date();
 
 	public Userstory createNewUserstory() {
-		return UserstoryStorageService.getInstance().createNewUserstory(ExtLibUtil.getCurrentSession());		
+		return UserstoryStorageService.getInstance().createNewUserstory(
+				ExtLibUtil.getCurrentSession());
 	}
 
 	public boolean saveUserstory(Userstory curUserstory) {
 		m_UserstoryList = null;
 		m_LastAccessed = new Date();
-		return UserstoryStorageService.getInstance().saveUserstory(curUserstory, ExtLibUtil.getCurrentSession());
+		return UserstoryStorageService.getInstance().saveUserstory(
+				curUserstory, ExtLibUtil.getCurrentSession());
 	}
 
 	public boolean deleteUserstory(Userstory curUserstory) {
 		m_UserstoryList = null;
 		m_LastAccessed = new Date();
-		return UserstoryStorageService.getInstance().deleteUserstory(curUserstory, ExtLibUtil.getCurrentSession());
+		return UserstoryStorageService.getInstance().deleteUserstory(
+				curUserstory, ExtLibUtil.getCurrentSession());
 	}
 
 	public Userstory getUserstoryById(String strUserstoryId) {
@@ -71,23 +76,32 @@ public class UserstorySessionFacade {
 	}
 
 	public List<Userstory> getAllUserstories(int sortOrder, boolean reverse) {
-		List<Userstory> lstAll = UserstoryStorageService.getInstance().getAllUserstories(ExtLibUtil.getCurrentSession());
+		List<Userstory> lstAll = UserstoryStorageService.getInstance()
+				.getAllUserstories(ExtLibUtil.getCurrentSession());
 		UserstorySortFactory.sortUserstories(lstAll, sortOrder, reverse);
 		return lstAll;
 	}
 
-	public List<Userstory> getUserstoriesOfProject(int sortOrder, boolean reverse, String projectID) {
-		List<Userstory> lstUserstoriesOfProject = UserstoryStorageService.getInstance().getUserstoriesOfProject(ExtLibUtil.getCurrentSession(), projectID);
-		UserstorySortFactory.sortUserstories(lstUserstoriesOfProject, sortOrder, reverse);
+	public List<Userstory> getUserstoriesOfProject(int sortOrder,
+			boolean reverse, String projectID) {
+		List<Userstory> lstUserstoriesOfProject = UserstoryStorageService
+				.getInstance().getUserstoriesOfProject(
+						ExtLibUtil.getCurrentSession(), projectID);
+		UserstorySortFactory.sortUserstories(lstUserstoriesOfProject,
+				sortOrder, reverse);
 		return lstUserstoriesOfProject;
 	}
 
-	public List<Userstory> getUserstoriesOfIteration(String iterationID, boolean reverse) {
-		List<Userstory> lstUserstoriesOfProject = UserstoryStorageService.getInstance().getUserstoriesOfIteration(ExtLibUtil.getCurrentSession(), iterationID);
-		UserstorySortFactory.sortUserstories(lstUserstoriesOfProject,SORT_BY_SUBJECT, reverse);
+	public List<Userstory> getUserstoriesOfIteration(String iterationID,
+			boolean reverse) {
+		List<Userstory> lstUserstoriesOfProject = UserstoryStorageService
+				.getInstance().getUserstoriesOfIteration(
+						ExtLibUtil.getCurrentSession(), iterationID);
+		UserstorySortFactory.sortUserstories(lstUserstoriesOfProject,
+				SORT_BY_SUBJECT, reverse);
 		return lstUserstoriesOfProject;
 	}
-	
+
 	public int getUserstoriesOfIterationCount(String iterationID) {
 		return getUserstoriesOfIteration(iterationID, false).size();
 	}
@@ -102,7 +116,8 @@ public class UserstorySessionFacade {
 
 	public List<String> getUserstoryValuesOfProject(String projectId) {
 		List<String> selectItems = new ArrayList<String>();
-		for (Userstory userstory : getUserstoriesOfProject(SORT_BY_SUBJECT, false, projectId)) {
+		for (Userstory userstory : getUserstoriesOfProject(SORT_BY_SUBJECT,
+				false, projectId)) {
 			selectItems.add(userstory.getSubject() + "|" + userstory.getId());
 		}
 		return selectItems;
@@ -116,17 +131,27 @@ public class UserstorySessionFacade {
 		return selectItems;
 	}
 
-	public List<String> getAvailableUserstoryValuesOfIteration(String iterationId, String projectID) {
+	public List<String> getAvailableUserstoryValuesOfIteration(
+			String iterationId, String projectID) {
 		List<String> selectItems = new ArrayList<String>();
-		for (Userstory userstory : getUserstoriesOfProject(SORT_BY_SUBJECT, false, projectID)) {
-			if (userstory.getIterationId() == null || userstory.getIterationId() == "") {
-				selectItems.add(userstory.getSubject() + "|" + userstory.getId());
+		for (Userstory userstory : getUserstoriesOfProject(SORT_BY_SUBJECT,
+				false, projectID)) {
+			if (userstory.getIterationId() == null
+					|| userstory.getIterationId() == "") {
+				selectItems.add(userstory.getSubject() + "|"
+						+ userstory.getId());
 			} else if (!userstory.getIterationId().equals(iterationId)) {
-				if (!(IterationSessionFacade.get().getIterationById(userstory.getIterationId()) == null)) {
-					Iteration iteration = IterationSessionFacade.get().getIterationById(userstory.getIterationId());
-					selectItems.add(userstory.getSubject() + " (" + iteration.getIndex() + " - " + iteration.getSubject() + ")" + "|" + userstory.getId());
+				if (!(IterationSessionFacade.get().getIterationById(
+						userstory.getIterationId()) == null)) {
+					Iteration iteration = IterationSessionFacade.get()
+							.getIterationById(userstory.getIterationId());
+					selectItems.add(userstory.getSubject() + " ("
+							+ iteration.getIndex() + " - "
+							+ iteration.getSubject() + ")" + "|"
+							+ userstory.getId());
 				} else {
-					selectItems.add(userstory.getSubject() + "|" + userstory.getId());
+					selectItems.add(userstory.getSubject() + "|"
+							+ userstory.getId());
 				}
 			}
 		}
@@ -142,17 +167,25 @@ public class UserstorySessionFacade {
 	}
 
 	private Userstory loadUserstory(String strID) {
-		if (m_UserstoryList == null || UserstoryStorageService.getInstance().isDirty(m_LastAccessed)) {
+		if (m_UserstoryList == null
+				|| UserstoryStorageService.getInstance()
+						.isDirty(m_LastAccessed)) {
 			m_UserstoryList = new HashMap<String, Userstory>();
 		}
 		if (m_UserstoryList.containsKey(strID)) {
 			return m_UserstoryList.get(strID);
 		}
-		Userstory p = UserstoryStorageService.getInstance().getUserstoryById(strID, ExtLibUtil.getCurrentSession());
+		Userstory p = UserstoryStorageService.getInstance().getUserstoryById(
+				strID, ExtLibUtil.getCurrentSession());
 		m_LastAccessed = new Date();
 		if (p != null) {
 			m_UserstoryList.put(strID, p);
 		}
 		return p;
+	}
+
+	public boolean isExecutable(String strID) {
+		return UserstoryStorageService.getInstance().isExecutable(
+				ExtLibUtil.getCurrentSession(), strID);
 	}
 }
