@@ -59,17 +59,21 @@ public class Bug implements Serializable, IScrumDocument {
 	private String m_Editor;
 	@DominoEntity(FieldName = "StatusDL")
 	private String m_Status;
+	@DominoEntity(FieldName = "StartDT", dateOnly = true)
+	private Date m_Start;
+	@DominoEntity(FieldName = "EndDT", dateOnly = true)
+	private Date m_End;
 	@DominoEntity(FieldName = "DueDT", dateOnly = true)
 	private Date m_Due;
 	@DominoEntity(FieldName = "TagsDL")
 	private List<String> m_Tags;
 	@DominoEntity(FieldName = "BodyT")
 	private String m_Body;
-	@DominoEntity(FieldName="Files")
+	@DominoEntity(FieldName = "Files")
 	private List<FileHelper> m_Files;
 	@DominoEntity(FieldName = "DeletedT")
 	private String m_IsDeleted;
-	@DominoEntity(FieldName="TempSave")
+	@DominoEntity(FieldName = "TempSave")
 	private String m_TempSave;
 
 	public String getId() {
@@ -107,13 +111,15 @@ public class Bug implements Serializable, IScrumDocument {
 	public List<String> getReader() {
 		return m_Reader;
 	}
+
 	public void setReader(List<String> reader) {
 		m_Reader = reader;
 	}
-	
+
 	public List<String> getAuthors() {
 		return m_Authors;
 	}
+
 	public void setAuthors(List<String> authors) {
 		m_Authors = authors;
 	}
@@ -125,15 +131,15 @@ public class Bug implements Serializable, IScrumDocument {
 	public void setProjectId(String projectId) {
 		m_ProjectId = projectId;
 	}
-	
+
 	public String getIterationId() {
-		if(getUserstoryId() == null || getUserstoryId() == "") {
+		if (getUserstoryId() == null || getUserstoryId() == "") {
 			return "";
 		}
 		try {
-			return UserstorySessionFacade.get().getUserstoryById(getUserstoryId())
-				.getIterationId();
-		} catch(Exception e){
+			return UserstorySessionFacade.get().getUserstoryById(
+					getUserstoryId()).getIterationId();
+		} catch (Exception e) {
 			return "";
 		}
 	}
@@ -149,13 +155,15 @@ public class Bug implements Serializable, IScrumDocument {
 	public String getSubject() {
 		return m_Subject;
 	}
+
 	public void setSubject(String subject) {
 		m_Subject = subject;
 	}
-	
+
 	public String getBugId() {
 		return m_BugId;
 	}
+
 	public void setBugId(String bugId) {
 		m_BugId = bugId;
 	}
@@ -168,6 +176,22 @@ public class Bug implements Serializable, IScrumDocument {
 		return m_Editor;
 	}
 
+	public void setStart(Date start) {
+		m_Start = start;
+	}
+
+	public Date getStart() {
+		return m_Start;
+	}
+
+	public void setEnd(Date end) {
+		m_End = end;
+	}
+
+	public Date getEnd() {
+		return m_End;
+	}
+
 	public Date getDue() {
 		return m_Due;
 	}
@@ -175,7 +199,7 @@ public class Bug implements Serializable, IScrumDocument {
 	public void setDue(Date due) {
 		m_Due = due;
 	}
-	
+
 	public boolean getIsOverdue() {
 		if (!m_Status.equals("4") && !m_Status.equals("9") && m_Due != null) {
 			return m_Due.compareTo(new Date()) == -1;
@@ -214,6 +238,7 @@ public class Bug implements Serializable, IScrumDocument {
 	public List<FileHelper> getFiles() {
 		return m_Files;
 	}
+
 	public void setFiles(List<FileHelper> files) {
 		m_Files = files;
 	}
@@ -223,7 +248,7 @@ public class Bug implements Serializable, IScrumDocument {
 	}
 
 	public String getIsDeleted() {
-		if (m_TempSave != null && m_TempSave.equals("1")) 
+		if (m_TempSave != null && m_TempSave.equals("1"))
 			return "true";
 		return m_IsDeleted;
 	}
@@ -234,16 +259,18 @@ public class Bug implements Serializable, IScrumDocument {
 		involved.add(getEditor());
 		return involved;
 	}
-	
+
 	public void setTempSave(String tempSave) {
 		m_TempSave = tempSave;
 	}
+
 	public String getTempSave() {
 		return m_TempSave;
 	}
 
 	public String getCustomer() {
-		return ProjectSessionFacade.get().getCustomerNameByProjectID(m_ProjectId);
+		return ProjectSessionFacade.get().getCustomerNameByProjectID(
+				m_ProjectId);
 	}
 
 	public String getForm() {
@@ -251,7 +278,8 @@ public class Bug implements Serializable, IScrumDocument {
 	}
 
 	public String getProject() {
-		return ProjectSessionFacade.get().getProjectNameByProjectID(m_ProjectId);
+		return ProjectSessionFacade.get()
+				.getProjectNameByProjectID(m_ProjectId);
 	}
 
 	public String getResponsible() {
@@ -261,10 +289,11 @@ public class Bug implements Serializable, IScrumDocument {
 	public Date getDueDate() {
 		return m_Due;
 	}
-	
+
 	public String getCustomerName(String strId) {
 		Customer customer = CustomerSessionFacade.get().getCustomerById(strId);
-		if (customer != null) return customer.getName();
+		if (customer != null)
+			return customer.getName();
 		return "";
 	}
 

@@ -48,6 +48,10 @@ public interface IScrumDocument {
 	
 	public abstract String getResponsible();
 	
+	public abstract Date getStart();
+	
+	public abstract Date getEnd();
+	
 	public abstract Date getDueDate();
 	
 	public abstract boolean getIsOverdue();

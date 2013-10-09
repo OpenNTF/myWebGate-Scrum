@@ -53,6 +53,10 @@ public class Iteration implements Serializable, IScrumDocument {
 	private int m_Index;
 	@DominoEntity(FieldName = "SubjectT")
 	private String m_Subject;
+	@DominoEntity(FieldName = "StartDT", dateOnly = true)
+	private Date m_Start;
+	@DominoEntity(FieldName = "EndDT", dateOnly = true)
+	private Date m_End;
 	@DominoEntity(FieldName = "DueDT", dateOnly = true)
 	private Date m_Due;
 	@DominoEntity(FieldName = "StatusDL")
@@ -136,6 +140,22 @@ public class Iteration implements Serializable, IScrumDocument {
 		m_Subject = subject;
 	}
 
+	public void setStart(Date start) {
+		m_Start = start;
+	}
+
+	public Date getStart() {
+		return m_Start;
+	}
+
+	public void setEnd(Date end) {
+		m_End = end;
+	}
+
+	public Date getEnd() {
+		return m_End;
+	}
+
 	public void setDue(Date due) {
 		m_Due = due;
 	}
@@ -212,7 +232,6 @@ public class Iteration implements Serializable, IScrumDocument {
 	}
 
 	public List<String> getTags() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
