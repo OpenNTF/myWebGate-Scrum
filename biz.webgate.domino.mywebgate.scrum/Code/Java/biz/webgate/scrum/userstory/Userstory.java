@@ -58,6 +58,10 @@ public class Userstory implements Serializable, IScrumDocument {
 	private String m_Responsible;
 	@DominoEntity(FieldName = "DueDT", dateOnly = true)
 	private Date m_Due;
+	@DominoEntity(FieldName = "StartDT", dateOnly = true)
+	private Date m_Start;
+	@DominoEntity(FieldName = "EndDT", dateOnly = true)
+	private Date m_End;
 	@DominoEntity(FieldName = "TimeN")
 	private int m_Time;
 	@DominoEntity(FieldName = "StatusDL")
@@ -170,9 +174,22 @@ public class Userstory implements Serializable, IScrumDocument {
 	public void setDue(Date due) {
 		m_Due = due;
 	}
-
 	public Date getDue() {
 		return m_Due;
+	}
+	
+	public void setStart(Date start) {
+		m_Start = start;
+	}
+	public Date getStart() {
+		return m_Start;
+	}
+
+	public void setEnd(Date end) {
+		m_End = end;
+	}
+	public Date getEnd() {
+		return m_End;
 	}
 
 	public int getTime() {
