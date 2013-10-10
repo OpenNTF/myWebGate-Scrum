@@ -183,9 +183,4 @@ public class UserstorySessionFacade {
 		}
 		return p;
 	}
-
-	public boolean isExecutable(String strID) {
-		return UserstoryStorageService.getInstance().isExecutable(
-				ExtLibUtil.getCurrentSession(), strID);
-	}
 }

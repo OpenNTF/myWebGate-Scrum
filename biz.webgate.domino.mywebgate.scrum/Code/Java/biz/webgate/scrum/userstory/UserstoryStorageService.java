@@ -219,9 +219,4 @@ public class UserstoryStorageService {
 	public boolean isDirty(Date datCheck) {
 		return m_LastModified.after(datCheck);
 	}
-
-	public boolean isExecutable(Session sesCurrent, String strID) {
-		return (TaskStorageService.getInstance().getTasksOfUserstory(
-				sesCurrent, strID, "").size() > 0);
-	}
 }

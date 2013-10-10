@@ -24,6 +24,8 @@ import biz.webgate.scrum.customer.CustomerSessionFacade;
 import biz.webgate.scrum.iteration.IterationSessionFacade;
 import biz.webgate.scrum.project.ProjectSessionFacade;
 import biz.webgate.scrum.scrumdocument.IScrumDocument;
+import biz.webgate.scrum.task.Task;
+import biz.webgate.scrum.task.TaskSessionFacade;
 import biz.webgate.xpages.dss.annotations.DominoEntity;
 import biz.webgate.xpages.dss.annotations.DominoStore;
 import biz.webgate.xpages.dss.binding.util.FileHelper;
@@ -54,10 +56,6 @@ public class Userstory implements Serializable, IScrumDocument {
 	private String m_Subject;
 	@DominoEntity(FieldName = "IterationIdT")
 	private String m_IterationId;
-	@DominoEntity(FieldName = "ResponsibleNM", showNameAs = "ABBREVIATE")
-	private String m_Responsible;
-	@DominoEntity(FieldName = "DueDT", dateOnly = true)
-	private Date m_Due;
 	@DominoEntity(FieldName = "StartDT", dateOnly = true)
 	private Date m_Start;
 	@DominoEntity(FieldName = "EndDT", dateOnly = true)
@@ -66,6 +64,8 @@ public class Userstory implements Serializable, IScrumDocument {
 	private int m_Time;
 	@DominoEntity(FieldName = "StatusDL")
 	private String m_Status;
+	@DominoEntity(FieldName = "PostponingReasonT")
+	private String m_PostponingReason;
 	@DominoEntity(FieldName = "TagsDL")
 	private List<String> m_Tags;
 	@DominoEntity(FieldName = "BodyT")
@@ -74,7 +74,7 @@ public class Userstory implements Serializable, IScrumDocument {
 	private List<FileHelper> m_Files;
 	@DominoEntity(FieldName = "DeletedT")
 	private String m_IsDeleted;
-	@DominoEntity(FieldName="TempSave")
+	@DominoEntity(FieldName = "TempSave")
 	private String m_TempSave;
 
 	public String getId() {
@@ -112,13 +112,15 @@ public class Userstory implements Serializable, IScrumDocument {
 	public List<String> getReader() {
 		return m_Reader;
 	}
+
 	public void setReader(List<String> reader) {
 		m_Reader = reader;
 	}
-	
+
 	public List<String> getAuthors() {
 		return m_Authors;
 	}
+
 	public void setAuthors(List<String> authors) {
 		m_Authors = authors;
 	}
@@ -146,41 +148,33 @@ public class Userstory implements Serializable, IScrumDocument {
 	public void setIterationId(String iterationId) {
 		m_IterationId = iterationId;
 	}
-	
+
 	public String getIterationNo() {
 		if (IterationSessionFacade.get().getIterationById(m_IterationId) != null) {
-			biz.webgate.scrum.iteration.Iteration it = IterationSessionFacade.get().getIterationById(m_IterationId);
-			return ""+it.getIndex();
+			biz.webgate.scrum.iteration.Iteration it = IterationSessionFacade
+					.get().getIterationById(m_IterationId);
+			return "" + it.getIndex();
 		}
 		return "";
 	}
 
 	public String getIteration() {
 		if (IterationSessionFacade.get().getIterationById(m_IterationId) != null) {
-			biz.webgate.scrum.iteration.Iteration it = IterationSessionFacade.get().getIterationById(m_IterationId);
+			biz.webgate.scrum.iteration.Iteration it = IterationSessionFacade
+					.get().getIterationById(m_IterationId);
 			return it.getIndex() + " - " + it.getSubject();
 		}
 		return "";
 	}
 
 	public String getResponsible() {
-		return m_Responsible;
+		return ProjectSessionFacade.get().getProjectById(m_ProjectId).getResponsible();
 	}
 
-	public void setResponsible(String responsible) {
-		m_Responsible = responsible;
-	}
-
-	public void setDue(Date due) {
-		m_Due = due;
-	}
-	public Date getDue() {
-		return m_Due;
-	}
-	
 	public void setStart(Date start) {
 		m_Start = start;
 	}
+
 	public Date getStart() {
 		return m_Start;
 	}
@@ -188,6 +182,7 @@ public class Userstory implements Serializable, IScrumDocument {
 	public void setEnd(Date end) {
 		m_End = end;
 	}
+
 	public Date getEnd() {
 		return m_End;
 	}
@@ -206,6 +201,14 @@ public class Userstory implements Serializable, IScrumDocument {
 
 	public void setStatus(String status) {
 		m_Status = status;
+	}
+
+	public String getPostponingReason() {
+		return m_PostponingReason;
+	}
+
+	public void setPostponingReason(String postponingReason) {
+		m_PostponingReason = postponingReason;
 	}
 
 	public List<String> getTags() {
@@ -237,20 +240,22 @@ public class Userstory implements Serializable, IScrumDocument {
 	}
 
 	public String getIsDeleted() {
-		if (m_TempSave != null && m_TempSave.equals("1")) 
+		if (m_TempSave != null && m_TempSave.equals("1"))
 			return "true";
 		return m_IsDeleted;
 	}
-	
+
 	public void setTempSave(String tempSave) {
 		m_TempSave = tempSave;
 	}
+
 	public String getTempSave() {
 		return m_TempSave;
 	}
 
 	public String getCustomer() {
-		return ProjectSessionFacade.get().getCustomerNameByProjectID(m_ProjectId);
+		return ProjectSessionFacade.get().getCustomerNameByProjectID(
+				m_ProjectId);
 	}
 
 	public String getForm() {
@@ -258,16 +263,18 @@ public class Userstory implements Serializable, IScrumDocument {
 	}
 
 	public String getProject() {
-		return ProjectSessionFacade.get().getProjectNameByProjectID(m_ProjectId);
+		return ProjectSessionFacade.get()
+				.getProjectNameByProjectID(m_ProjectId);
 	}
 
 	public Date getDueDate() {
-		return m_Due;
+		return getEnd();
 	}
 
 	public String getCustomerName(String strId) {
 		Customer customer = CustomerSessionFacade.get().getCustomerById(strId);
-		if (customer != null) return customer.getName();
+		if (customer != null)
+			return customer.getName();
 		return "";
 	}
 
@@ -277,5 +284,38 @@ public class Userstory implements Serializable, IScrumDocument {
 
 	public String getReadableId() {
 		return null;
+	}
+
+	public boolean isExecutable() {
+		return TaskSessionFacade.get().getTasksOfUserstory(
+				TaskSessionFacade.SORT_BY_ID, false, m_Id, "").size() > 0;
+	}
+
+	public int getExpectedEffort() {
+		int expectedEffort = 0;
+		for (Task task : TaskSessionFacade.get().getTasksOfUserstory(
+				TaskSessionFacade.SORT_BY_ID, false, m_Id, "")) {
+			expectedEffort += task.getTime();
+		}
+		return expectedEffort;
+	}
+
+	public int getCompletedEffort() {
+		int completedEffort = 0;
+		for (Task task : TaskSessionFacade.get().getTasksOfUserstory(
+				TaskSessionFacade.SORT_BY_ID, false, m_Id, "Completed")) {
+			if (!task.getStatus().equals("Postponed")) {
+				completedEffort += task.getTime();
+			}
+		}
+		return completedEffort;
+	}
+
+	public int getRemainingEffort() {
+		return getExpectedEffort() - getCompletedEffort();
+	}
+
+	public int getRemainingEffortPercent() {
+		return 100 * getCompletedEffort() / getExpectedEffort();
 	}
 }
