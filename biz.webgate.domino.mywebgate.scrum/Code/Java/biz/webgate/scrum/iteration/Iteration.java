@@ -23,6 +23,9 @@ import biz.webgate.scrum.customer.Customer;
 import biz.webgate.scrum.customer.CustomerSessionFacade;
 import biz.webgate.scrum.project.ProjectSessionFacade;
 import biz.webgate.scrum.scrumdocument.IScrumDocument;
+import biz.webgate.scrum.userstory.Userstory;
+import biz.webgate.scrum.userstory.UserstorySessionFacade;
+import biz.webgate.scrum.userstory.UserstoryStorageService;
 import biz.webgate.xpages.dss.annotations.DominoEntity;
 import biz.webgate.xpages.dss.annotations.DominoStore;
 import biz.webgate.xpages.dss.binding.util.FileHelper;
@@ -67,7 +70,7 @@ public class Iteration implements Serializable, IScrumDocument {
 	private List<FileHelper> m_Files;
 	@DominoEntity(FieldName = "DeletedT")
 	private String m_IsDeleted;
-	@DominoEntity(FieldName="TempSave")
+	@DominoEntity(FieldName = "TempSave")
 	private String m_TempSave;
 
 	public String getId() {
@@ -105,13 +108,15 @@ public class Iteration implements Serializable, IScrumDocument {
 	public List<String> getReader() {
 		return m_Reader;
 	}
+
 	public void setReader(List<String> reader) {
 		m_Reader = reader;
 	}
-	
+
 	public List<String> getAuthors() {
 		return m_Authors;
 	}
+
 	public void setAuthors(List<String> authors) {
 		m_Authors = authors;
 	}
@@ -179,7 +184,7 @@ public class Iteration implements Serializable, IScrumDocument {
 	public String getBody() {
 		return m_Body;
 	}
-	
+
 	public void setFiles(List<FileHelper> files) {
 		m_Files = files;
 	}
@@ -193,14 +198,15 @@ public class Iteration implements Serializable, IScrumDocument {
 	}
 
 	public String getIsDeleted() {
-		if (m_TempSave != null && m_TempSave.equals("1")) 
+		if (m_TempSave != null && m_TempSave.equals("1"))
 			return "true";
 		return m_IsDeleted;
 	}
-	
+
 	public void setTempSave(String tempSave) {
 		m_TempSave = tempSave;
 	}
+
 	public String getTempSave() {
 		return m_TempSave;
 	}
@@ -211,7 +217,8 @@ public class Iteration implements Serializable, IScrumDocument {
 
 	public String getCustomerName(String strId) {
 		Customer customer = CustomerSessionFacade.get().getCustomerById(strId);
-		if (customer != null) return customer.getName();
+		if (customer != null)
+			return customer.getName();
 		return "";
 	}
 
@@ -224,7 +231,8 @@ public class Iteration implements Serializable, IScrumDocument {
 	}
 
 	public String getProject() {
-		return ProjectSessionFacade.get().getProjectNameByProjectID(m_ProjectId);
+		return ProjectSessionFacade.get()
+				.getProjectNameByProjectID(m_ProjectId);
 	}
 
 	public String getResponsible() {
@@ -241,5 +249,46 @@ public class Iteration implements Serializable, IScrumDocument {
 
 	public String getReadableId() {
 		return null;
+	}
+
+	public boolean isExecutable() {
+		for (Userstory userstory : UserstorySessionFacade.get()
+				.getUserstoriesOfIteration(m_Id, false)) {
+			if(userstory.isExecutable()){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public int getExpectedEffort() {
+		int expectedEffort = 0;
+		for (Userstory userstory : UserstorySessionFacade.get()
+				.getUserstoriesOfIteration(m_Id, false)) {
+			expectedEffort += userstory.getExpectedEffort();
+		}
+		return expectedEffort;
+	}
+	
+	public int getCompletedEffort() {
+		int completedEffort = 0;
+		for (Userstory userstory : UserstorySessionFacade.get()
+				.getUserstoriesOfIteration(m_Id, false)) {
+			completedEffort += userstory.getCompletedEffort();
+		}
+		return completedEffort;
+	}
+	
+	public int getRemainingEffort() {
+		int remainingEffort = 0;
+		for (Userstory userstory : UserstorySessionFacade.get()
+				.getUserstoriesOfIteration(m_Id, false)) {
+			remainingEffort += userstory.getRemainingEffort();
+		}
+		return remainingEffort;
+	}
+	
+	public int getRemainingEffortPercent() {
+		return getRemainingEffort() * 100 / getCompletedEffort();
 	}
 }
