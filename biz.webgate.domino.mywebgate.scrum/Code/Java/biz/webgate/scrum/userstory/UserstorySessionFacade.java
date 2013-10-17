@@ -47,7 +47,6 @@ public class UserstorySessionFacade {
 	public static final int SORT_BY_SUBJECT = 2;
 	public static final int SORT_BY_STATUS = 3;
 	public static final int SORT_BY_ITERATION = 4;
-	public static final int SORT_BY_DUE = 5;
 
 	private HashMap<String, Userstory> m_UserstoryList;
 	private Date m_LastAccessed = new Date();

@@ -74,6 +74,14 @@ public class IterationStorageService {
 			curIteration.setReader(lstReader);
 			curIteration.setAuthors(lstReader);
 			
+			// clean-up
+			int status = Integer.parseInt(curIteration.getStatus());
+			if (status == 1) {
+				// no effective start/end date if "planned"
+				curIteration.setStart(null);
+				curIteration.setEnd(null);
+			}
+			
 			curIteration.setTempSave(null);
 			return DominoStorageService.getInstance().saveObject(curIteration, sesCurrent.getCurrentDatabase());
 		} catch (Exception e) {

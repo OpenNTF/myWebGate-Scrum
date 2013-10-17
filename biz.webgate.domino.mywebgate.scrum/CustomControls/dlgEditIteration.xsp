@@ -71,28 +71,6 @@ getComponent("dlgEditIteration").hide();}]]></xp:this.action>
 					</xe:dialogButtonBar>
 				</xp:this.facets>
 
-				<xe:formRow id="froIterationCustomer" for="cfIterationCustomer"
-					label="Customer">
-					<xp:text id="cfIterationCustomer">
-						<xp:this.value><![CDATA[#{javascript:if (projectBean.getProjectById(editIteration.projectId) != null) {
-	var customer = projectBean.getProjectById(editIteration.projectId).getCustomer();
-	return editIteration.getCustomerName(customer);
-}
-return "";}]]></xp:this.value>
-					</xp:text>
-				</xe:formRow>
-
-				<xe:formRow id="froIterationProjekt" for="cfIterationProjekt"
-					label="Project">
-					<xp:text escape="true" id="cfIterationProjekt">
-						<xp:this.value><![CDATA[#{javascript:
-								if (projectBean.getProjectById(editIteration.projectId) != null) {
-									return "" + projectBean.getProjectById(editIteration.projectId).getSubject();
-								}
-								return "";
-							}]]></xp:this.value>
-					</xp:text>
-				</xe:formRow>
 				<xe:formRow id="froIterationIndex" for="iptIterationIndex"
 					label="Index">
 					<xp:inputText id="iptIterationIndex" value="#{editIteration.index}"
@@ -208,8 +186,6 @@ return "";}]]></xp:this.value>
 					label="Status">
 					<xp:comboBox id="cbbIterationStatus" value="#{editIteration.status}"
 						defaultValue="1">
-						<xp:selectItem itemLabel="" itemValue="">
-						</xp:selectItem>
 						<xp:selectItem itemLabel="Planned" itemValue="1">
 						</xp:selectItem>
 						<xp:selectItem itemLabel="In progress" itemValue="3">
@@ -218,8 +194,58 @@ return "";}]]></xp:this.value>
 						</xp:selectItem>
 						<xp:selectItem itemLabel="Accepted" itemValue="5">
 						</xp:selectItem>
+						<xp:eventHandler event="onchange" submit="true"
+							refreshMode="partial" refreshId="ftaIterationEdit" disableValidators="true">
+						</xp:eventHandler>
 					</xp:comboBox>
+
+					<xp:image id="imgExecutable" style="margin-top:1px;">
+						<xp:this.url><![CDATA[#{javascript:if (editIteration.isExecutable() == true) {
+	"/bullet_green.png"
+} else {
+	"/bullet_red.png"
+}}]]></xp:this.url>
+						<xp:this.alt><![CDATA[#{javascript:if (editIteration.isExecutable() == true) {
+	"Iteration is executable"
+} else {
+	"Iteration is not executable - missing information"
+}}]]></xp:this.alt>
+					</xp:image>
+					<xe:tooltip id="ttExecutable" for="imgExecutable">
+						<xe:this.label><![CDATA[#{javascript:if (editIteration.isExecutable() == true) {
+	"Iteration is executable"
+} else {
+	"Iteration is not executable - missing information"
+}}]]></xe:this.label>
+					</xe:tooltip>
 				</xe:formRow>
+
+				<xe:formRow id="froIterationEffectiveStart" for="iptIterationStart"
+					label="Effective start date">
+					<xe:this.rendered><![CDATA[#{javascript:@TextToNumber(editIteration.status) > 1;}]]></xe:this.rendered>
+					<xp:inputText id="iptIterationStart" value="#{editIteration.start}">
+						<xp:this.converter>
+							<xp:convertDateTime type="date">
+							</xp:convertDateTime>
+						</xp:this.converter>
+						<xp:dateTimeHelper dojoType="dijit.form.DateTextBox">
+						</xp:dateTimeHelper>
+					</xp:inputText>
+				</xe:formRow>
+
+				<xe:formRow id="froIterationEffectiveEnd" for="iptIterationEnd"
+					label="Effective end date">
+					<xe:this.rendered><![CDATA[#{javascript:@TextToNumber(editIteration.status) > 1;}]]></xe:this.rendered>
+					<xp:inputText id="iptIterationEnd" value="#{editIteration.end}">
+						<xp:this.converter>
+							<xp:convertDateTime type="date">
+							</xp:convertDateTime>
+						</xp:this.converter>
+						<xp:dateTimeHelper dojoType="dijit.form.DateTextBox">
+						</xp:dateTimeHelper>
+					</xp:inputText>
+				</xe:formRow>
+
 				<xe:formRow id="froIterationBody" for="itaIterationBody"
 					label="Description">
 					<xp:inputTextarea id="itaIterationBody" value="#{editIteration.body}"

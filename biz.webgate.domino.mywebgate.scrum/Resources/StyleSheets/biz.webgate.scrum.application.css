@@ -55,4 +55,15 @@ table {
  	padding: 3px 0 !important;
  }
 
-
+tr.lotusFormErrorSummary td {
+	background-color:#FFF799;
+	border:1px solid #FFCD04 !important;
+	margin: 5px 10px;
+	padding: 3px 5px;
+	
+}
+tr.lotusFormErrorSummary td div {
+	margin: 5px 10px;
+	padding: 3px 5px;
+	
+}

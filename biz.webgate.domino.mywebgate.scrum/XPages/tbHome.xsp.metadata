@@ -1,12 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?><note class="form" replicaid="C1257BD000474D7F" version="9.0" xmlns="http://www.lotus.com/dxl">
-<noteinfo noteid="67a" sequence="6" unid="78B2327B28374E90C1257BDA003BAEF0">
-<created><datetime dst="true">20130902T125154,08+02</datetime></created>
-<modified><datetime dst="true">20130902T125212,45+02</datetime></modified>
-<revised><datetime dst="true">20130902T125212,44+02</datetime></revised>
-<lastaccessed><datetime dst="true">20130902T125212,45+02</datetime></lastaccessed>
-<addedtofile><datetime dst="true">20130902T125154,09+02</datetime></addedtofile></noteinfo>
-<updatedby><name>CN=Christian Guedemann/O=WGC/C=CH</name></updatedby>
-<wassignedby><name>CN=Christian Guedemann/O=WGC/C=CH</name></wassignedby>
+<?xml version="1.0" encoding="UTF-8"?><note class="form" replicaid="C1257BFE003BAEFD" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="172" sequence="14" unid="92D9E2343409BBD2C1257BFE003BBA14">
+<created><datetime dst="true">20131008T125222,60+02</datetime></created>
+<modified><datetime dst="true">20131017T105615,25+02</datetime></modified>
+<revised><datetime dst="true">20131017T105615,24+02</datetime></revised>
+<lastaccessed><datetime dst="true">20131017T105615,25+02</datetime></lastaccessed>
+<addedtofile><datetime dst="true">20131008T125222,69+02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Marco Baumann/O=WGC/C=CH</name></updatedby>
+<wassignedby><name>CN=Marco Baumann/O=WGC/C=CH</name></wassignedby>
 <item name="$TITLE"><text>tbHome.xsp</text></item>
 <item name="$Flags"><text>gC~4K</text></item>
 

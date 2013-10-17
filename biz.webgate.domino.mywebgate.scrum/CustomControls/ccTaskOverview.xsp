@@ -13,9 +13,14 @@
 			<xp:button value="New Task" id="btNewTask" style="float:left;margin-top:2px;">
 				<xp:this.rendered><![CDATA[#{javascript:!(compositeData.ProjectIsNew || compositeData.UserstoryIsNew || compositeData.UserOnly) && (hasRole("[Admin]") || hasRole("[Intern]"))}]]></xp:this.rendered>
 				<xp:eventHandler event="onclick" submit="true"
-					refreshMode="partial" execId="dlgEditTask" refreshId="dlgEditTask">
+					refreshMode="partial" execId="dlgEditTask"
+					refreshId="dlgEditTask">
 					<xp:this.action><![CDATA[#{javascript:viewScope.editTaskId = "";
-viewScope.taskRefreshId = getClientId("tblTasks");
+if (compositeData.refreshId!= null && compositeData.refreshId != ""){
+	viewScope.taskRefreshId = getClientId(compositeData.refreshId);
+} else {
+	viewScope.taskRefreshId = getClientId("tblTasks");
+}
 getComponent("dlgEditTask").show()}]]></xp:this.action>
 				</xp:eventHandler>
 			</xp:button>
@@ -158,6 +163,9 @@ viewScope.taskSort = taskBean.SORT_BY_DUE;}]]></xp:this.action>
 }
 viewScope.taskSort = taskBean.SORT_BY_ID;}]]></xp:this.action>
 					</xp:eventHandler>
+				</xp:td>
+				<xp:td id="tdTaskExecutable" styleClass="th" style="width:20px;">
+
 				</xp:td>
 				<xp:td id="tdTaskSubject" styleClass="th" style="cursor:pointer;">
 					<xp:label value="Task" id="lblTaskSubject" for="cfTaskSubject"
@@ -344,7 +352,7 @@ if (compositeData.UserOnly) {
 	return taskBean.getMyTasks(sort.intValue(), viewScope.taskSortReverse, compositeData.involvedType, viewScope.filterStatus, compositeData.showCompleted);
 }
 if (compositeData.UserstoryId != "" && compositeData.UserstoryId != null) {
-	return taskBean.getTasksOfUserstory(sort.intValue(), viewScope.taskSortReverse, compositeData.UserstoryId, viewScope.filterStatus);
+	return taskBean.getTasksOfUserstory(sort.intValue(), viewScope.taskSortReverse, compositeData.UserstoryId, viewScope.filterStatus, false);
 }
 if (compositeData.ProjectId != "" && compositeData.ProjectId != null) {
 	return taskBean.getTasksOfProject(
@@ -369,6 +377,27 @@ return taskBean.getAllTasks(sort.intValue(), viewScope.taskSortReverse, viewScop
 						<xp:text escape="true" id="cfTaskID" value="#{repeatedTask.taskId}">
 							<xp:this.styleClass><![CDATA[#{javascript:if (viewScope.get("taskId") == repeatedTask.getId()) {"selectedTaskText"}}]]></xp:this.styleClass>
 						</xp:text>
+					</xp:td>
+					<xp:td style="text-align:center;">
+						<xp:image id="imgExecutable" style="margin-top:1px;">
+							<xp:this.url><![CDATA[#{javascript:if (repeatedTask.isExecutable() == true) {
+	"/bullet_green.png"
+} else {
+	"/bullet_red.png"
+}}]]></xp:this.url>
+							<xp:this.alt><![CDATA[#{javascript:if (repeatedTask.isExecutable() == true) {
+	"Task is executable"
+} else {
+	"Task is not executable - missing information"
+}}]]></xp:this.alt>
+						</xp:image>
+						<xe:tooltip id="ttExecutable" for="imgExecutable">
+							<xe:this.label><![CDATA[#{javascript:if (repeatedTask.isExecutable() == true) {
+	"Task is executable"
+} else {
+	"Task is not executable - missing information"
+}}]]></xe:this.label>
+						</xe:tooltip>
 					</xp:td>
 					<xp:td>
 						<xp:link escape="true" id="lnkEditTask" text="#{repeatedTask.subject}">
@@ -486,11 +515,16 @@ getComponent("dlgEditMailOut").show();}]]></xp:this.action>
 					<xp:td style="text-align:center;">
 						<xp:link escape="true" id="lnkEdit" text="">
 							<xp:this.rendered><![CDATA[#{javascript:(hasRole("[Admin]") || hasRole("[Intern]"))}]]></xp:this.rendered>
-							<xp:eventHandler event="onclick" submit="true"
-								refreshMode="partial" refreshId="dlgEditTask" disableValidators="true">
+							<xp:eventHandler event="onclick"
+								submit="true" refreshMode="partial" refreshId="dlgEditTask"
+								disableValidators="true">
 								<xp:this.action><![CDATA[#{javascript:viewScope.editTaskId = repeatedTask.getId();
 viewScope.isEditTask = true;
-viewScope.taskRefreshId = getClientId("tblTasks");
+if (compositeData.refreshId!= null && compositeData.refreshId != ""){
+	viewScope.taskRefreshId = getClientId(compositeData.refreshId);
+} else {
+	viewScope.taskRefreshId = getClientId("tblTasks");
+}
 getComponent("dlgEditTask").show()}]]></xp:this.action>
 							</xp:eventHandler>
 							<xp:image id="image3" alt="Edit Task" url="/pencil.png"
@@ -504,8 +538,12 @@ getComponent("dlgEditTask").show()}]]></xp:this.action>
 					<xp:td style="text-align:center;">
 						<xp:link escape="true" id="lnkDelete">
 							<xp:this.rendered><![CDATA[#{javascript:(hasRole("[Admin]") || hasRole("[Intern]"))}]]></xp:this.rendered>
-							<xp:eventHandler event="onclick" submit="true"
-								refreshMode="partial" refreshId="tblTasks">
+							<xp:eventHandler event="onclick"
+								submit="true" refreshMode="partial" refreshId='#{javascript:if (compositeData.refreshId!= null &amp;&amp; compositeData.refreshId != ""){
+	compositeData.refreshId;
+} else {
+	"tblTasks";
+}}'>
 								<xp:this.script><![CDATA[return confirm("Are you sure, you want to delete this task permanently?");]]></xp:this.script>
 								<xp:this.action><![CDATA[#{javascript:taskBean.deleteTask(repeatedTask);}]]></xp:this.action>
 							</xp:eventHandler>
@@ -530,7 +568,7 @@ getComponent("dlgEditTask").show()}]]></xp:this.action>
 						<xp:table style="width:100%;margin-bottom:10px;"
 							styleClass="selectedTask">
 							<xp:tr>
-								<xp:td style="padding-bottom:10px;width:100px;">
+								<xp:td style="padding-bottom:10px;width:150px;">
 									<xp:label value="Description" id="label10" for="dspDescription">
 									</xp:label>
 								</xp:td>
@@ -576,6 +614,20 @@ getComponent("dlgEditTask").show()}]]></xp:this.action>
 									<xp:text escape="true" id="dspEffort" value="#{repeatedTask.time}">
 									</xp:text>
 									&#160;h
+								</xp:td>
+							</xp:tr>
+							<xp:tr>
+								<xp:this.rendered><![CDATA[#{javascript:@TextToNumber(repeatedTask.getStatus()) > 1}]]></xp:this.rendered>
+								<xp:td>
+									<xp:label value="Effective Start / End Date" id="label7" for="dspStartDate">
+									</xp:label>
+								</xp:td>
+								<xp:td>
+									<xp:text escape="true" id="dspStartDate" value="#{repeatedTask.start}">
+									</xp:text>
+									&#160;/&#160;
+									<xp:text escape="true" id="dspEndDate" value="#{repeatedTask.end}">
+									</xp:text>
 								</xp:td>
 							</xp:tr>
 							<xp:tr>

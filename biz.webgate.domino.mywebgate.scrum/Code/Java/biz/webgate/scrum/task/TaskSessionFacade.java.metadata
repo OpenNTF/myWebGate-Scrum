@@ -1,12 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?><note class="form" replicaid="C1257BFD004EFA7E" version="9.0" xmlns="http://www.lotus.com/dxl">
-<noteinfo noteid="49a" sequence="16" unid="7868F6C939830300C1257BFD004F0108">
-<created><datetime dst="true">20131007T162256,08+02</datetime></created>
-<modified><datetime dst="true">20131010T171207,84+02</datetime></modified>
-<revised><datetime dst="true">20131010T171207,83+02</datetime></revised>
-<lastaccessed><datetime dst="true">20131010T171207,84+02</datetime></lastaccessed>
-<addedtofile><datetime dst="true">20131007T162258,57+02</datetime></addedtofile></noteinfo>
-<updatedby><name>CN=Simeon Hafner/O=WGC/C=CH</name></updatedby>
-<wassignedby><name>CN=Simeon Hafner/O=WGC/C=CH</name></wassignedby>
+<?xml version="1.0" encoding="UTF-8"?><note class="form" replicaid="C1257BFE003BAEFD" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="496" sequence="29" unid="46EB655FA93CDBE4C1257BFE003BBDCE">
+<created><datetime dst="true">20131008T125232,14+02</datetime></created>
+<modified><datetime dst="true">20131017T115521,36+02</datetime></modified>
+<revised><datetime dst="true">20131017T115521,35+02</datetime></revised>
+<lastaccessed><datetime dst="true">20131017T115521,36+02</datetime></lastaccessed>
+<addedtofile><datetime dst="true">20131008T125234,71+02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Marco Baumann/O=WGC/C=CH</name></updatedby>
+<wassignedby><name>CN=Marco Baumann/O=WGC/C=CH</name></wassignedby>
 <item name="$Flags"><text>34567Cg~[</text></item>
 <item name="$TITLE"><text>biz/webgate/scrum/task/TaskSessionFacade.java</text></item>
 

@@ -27,7 +27,8 @@ getComponent("dlgEditUserstory").show();}]]></xp:this.action>
 
 		<xp:table style="width:100%" id="tblUserstories" styleClass="content">
 			<xp:tr>
-				<xp:td id="tdUserstoryIteration" styleClass="th" style="cursor:pointer;width:200px;">
+				<xp:td id="tdUserstoryIteration" styleClass="th"
+					style="cursor:pointer;width:200px;">
 					<xp:label value="Iteration" id="lblIteration" for="cfUserstoryIteration"
 						style="cursor:pointer;">
 					</xp:label>
@@ -45,6 +46,9 @@ getComponent("dlgEditUserstory").show();}]]></xp:this.action>
 }
 viewScope.userstorySort = userstoryBean.SORT_BY_ITERATION;}]]></xp:this.action>
 					</xp:eventHandler>
+				</xp:td>
+				<xp:td id="tdUserStoryExecutable" styleClass="th" style="width:20px;">
+
 				</xp:td>
 				<xp:td id="tdUserstorySubject" styleClass="th" style="cursor:pointer;">
 					<xp:label value="Subject" id="lblSubject" for="cfUserstorySubject"
@@ -87,25 +91,6 @@ viewScope.userstorySort = userstoryBean.SORT_BY_SUBJECT;}]]></xp:this.action>
 viewScope.userstorySort = userstoryBean.SORT_BY_STATUS;}]]></xp:this.action>
 					</xp:eventHandler>
 				</xp:td>
-				<xp:td id="tdUserstoryDue" styleClass="th date" style="cursor:pointer;">
-					<xp:label value="Due Date" id="label1" for="cfUserstoryDue"
-						style="cursor:pointer;">
-					</xp:label>
-					&#160;
-					<xp:image id="image1"
-						rendered="#{javascript:viewScope.userstorySort == userstoryBean.SORT_BY_DUE}">
-						<xp:this.url><![CDATA[#{javascript:@If ( !viewScope.sortReverse , "twisty.png" , "twisty_reverse.png")}]]></xp:this.url>
-					</xp:image>
-					<xp:eventHandler event="onclick" submit="true"
-						refreshMode="partial" refreshId="tblUserstories" id="eventHandler1">
-						<xp:this.action><![CDATA[#{javascript:if(viewScope.userstorySort == userstoryBean.SORT_BY_DUE && !viewScope.sortReverse) {
-	viewScope.sortReverse = true;
-} else {
-	viewScope.sortReverse = false;
-}
-viewScope.userstorySort = userstoryBean.SORT_BY_DUE;}]]></xp:this.action>
-					</xp:eventHandler>
-				</xp:td>
 				<xp:td id="tdSendLink" styleClass="th" style="width:20px;">
 				</xp:td>
 				<xp:td id="tdEdit" styleClass="th" style="width:20px;">
@@ -127,6 +112,27 @@ return userstoryBean.getUserstoriesOfProject(sort.intValue(), viewScope.sortReve
 							value="#{javascript:repeatedUserstory.iteration}">
 							<xp:this.styleClass><![CDATA[#{javascript:if (viewScope.get("curUSId") == repeatedUserstory.getId() || viewScope.get("userstoryId") == repeatedUserstory.getId() || viewScope.get("curUSId-t") == repeatedUserstory.getId() || viewScope.get("curUSId-b") == repeatedUserstory.getId()) {"selectedTaskText"}}]]></xp:this.styleClass>
 						</xp:text>
+					</xp:td>
+					<xp:td style="text-align:center;">
+						<xp:image id="imgExecutable" style="margin-top:1px;">
+							<xp:this.url><![CDATA[#{javascript:if (repeatedUserstory.isExecutable() == true) {
+	"/bullet_green.png"
+} else {
+	"/bullet_red.png"
+}}]]></xp:this.url>
+							<xp:this.alt><![CDATA[#{javascript:if (repeatedUserstory.isExecutable() == true) {
+	"Userstory is executable"
+} else {
+	"Userstory is not executable - missing information"
+}}]]></xp:this.alt>
+						</xp:image>
+						<xe:tooltip id="ttExecutable" for="imgExecutable">
+							<xe:this.label><![CDATA[#{javascript:if (repeatedUserstory.isExecutable() == true) {
+	"Userstory is executable"
+} else {
+	"Userstory is not executable - missing information"
+}}]]></xe:this.label>
+						</xe:tooltip>
 					</xp:td>
 					<xp:td>
 						<xp:link escape="true" id="lnkEditUserstory" text="#{repeatedUserstory.subject}">
@@ -182,6 +188,8 @@ return userstoryBean.getUserstoriesOfProject(sort.intValue(), viewScope.sortReve
 	"/tick.png"
 } else if (repeatedUserstory.status == "5") {
 	"/accept.png"
+} else if (repeatedUserstory.status == "9") {
+	"/calendar_delete.png"
 }}]]></xp:this.url>
 							<xp:this.alt><![CDATA[#{javascript:if (repeatedUserstory.status == "0") {
 	"Idea"
@@ -193,6 +201,8 @@ return userstoryBean.getUserstoriesOfProject(sort.intValue(), viewScope.sortReve
 	"Completed"
 } else if (repeatedUserstory.status == "5") {
 	"Accepted"
+} else if (repeatedUserstory.status == "9") {
+	"Postponed"
 }}]]></xp:this.alt>
 						</xp:image>
 						<xe:tooltip id="ttStatus" for="imgStatus">
@@ -206,13 +216,10 @@ return userstoryBean.getUserstoriesOfProject(sort.intValue(), viewScope.sortReve
 	"Completed"
 } else if (repeatedUserstory.status == "5") {
 	"Accepted"
+} else if (repeatedUserstory.status == "9") {
+	"Postponed"
 }}]]></xe:this.label>
 						</xe:tooltip>
-					</xp:td>
-					<xp:td>
-						<xp:text escape="true" id="dfDueDate" value="#{repeatedUserstory.due}">
-							<xp:this.styleClass><![CDATA[#{javascript:if (viewScope.get("curUSId") == repeatedUserstory.getId() || viewScope.get("userstoryId") == repeatedUserstory.getId() || viewScope.get("curUSId-t") == repeatedUserstory.getId() || viewScope.get("curUSId-b") == repeatedUserstory.getId()) {"selectedTaskText"}}]]></xp:this.styleClass>
-						</xp:text>
 					</xp:td>
 					<xp:td style="text-align:center;">
 						<xp:link escape="true" id="lnkSendLink" text="">
@@ -265,7 +272,7 @@ getComponent("dlgEditUserstory").show()}]]></xp:this.action>
 				</xp:tr>
 				<xp:tr>
 					<xp:this.rendered><![CDATA[#{javascript:viewScope.get("userstoryId") == repeatedUserstory.getId() || viewScope.get("curUSId-t") == repeatedUserstory.getId() || viewScope.get("curUSId-b") == repeatedUserstory.getId()}]]></xp:this.rendered>
-					<xp:td styleClass="selectedTask">
+					<xp:td colspan="2" styleClass="selectedTask">
 
 					</xp:td>
 					<xp:td colspan="7" styleClass="selectedTask">
@@ -278,7 +285,7 @@ getComponent("dlgEditUserstory").show()}]]></xp:this.action>
 							<xp:table style="width:100%;margin-bottom:10px;"
 								styleClass="selectedTask">
 								<xp:tr>
-									<xp:td style="padding-bottom:10px;width:100px;">
+									<xp:td style="padding-bottom:10px;width:150px;">
 										<xp:label value="Description" id="label7" for="dspBody">
 										</xp:label>
 									</xp:td>
@@ -294,18 +301,48 @@ getComponent("dlgEditUserstory").show()}]]></xp:this.action>
 									</xp:td>
 									<xp:td>
 										<xp:text escape="true" id="dspEffort">
-											<xp:this.value><![CDATA[#{javascript:repeatedUserstory.time + " h"}]]></xp:this.value>
+											<xp:this.value><![CDATA[#{javascript:repeatedUserstory.getExpectedEffort() + " h"
+}]]></xp:this.value>
 										</xp:text>
 									</xp:td>
 								</xp:tr>
 								<xp:tr>
-									<xp:td style="padding-bottom:10px;">
-										<xp:label value="Responsible" id="label11" for="dspResponsible">
+									<xp:td>
+										<xp:label value="Remaining Workload" id="label3" for="dspWorkloadRem">
+										</xp:label>
+									</xp:td>
+									<xp:td>
+										<xp:text escape="true"
+											id="dspWorkloadRem">
+											<xp:this.value><![CDATA[#{javascript:repeatedUserstory.getRemainingEffort() + " h / " + repeatedUserstory.getRemainingEffortPercent() + " %"
+}]]></xp:this.value>
+										</xp:text>
+									</xp:td>
+								</xp:tr>
+								<xp:tr>
+									<xp:this.rendered><![CDATA[#{javascript:repeatedUserstory.status == "9"}]]></xp:this.rendered>
+									<xp:td style="padding-bottom:10px;width:150px;">
+										<xp:label value="Reason for postponing" id="label2" for="dspPostponeReason">
 										</xp:label>
 									</xp:td>
 									<xp:td style="padding-bottom:10px;">
-										<xp:text escape="true" id="dspResponsible"
-											value="#{repeatedUserstory.responsible}">
+										<xp:text escape="true" id="dspPostponeReason" value="#{repeatedUserstory.postponingReason}">
+										</xp:text>
+									</xp:td>
+								</xp:tr>								
+								<xp:tr>
+									<xp:this.rendered><![CDATA[#{javascript:var status = @TextToNumber(repeatedUserstory.status); 
+status > 1 && status < 9}]]></xp:this.rendered>
+									<xp:td>
+										<xp:label value="Effective Start / End Date" id="label1"
+											for="dspStartDate">
+										</xp:label>
+									</xp:td>
+									<xp:td>
+										<xp:text escape="true" id="dspStartDate" value="#{repeatedUserstory.start}">
+										</xp:text>
+										&#160;/&#160;
+										<xp:text escape="true" id="dspEndDate" value="#{repeatedUserstory.end}">
 										</xp:text>
 									</xp:td>
 								</xp:tr>
@@ -337,10 +374,12 @@ getComponent("dlgEditUserstory").show()}]]></xp:this.action>
 						<xp:panel>
 							<xc:this.rendered><![CDATA[#{javascript:viewScope.get("curUSId-t") == repeatedUserstory.getId()}]]></xc:this.rendered>
 
-							<xc:ccTaskOverview UserstoryId="#{repeatedUserstory.id}"
-								showAssignedTo="true" showAuthor="true" showCustomer="false"
-								showIteration="false" showUserstory="false" showProject="false"
-								ProjectIsNew="false" ProjectId="#{javascript:compositeData.ProjectId}">
+							<xc:ccTaskOverview
+								UserstoryId="#{repeatedUserstory.id}" showAssignedTo="true"
+								showAuthor="true" showCustomer="false" showIteration="false"
+								showUserstory="false" showProject="false" ProjectIsNew="false"
+								ProjectId="#{javascript:compositeData.ProjectId}"
+								refreshId="tblUserstories">
 							</xc:ccTaskOverview>
 
 							<hr style="width:90%;color:#eeeeee;" />

@@ -252,8 +252,8 @@ public class Iteration implements Serializable, IScrumDocument {
 	}
 
 	public boolean isExecutable() {
-		for (Userstory userstory : UserstorySessionFacade.get()
-				.getUserstoriesOfIteration(m_Id, false)) {
+		//at least one userstory must be executable
+		for (Userstory userstory : UserstorySessionFacade.get().getUserstoriesOfIteration(m_Id, false)) {
 			if(userstory.isExecutable()){
 				return true;
 			}

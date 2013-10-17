@@ -35,8 +35,18 @@ return editUserstory;}]]></xe:this.createObject>
 						<xp:button id="btSaveBug" value="Save">
 							<xp:eventHandler event="onclick" submit="true"
 								refreshMode="complete">
-								<xp:this.action><![CDATA[#{javascript:editUserstory.setIsDeleted("false");
-ccBean.updateMultiValueData(editUserstory, "userstoryAlias");
+								<xp:this.action><![CDATA[#{javascript:ccBean.updateMultiValueData(editUserstory, "userstoryAlias");
+
+var status = @TextToNumber(editUserstory.status);
+if (status > 1 && status < 9) {
+	if (editUserstory.isExecutable() == false) {		
+		var msg = new javax.faces.application.FacesMessage();
+			facesContext.addMessage("msgTaskTime",msg("You need to have at least one executable task before processing"));
+		return false;	
+	}
+}
+editUserstory.setIsDeleted("false");
+
 editUserstory.setModifiedAt(new Date());
 userstoryBean.saveUserstory(editUserstory);
 viewScope.isUSNew = false;
@@ -51,26 +61,6 @@ getComponent("dlgEditUserstory").hide("tblUserstories");}]]></xp:this.action>
 						</xp:button>
 					</xe:dialogButtonBar>
 				</xp:this.facets>
-
-				<xe:formRow id="froUSCustomer" for="cfUSCustomer" label="Customer">
-					<xp:text id="cfUSCustomer">
-						<xp:this.value><![CDATA[#{javascript:if (projectBean.getProjectById(editUserstory.projectId) != null) {
-	var customer = projectBean.getProjectById(editUserstory.projectId).getCustomer();
-	return editUserstory.getCustomerName(customer);
-}
-return "";}]]></xp:this.value>
-					</xp:text>
-				</xe:formRow>
-
-				<xe:formRow id="froUSProjekt" for="cfUSProjekt" label="Project">
-					<xp:text id="cfUSProjekt">
-						<xp:this.value><![CDATA[#{javascript:if (projectBean.getProjectById(editUserstory.projectId) != null) {
-	return "" + projectBean.getProjectById(editUserstory.projectId).getSubject();
-}
-return "";
-							}]]></xp:this.value>
-					</xp:text>
-				</xe:formRow>
 
 				<xe:formRow id="froUSIteration" for="cbbUSIteration"
 					label="Iteration">
@@ -96,47 +86,24 @@ return "";
 					</xp:inputText>
 				</xe:formRow>
 
-				<xe:formRow id="froUSDue" for="iptUSDue" label="Due Date">
-					<xp:inputText id="iptUSDue" value="#{editUserstory.due}">
-						<xp:this.converter>
-							<xp:convertDateTime type="date">
-							</xp:convertDateTime>
-						</xp:this.converter>
-						<xp:dateTimeHelper dojoType="dijit.form.DateTextBox">
-						</xp:dateTimeHelper>
-					</xp:inputText>
-				</xe:formRow>
-
-
-
 				<xe:formRow id="froUSTime" for="iptUSTime" label="Expected Effort">
-					<xp:inputText id="iptUSTime" value="#{editUserstory.time}"
-						style="width:30px;">
+					<xp:inputText id="iptUSTime"
+						value="#{javascript:editUserstory.getExpectedEffort()}" style="width:30px;"
+						readonly="true">
+						<xp:this.converter>
+							<xp:convertNumber type="number" integerOnly="true">
+							</xp:convertNumber>
+						</xp:this.converter>
 					</xp:inputText>
 					&#160;h
 				</xe:formRow>
 
-				<xe:formRow id="froUSResponsible" for="cnpResponsible"
-					label="Responsible">
-					<xc:ccNamePicker dirIsLookup="true"
-						dirMultiValue="false" dirReturnFieldFormula="true"
-						dirView="($VIMPeople)"
-						pickerFieldName="Responsible" pickerId="ResponsibleId"
-						pickerObject="#{javascript:editUserstory}"
-						pickerObjectAlias="userstoryAlias" id="cnpResponsible"
-						dirReadOnly="false" dirFTSearchFieldInView="FullName"
-						mvSeparator="," dirRefreshId="cnpResponsible">
-						<xc:this.dirServer><![CDATA[#{javascript:mywebgateBean.getAppSettings().getServer()}]]></xc:this.dirServer>
-						<xc:this.dirPath><![CDATA[#{javascript:mywebgateBean.getAppSettings().getPath()}]]></xc:this.dirPath> 
-						<xc:this.dirReturnFields>
-							<xp:value>
-								@Name([Abbreviate];FullName)
-							</xp:value>
-							<xp:value>FirstName</xp:value>
-							<xp:value>LastName</xp:value>
-						</xc:this.dirReturnFields>
-						<xc:this.dirReturnField><![CDATA[@Name([ABBREVIATE];FullName)]]></xc:this.dirReturnField>
-					</xc:ccNamePicker>
+				<xe:formRow id="froWorkloadRem" for="dspWorkloadRem"
+					label="Remaining Workload">
+					<xp:text escape="true" id="dspWorkloadRem">
+						<xp:this.value><![CDATA[#{javascript:editUserstory.getRemainingEffort() + " h / " + editUserstory.getRemainingEffortPercent() + " %"
+}]]></xp:this.value>
+					</xp:text>
 				</xe:formRow>
 
 				<xe:formRow id="froUSStatus" for="cbbUSStatus" label="Status">
@@ -151,8 +118,75 @@ return "";
 						</xp:selectItem>
 						<xp:selectItem itemLabel="Accepted" itemValue="5">
 						</xp:selectItem>
+						<xp:selectItem itemLabel="Postponed" itemValue="9"></xp:selectItem>
+						<xp:eventHandler event="onchange" submit="true"
+							refreshMode="partial" refreshId="ftaUSEdit" disableValidators="true">
+						</xp:eventHandler>
 					</xp:comboBox>
+
+					<xp:image id="imgExecutable" style="margin-top:1px;">
+						<xp:this.url><![CDATA[#{javascript:if (editUserstory.isExecutable() == true) {
+	"/bullet_green.png"
+} else {
+	"/bullet_red.png"
+}}]]></xp:this.url>
+						<xp:this.alt><![CDATA[#{javascript:if (editUserstory.isExecutable() == true) {
+	"Userstory is executable"
+} else {
+	"Userstory is not executable - missing information"
+}}]]></xp:this.alt>
+					</xp:image>
+					<xe:tooltip id="ttExecutable" for="imgExecutable">
+						<xe:this.label><![CDATA[#{javascript:if (editUserstory.isExecutable() == true) {
+	"Userstory is executable"
+} else {
+	"Userstory is not executable - missing information"
+}}]]></xe:this.label>
+					</xe:tooltip>
 				</xe:formRow>
+
+				<xe:formRow id="froPostponeReason" label="Reason"
+					for="itUSPostponeReason">
+					<xe:this.rendered><![CDATA[#{javascript:editUserstory.status == "9"}]]></xe:this.rendered>
+					<xp:inputTextarea id="itUSPostponeReason"
+						value="#{editUserstory.postponingReason}" style="width:450px;height:40px;">
+						<xp:this.required><![CDATA[#{javascript:editUserstory.status == "9"}]]></xp:this.required>
+						<xp:this.validators>
+							<xp:validateRequired
+								message="Please enter the reason for postponing this Userstory">
+							</xp:validateRequired>
+						</xp:this.validators>
+					</xp:inputTextarea>
+				</xe:formRow>
+
+				<xe:formRow id="froUSEffectiveStart" for="iptUSStart"
+					label="Effective start date">
+					<xe:this.rendered><![CDATA[#{javascript:var status = @TextToNumber(editUserstory.status); 
+status > 1 && status < 9}]]></xe:this.rendered>
+					<xp:inputText id="iptUSStart" value="#{editUserstory.start}">
+						<xp:this.converter>
+							<xp:convertDateTime type="date">
+							</xp:convertDateTime>
+						</xp:this.converter>
+						<xp:dateTimeHelper dojoType="dijit.form.DateTextBox">
+						</xp:dateTimeHelper>
+					</xp:inputText>
+				</xe:formRow>
+
+				<xe:formRow id="froUSEffectiveEnd" for="iptUSEnd"
+					label="Effective end date">
+					<xe:this.rendered><![CDATA[#{javascript:var status = @TextToNumber(editUserstory.status); 
+status > 1 && status < 9}]]></xe:this.rendered>
+					<xp:inputText id="iptUSEnd" value="#{editUserstory.end}">
+						<xp:this.converter>
+							<xp:convertDateTime type="date">
+							</xp:convertDateTime>
+						</xp:this.converter>
+						<xp:dateTimeHelper dojoType="dijit.form.DateTextBox">
+						</xp:dateTimeHelper>
+					</xp:inputText>
+				</xe:formRow>
+
 
 				<xe:formRow id="froUSTags" label="Tags" for="cmtTags">
 					<xc:ccMultivalueText id="cmtTags"

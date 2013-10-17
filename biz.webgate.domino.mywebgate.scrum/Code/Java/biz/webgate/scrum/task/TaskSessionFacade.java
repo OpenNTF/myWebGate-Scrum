@@ -30,8 +30,7 @@ public class TaskSessionFacade {
 	public static final String BEAN_NAME = "taskBean"; //$NON-NLS-1$
 
 	public static TaskSessionFacade get(FacesContext context) {
-		TaskSessionFacade bean = (TaskSessionFacade) context.getApplication()
-				.getVariableResolver().resolveVariable(context, BEAN_NAME);
+		TaskSessionFacade bean = (TaskSessionFacade) context.getApplication().getVariableResolver().resolveVariable(context, BEAN_NAME);
 		return bean;
 	}
 
@@ -91,11 +90,12 @@ public class TaskSessionFacade {
 	public List<Task> getTasksOfProject(int sortOrder, boolean reverse, String projectID, String statusFilter, String usFilter, String itFilter, boolean hideComplete) {
 		List<Task> lstTasksOfProject = TaskStorageService.getInstance().getTasksOfProject(ExtLibUtil.getCurrentSession(), projectID, statusFilter, usFilter, itFilter, hideComplete);
 		TaskSortFactory.sortTasks(lstTasksOfProject, sortOrder, reverse);
+		//TODO: secondary sort by ID
 		return lstTasksOfProject;
 	}
 
-	public List<Task> getTasksOfUserstory(int sortOrder, boolean reverse, String userstoryID, String statusFilter) {
-		List<Task> lstTasksOfUserstory = TaskStorageService.getInstance().getTasksOfUserstory(ExtLibUtil.getCurrentSession(), userstoryID, statusFilter);
+	public List<Task> getTasksOfUserstory(int sortOrder, boolean reverse, String userstoryID, String statusFilter, boolean isExecutable) {
+		List<Task> lstTasksOfUserstory = TaskStorageService.getInstance().getTasksOfUserstory(ExtLibUtil.getCurrentSession(), userstoryID, statusFilter, isExecutable);
 		TaskSortFactory.sortTasks(lstTasksOfUserstory, sortOrder, reverse);
 		return lstTasksOfUserstory;
 	}

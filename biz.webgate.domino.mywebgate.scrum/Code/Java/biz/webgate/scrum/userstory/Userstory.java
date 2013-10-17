@@ -287,14 +287,12 @@ public class Userstory implements Serializable, IScrumDocument {
 	}
 
 	public boolean isExecutable() {
-		return TaskSessionFacade.get().getTasksOfUserstory(
-				TaskSessionFacade.SORT_BY_ID, false, m_Id, "").size() > 0;
+		return TaskSessionFacade.get().getTasksOfUserstory(TaskSessionFacade.SORT_BY_ID, false, m_Id, "", true).size() > 0;
 	}
 
 	public int getExpectedEffort() {
 		int expectedEffort = 0;
-		for (Task task : TaskSessionFacade.get().getTasksOfUserstory(
-				TaskSessionFacade.SORT_BY_ID, false, m_Id, "")) {
+		for (Task task : TaskSessionFacade.get().getTasksOfUserstory(TaskSessionFacade.SORT_BY_ID, false, m_Id, "", false)) {
 			expectedEffort += task.getTime();
 		}
 		return expectedEffort;
@@ -302,11 +300,8 @@ public class Userstory implements Serializable, IScrumDocument {
 
 	public int getCompletedEffort() {
 		int completedEffort = 0;
-		for (Task task : TaskSessionFacade.get().getTasksOfUserstory(
-				TaskSessionFacade.SORT_BY_ID, false, m_Id, "Completed")) {
-			if (!task.getStatus().equals("Postponed")) {
-				completedEffort += task.getTime();
-			}
+		for (Task task : TaskSessionFacade.get().getTasksOfUserstory(TaskSessionFacade.SORT_BY_ID, false, m_Id, "4", false)) {
+			completedEffort += task.getTime();
 		}
 		return completedEffort;
 	}
@@ -316,6 +311,6 @@ public class Userstory implements Serializable, IScrumDocument {
 	}
 
 	public int getRemainingEffortPercent() {
-		return 100 * getCompletedEffort() / getExpectedEffort();
+		return (getCompletedEffort() == 0) ? 100 : 100 * getCompletedEffort() / getExpectedEffort();
 	}
 }

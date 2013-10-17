@@ -28,8 +28,6 @@ public class UserstorySortFactory {
 			UserstorySessionFacade.SORT_BY_STATUS);
 	private static Comparator<Userstory> m_IterationComp = new UserstoryComparator(
 			UserstorySessionFacade.SORT_BY_ITERATION);
-	private static Comparator<Userstory> m_DueComp = new UserstoryComparator(
-			UserstorySessionFacade.SORT_BY_DUE);
 
 	public static void sortUserstories(List<Userstory> lstUserstories, int sortOrder, boolean reverse) {
 		switch (sortOrder) {
@@ -44,9 +42,6 @@ public class UserstorySortFactory {
 			break;
 		case UserstorySessionFacade.SORT_BY_ITERATION:
 			Collections.sort(lstUserstories, m_IterationComp);
-			break;
-		case UserstorySessionFacade.SORT_BY_DUE:
-			Collections.sort(lstUserstories, m_DueComp);
 			break;
 		}
 		if (reverse) {Collections.reverse(lstUserstories);}

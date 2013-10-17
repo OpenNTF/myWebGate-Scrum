@@ -58,6 +58,8 @@ public class TaskStorageService {
 			
 			newTask.setStatus("1");
 			newTask.setProjectId(projID);
+			newTask.setEditor("");
+			newTask.setIsExecutable(false);
 			
 			//temporary save to allow attachments
 			newTask.setTempSave("1");
@@ -91,13 +93,6 @@ public class TaskStorageService {
 						curTask.setTaskId("T" + temp.substring(temp.length() - 3));
 					}
 				}
-			}
-			
-			//check if task is executable (must have assigned person and expected effort)
-			if (!curTask.getEditor().equals("") && curTask.getTime() > 0) {
-				curTask.setIsExecutable("1");
-			} else {
-				curTask.setIsExecutable("0");
 			}
 			
 			curTask.setTempSave(null);
@@ -244,7 +239,7 @@ public class TaskStorageService {
 		return lstTask;
 	}
 
-	public List<Task> getTasksOfUserstory(Session sesCurrent, String userstoryID, String statusFilter) {
+	public List<Task> getTasksOfUserstory(Session sesCurrent, String userstoryID, String statusFilter, boolean isExecutable) {
 		List<Task> lstTasks = new ArrayList<Task>();
 		try {
 			Database ndbCurrent = sesCurrent.getCurrentDatabase();
@@ -255,11 +250,16 @@ public class TaskStorageService {
 				docNext = viwTask.getNextDocument(docNext);
 				Task newTask = new Task();
 				if (DominoStorageService.getInstance().getObjectWithDocument(newTask, docProcess)) {
-					if (newTask.getUserstoryId().equals(userstoryID)
-							&& !newTask.getIsDeleted().equals("true")
-							&& (statusFilter == null || statusFilter.equals("") || statusFilter
-									.equals(newTask.getStatus()))) {
-						lstTasks.add(newTask);
+					if (newTask.getUserstoryId().equals(userstoryID) && !newTask.getIsDeleted().equals("true")) {
+						if (isExecutable == false) {
+							if (statusFilter == null || statusFilter.equals("") || statusFilter.equals(newTask.getStatus())) {
+								lstTasks.add(newTask);
+							}
+						} else {
+							if (newTask.isExecutable() == true) {
+								lstTasks.add(newTask);
+							}
+						}
 					}
 				}
 				docProcess.recycle();

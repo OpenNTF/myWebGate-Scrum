@@ -44,8 +44,6 @@ public class UserstoryComparator implements Comparator<Userstory> {
 			s1 = o1.getIteration();
 			s2 = o2.getIteration();
 			break;
-		case UserstorySessionFacade.SORT_BY_DUE:
-			return compareDates(o1.getDue(), o2.getDue());
 		}
 
 		return s1.compareTo(s2);

@@ -16,10 +16,8 @@ if(id == "" || id == null){
 	if(compositeData.UserstoryId != null && compositeData.UserstoryId != "" ) {
 		thisEditTask.setUserstoryId(compositeData.UserstoryId);
 	}
-	viewScope.isTaskNew = true;
 }else{
 	thisEditTask = taskBean.getTaskById(id);
-	viewScope.isTaskNew = false;
 }
 return thisEditTask;}]]></xe:this.createObject>
 				</xe:objectData>
@@ -30,11 +28,11 @@ return thisEditTask;}]]></xe:this.createObject>
 				<xp:this.facets>
 					<xe:dialogButtonBar id="dbbEditTask" xp:key="footer">
 						<xp:button id="btSaveTask" value="Save">
-							<xp:eventHandler event="onclick"
-								submit="true" refreshMode="complete">
+							<xp:eventHandler event="onclick" submit="true"
+								refreshMode="complete">
 								<xp:this.action><![CDATA[#{javascript:ccBean.updateMultiValueData(editTask, "taskAlias");
 
-if (@TextToNumber(getComponent("cbbTaskStatus").getValue()) > 1) {
+if (@TextToNumber(editTask.status) > 1) {
 	if (editTask.editor == "" || editTask.time == 0) {		
 		if (editTask.editor == "") {
 			var msg = new javax.faces.application.FacesMessage();
@@ -51,7 +49,6 @@ if (@TextToNumber(getComponent("cbbTaskStatus").getValue()) > 1) {
 editTask.setIsDeleted("false");
 editTask.setModifiedAt(new Date());
 taskBean.saveTask(editTask);
-viewScope.isTaskNew = false;
 viewScope.remove("curTaskId");
 if(viewScope.taskRefreshId != null || viewScope.taskRefreshId != ""){
 	getComponent("dlgEditTask").hide(viewScope.taskRefreshId);
@@ -66,30 +63,8 @@ if(viewScope.taskRefreshId != null || viewScope.taskRefreshId != ""){
 								<xp:this.action><![CDATA[#{javascript:getComponent("dlgEditTask").hide();}]]></xp:this.action>
 							</xp:eventHandler>
 						</xp:button>
-						<xp:button id="btDeleteTask" value="Delete">
-							<xp:this.rendered><![CDATA[#{javascript://return !viewScope.isTaskNew;
-return false;}]]></xp:this.rendered>
-							<xp:eventHandler event="onclick" submit="true"
-								refreshMode="partial" refreshId="tblTasks">
-								<xp:this.script><![CDATA[return confirm("Are you sure, you want to delete this task permanently?");]]></xp:this.script>
-								<xp:this.action><![CDATA[#{javascript:
-									getComponent("dlgEditTask").hide("tblTasks");
-									taskBean.deleteTask(editTask);
-								}]]></xp:this.action>
-							</xp:eventHandler>
-						</xp:button>
 					</xe:dialogButtonBar>
 				</xp:this.facets>
-
-				<xe:formRow id="froErrorTop" label="">
-					<xp:messages id="saveError"></xp:messages>
-				</xe:formRow>
-									
-				<xe:formRow id="froTaskID" for="cfTaskID" label="ID"
-					rendered="false">
-					<xp:text escape="true" id="cfTaskID" value="#{editTask.id}">
-					</xp:text>
-				</xe:formRow>
 
 				<xe:formRow id="froTaskAuthor" for="cfTaskAuthor" label="Created">
 					<xp:text escape="true" id="cfTaskAuthor" value="#{editTask.author}">
@@ -101,28 +76,6 @@ return false;}]]></xp:this.rendered>
 					</xp:text>
 					&#160;/&#160;
 					<xp:text escape="true" id="cfTaskCreatedAt" value="#{editTask.createdAt}">
-					</xp:text>
-				</xe:formRow>
-
-				<xe:formRow id="froTaskCustomer" for="cfTaskCustomer"
-					label="Customer">
-					<xp:text id="cfTaskCustomer">
-						<xp:this.value><![CDATA[#{javascript:if (projectBean.getProjectById(editTask.projectId) != null) {
-	var customer = projectBean.getProjectById(editTask.projectId).getCustomer();
-	return editTask.getCustomerName(customer);
-}
-return "";}]]></xp:this.value>
-					</xp:text>
-				</xe:formRow>
-
-				<xe:formRow id="froTaskProjekt" for="cfTaskProjekt"
-					label="Project">
-					<xp:text id="cfTaskProjekt">
-						<xp:this.value><![CDATA[#{javascript:if (projectBean.getProjectById(editTask.projectId) != null) {
-	return "" + projectBean.getProjectById(editTask.projectId).getSubject();
-}
-return "";
-							}]]></xp:this.value>
 					</xp:text>
 				</xe:formRow>
 
@@ -203,10 +156,12 @@ return "";
 				<xe:formRow id="froTaskTime" for="iptTaskTime" label="Expected Effort">
 					<xp:inputText id="iptTaskTime" value="#{editTask.time}"
 						style="width:30px;">
+						<xp:eventHandler event="onchange" submit="true"
+							refreshMode="partial" refreshId="calcExec">
+						</xp:eventHandler>
 					</xp:inputText>
 					&#160;h
 
-					
 				</xe:formRow>
 
 				<xe:formRow id="froTaskStatus" for="cbbTaskStatus" label="Status">
@@ -221,6 +176,29 @@ return "";
 							refreshMode="partial" refreshId="ftaTaskEdit" disableValidators="true">
 						</xp:eventHandler>
 					</xp:comboBox>
+
+					<xp:span id="calcExec">
+
+						<xp:image id="imgExecutable" style="margin-top:1px;">
+							<xp:this.url><![CDATA[#{javascript:if (editTask.isExecutable() == true) {
+	"/bullet_green.png"
+} else {
+	"/bullet_red.png"
+}}]]></xp:this.url>
+							<xp:this.alt><![CDATA[#{javascript:if (editTask.isExecutable() == true) {
+	"Task is executable"
+} else {
+	"Task is not executable - missing information"
+}}]]></xp:this.alt>
+						</xp:image>
+						<xe:tooltip id="ttExecutable" for="imgExecutable">
+							<xe:this.label><![CDATA[#{javascript:if (editTask.isExecutable() == true) {
+	"Task is executable"
+} else {
+	"Task is not executable - missing information"
+}}]]></xe:this.label>
+						</xe:tooltip>
+					</xp:span>
 				</xe:formRow>
 
 				<xe:formRow id="froTaskEffectiveStart" for="iptTaskStart"
@@ -276,10 +254,6 @@ setTimestamp(toSet, '#{id:itBody}');]]></xp:this.script>
 						fileDownloadId="Files" fileDownloadObject="#{javascript:editTask}"
 						deletionDisabled="false" uploadDisabled="false">
 					</xc:ccFileDownload>
-				</xe:formRow>
-				
-				<xe:formRow id="froErrorBottom" label="">
-					<xp:messages id="messages1"></xp:messages>
 				</xe:formRow>
 
 			</xe:formTable>

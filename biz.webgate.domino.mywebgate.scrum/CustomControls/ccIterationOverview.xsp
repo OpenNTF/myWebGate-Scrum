@@ -46,6 +46,9 @@ getComponent("dlgEditIteration").show();}]]></xp:this.action>
 						}]]></xp:this.action>
 					</xp:eventHandler>
 				</xp:td>
+				<xp:td id="tdUserStoryExecutable" styleClass="th" style="width:20px;">
+
+				</xp:td>
 				<xp:td id="tdIterationSubject" styleClass="th" style="cursor:pointer;">
 					<xp:label value="Subject" id="lblIterationSubject" for="lnkEditIteration"
 						style="cursor:pointer;">
@@ -134,6 +137,27 @@ getComponent("dlgEditIteration").show();}]]></xp:this.action>
 					<xp:td styleClass="icon">
 						<xp:text escape="true" id="cfIterationIndex" value="#{repeatedIteration.index}">
 						</xp:text>
+					</xp:td>
+					<xp:td style="text-align:center;">
+						<xp:image id="imgExecutable" style="margin-top:1px;">
+							<xp:this.url><![CDATA[#{javascript:if (repeatedIteration.isExecutable() == true) {
+	"/bullet_green.png"
+} else {
+	"/bullet_red.png"
+}}]]></xp:this.url>
+							<xp:this.alt><![CDATA[#{javascript:if (repeatedIteration.isExecutable() == true) {
+	"Iteration is executable"
+} else {
+	"Iteration is not executable - missing information"
+}}]]></xp:this.alt>
+						</xp:image>
+						<xe:tooltip id="ttExecutable" for="imgExecutable">
+							<xe:this.label><![CDATA[#{javascript:if (repeatedIteration.isExecutable() == true) {
+	"Iteration is executable"
+} else {
+	"Iteration is not executable - missing information"
+}}]]></xe:this.label>
+						</xe:tooltip>
 					</xp:td>
 					<xp:td>
 						<xp:link escape="true" id="lnkEditIteration" text="#{repeatedIteration.subject}">
@@ -235,32 +259,57 @@ getComponent("dlgEditIteration").show()}]]></xp:this.action>
 				</xp:tr>
 				<xp:tr>
 					<xp:this.rendered><![CDATA[#{javascript:viewScope.get("iterationId") == repeatedIteration.getId()}]]></xp:this.rendered>
-					<xp:td style="padding:0;" styleClass="selectedTask">
+					<xp:td colspan="2" style="padding:0;" styleClass="selectedTask">
 
 					</xp:td>
 					<xp:td colspan="6" style="padding:10px 0;" styleClass="selectedTask">
 
 						<hr style="width:90%;color:#eeeeee;" />
 
-						<xp:panel style="padding-bottom:20px;">
-							<xp:text escape="true" id="cfBody" value="#{repeatedIteration.body}">
-							</xp:text>
-						</xp:panel>
+						<xp:table style="width:100%;" styleClass="selectedTask">
+							<xp:tr>
+								<xp:td colspan="2" style="padding-bottom:10px;">
+									<xp:text escape="true" id="cfBody" value="#{repeatedIteration.body}">
+									</xp:text>
+								</xp:td>
+							</xp:tr>
+							<xp:tr>
+								<xp:this.rendered><![CDATA[#{javascript:@TextToNumber(repeatedIteration.status) > 1;}]]></xp:this.rendered>
+								<xp:td style="padding:10px 0;width:150px;">
+									<xp:label value="Effective Start / End Date" id="label2"
+										for="dspStartDate">
+									</xp:label>
+								</xp:td>
+								<xp:td style="padding:10px 0;">
+									<xp:text escape="true" id="dspStartDate" value="#{repeatedIteration.start}">
+									</xp:text>
+									&#160;/&#160;
+									<xp:text escape="true" id="dspEndDate" value="#{repeatedIteration.end}">
+									</xp:text>
+								</xp:td>
+							</xp:tr>
+							<xp:tr>
+								<xp:this.rendered><![CDATA[#{javascript:@Elements(repeatedIteration.files) > 1}]]></xp:this.rendered>
+								<xp:td colspan="2">
+									<xp:panel style="width:500px;">
+										<xc:ccFileDownload fileDownloadFieldName="Files"
+											fileDownloadId="Files" fileDownloadObject="#{javascript:repeatedIteration}"
+											uploadDisabled="true" deletionDisabled="true">
+										</xc:ccFileDownload>
+									</xp:panel>
+								</xp:td>
+							</xp:tr>
+						</xp:table>
 
-						<xp:panel style="width:500px;">
-							<xp:this.rendered><![CDATA[#{javascript:@Elements(repeatedIteration.files) > 1}]]></xp:this.rendered>
-							<xc:ccFileDownload fileDownloadFieldName="Files"
-								fileDownloadId="Files" fileDownloadObject="#{javascript:repeatedIteration}"
-								uploadDisabled="true" deletionDisabled="true">
-							</xc:ccFileDownload>
-						</xp:panel>
-						
 						<hr style="width:90%;color:#eeeeee;" />
 
 						<xp:table style="width:100%" id="tblUserstories"
 							styleClass="content">
 							<xp:this.rendered><![CDATA[#{javascript:userstoryBean.getUserstoriesOfIterationCount(repeatedIteration.getId()) > 0}]]></xp:this.rendered>
 							<xp:tr styleClass="hover">
+								<xp:td id="td2" styleClass="th" style="width:20px;">
+
+								</xp:td>
 								<xp:td id="tdUserstorySubject" styleClass="th">
 									<xp:label value="Userstory" id="lblSubject" for="cfUserstorySubject"
 										style="cursor:pointer;">
@@ -303,11 +352,33 @@ getComponent("dlgEditIteration").show()}]]></xp:this.action>
 									return userstoryBean.getUserstoriesOfIteration(repeatedIteration.getId(), false);
 								}]]></xp:this.value>
 								<xp:tr>
+									<xp:td style="text-align:center;">
+										<xp:image id="image5" style="margin-top:1px;">
+											<xp:this.url><![CDATA[#{javascript:if (repeatedUserstory.isExecutable() == true) {
+	"/bullet_green.png"
+} else {
+	"/bullet_red.png"
+}}]]></xp:this.url>
+											<xp:this.alt><![CDATA[#{javascript:if (repeatedUserstory.isExecutable() == true) {
+	"Userstory is executable"
+} else {
+	"Userstory is not executable - missing information"
+}}]]></xp:this.alt>
+										</xp:image>
+										<xe:tooltip id="tooltip5" for="imgExecutable">
+											<xe:this.label><![CDATA[#{javascript:if (repeatedUserstory.isExecutable() == true) {
+	"Userstory is executable"
+} else {
+	"Userstory is not executable - missing information"
+}}]]></xe:this.label>
+										</xe:tooltip>
+									</xp:td>
 									<xp:td>
 										<xp:link escape="true"
 											text="#{javascript:repeatedUserstory.subject}" id="lnkOpenUserStory">
-											
-										<xp:this.value><![CDATA[#{javascript:"/show.xsp?id=" + repeatedUserstory.id}]]></xp:this.value></xp:link>
+
+											<xp:this.value><![CDATA[#{javascript:"/show.xsp?id=" + repeatedUserstory.id}]]></xp:this.value>
+										</xp:link>
 									</xp:td>
 									<xp:td styleClass="icon">
 										<xp:image id="imgUSStatus" style="margin-top:2px;">

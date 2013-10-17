@@ -81,9 +81,8 @@ public class Task implements Serializable, IScrumDocument {
 	private String m_IsDeleted;
 	@DominoEntity(FieldName="TempSave")
 	private String m_TempSave;
-	@DominoEntity(FieldName="IsExecutable")
-	private String m_IsExecutable;
-
+	private boolean m_IsExecutable;
+	
 	public String getId() {
 		return m_Id;
 	}
@@ -313,13 +312,14 @@ public class Task implements Serializable, IScrumDocument {
 		return m_TaskId;
 	}
 	
-	public String getIsExecutable() {
+	public boolean getIsExecutable() {		
 		return m_IsExecutable;
 	}
-	public void setIsExecutable(String isExecutable) {
+	public void setIsExecutable(boolean isExecutable) {
 		m_IsExecutable = isExecutable;
 	}
-	
-	
-	
+	public boolean isExecutable() {
+		//task must have assignee and expected effort to be executable
+		return (!m_Editor.equals("") && m_Time > 0) ? true : false;		
+	}
 }

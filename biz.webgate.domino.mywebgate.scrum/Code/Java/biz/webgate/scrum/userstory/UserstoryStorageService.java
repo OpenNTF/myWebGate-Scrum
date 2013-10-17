@@ -73,15 +73,25 @@ public class UserstoryStorageService {
 			m_LastModified = new Date();
 			List<String> lstReader = new ArrayList<String>();
 			// get readers from project
-			Project project = ProjectSessionFacade.get().getProjectById(
-					curUserstory.getProjectId());
+			Project project = ProjectSessionFacade.get().getProjectById(curUserstory.getProjectId());
 			lstReader.addAll(project.getReader());
 			curUserstory.setReader(lstReader);
 			curUserstory.setAuthors(lstReader);
+			
+			//clean-up
+			int status = Integer.parseInt(curUserstory.getStatus());
+			if (status < 2 || status == 9) {
+				//no effective start/end date if "idea", "planned" or "postponed"
+				curUserstory.setStart(null);
+				curUserstory.setEnd(null);
+			} 
+			if (status != 9) {
+				//no postponing reason if not postponed
+				curUserstory.setPostponingReason("");
+			}
 
 			curUserstory.setTempSave(null);
-			return DominoStorageService.getInstance().saveObject(curUserstory,
-					sesCurrent.getCurrentDatabase());
+			return DominoStorageService.getInstance().saveObject(curUserstory, sesCurrent.getCurrentDatabase());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
