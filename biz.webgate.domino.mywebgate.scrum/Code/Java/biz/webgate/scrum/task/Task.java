@@ -57,14 +57,12 @@ public class Task implements Serializable, IScrumDocument {
 	private String m_Subject;
 	@DominoEntity(FieldName = "TaskIdT")
 	private String m_TaskId;
-	@DominoEntity(FieldName = "StartDT", dateOnly = true)
-	private Date m_Start;
-	@DominoEntity(FieldName = "EndDT", dateOnly = true)
-	private Date m_End;
 	@DominoEntity(FieldName = "DueDT", dateOnly = true)
 	private Date m_Due;
-	@DominoEntity(FieldName = "TimeN")
-	private int m_Time;
+	@DominoEntity(FieldName = "ExpectedEffortN")
+	private int m_ExpectedEffort;
+	@DominoEntity(FieldName = "EffectiveEffortN")
+	private int m_EffectiveEffort;
 	@DominoEntity(FieldName = "EditorNM", showNameAs = "ABBREVIATE")
 	private String m_Editor;
 	@DominoEntity(FieldName = "TesterInternalNM", showNameAs = "ABBREVIATE")
@@ -79,10 +77,10 @@ public class Task implements Serializable, IScrumDocument {
 	private List<FileHelper> m_Files;
 	@DominoEntity(FieldName = "DeletedT")
 	private String m_IsDeleted;
-	@DominoEntity(FieldName="TempSave")
+	@DominoEntity(FieldName = "TempSave")
 	private String m_TempSave;
 	private boolean m_IsExecutable;
-	
+
 	public String getId() {
 		return m_Id;
 	}
@@ -118,13 +116,15 @@ public class Task implements Serializable, IScrumDocument {
 	public List<String> getReader() {
 		return m_Reader;
 	}
+
 	public void setReader(List<String> reader) {
 		m_Reader = reader;
 	}
-	
+
 	public List<String> getAuthors() {
 		return m_Authors;
 	}
+
 	public void setAuthors(List<String> authors) {
 		m_Authors = authors;
 	}
@@ -146,7 +146,8 @@ public class Task implements Serializable, IScrumDocument {
 			return "";
 		}
 		try {
-			return UserstorySessionFacade.get().getUserstoryById(getUserstoryId()).getIterationId();
+			return UserstorySessionFacade.get().getUserstoryById(
+					getUserstoryId()).getIterationId();
 		} catch (Exception e) {
 			return "";
 		}
@@ -159,31 +160,17 @@ public class Task implements Serializable, IScrumDocument {
 	public String getSubject() {
 		return m_Subject;
 	}
+
 	public void setSubject(String subject) {
 		m_Subject = subject;
 	}
-	
+
 	public String getTaskId() {
 		return m_TaskId;
 	}
+
 	public void setTaskId(String taskId) {
 		m_TaskId = taskId;
-	}
-
-	public void setStart(Date start) {
-		m_Start = start;
-	}
-
-	public Date getStart() {
-		return m_Start;
-	}
-
-	public void setEnd(Date end) {
-		m_End = end;
-	}
-
-	public Date getEnd() {
-		return m_End;
 	}
 
 	public void setDue(Date due) {
@@ -193,7 +180,7 @@ public class Task implements Serializable, IScrumDocument {
 	public Date getDue() {
 		return m_Due;
 	}
-	
+
 	public boolean getIsOverdue() {
 		if (!m_Status.equals("4") && m_Due != null) {
 			return m_Due.compareTo(new Date()) == -1;
@@ -201,12 +188,20 @@ public class Task implements Serializable, IScrumDocument {
 		return false;
 	}
 
-	public int getTime() {
-		return m_Time;
+	public int getExpectedEffort() {
+		return m_ExpectedEffort;
 	}
 
-	public void setTime(int time) {
-		m_Time = time;
+	public void setExpectedEffort(int expectedEffort) {
+		m_ExpectedEffort = expectedEffort;
+	}
+
+	public int getEffectiveEffort() {
+		return m_EffectiveEffort;
+	}
+
+	public void setEffectiveEffort(int effectiveEffort) {
+		m_EffectiveEffort = effectiveEffort;
 	}
 
 	public String getEditor() {
@@ -262,14 +257,15 @@ public class Task implements Serializable, IScrumDocument {
 	}
 
 	public String getIsDeleted() {
-		if (m_TempSave != null && m_TempSave.equals("1")) 
+		if (m_TempSave != null && m_TempSave.equals("1"))
 			return "true";
 		return m_IsDeleted;
 	}
-	
+
 	public void setTempSave(String tempSave) {
 		m_TempSave = tempSave;
 	}
+
 	public String getTempSave() {
 		return m_TempSave;
 	}
@@ -283,7 +279,8 @@ public class Task implements Serializable, IScrumDocument {
 	}
 
 	public String getCustomer() {
-		return ProjectSessionFacade.get().getCustomerNameByProjectID(m_ProjectId);
+		return ProjectSessionFacade.get().getCustomerNameByProjectID(
+				m_ProjectId);
 	}
 
 	public String getForm() {
@@ -291,7 +288,8 @@ public class Task implements Serializable, IScrumDocument {
 	}
 
 	public String getProject() {
-		return ProjectSessionFacade.get().getProjectNameByProjectID(m_ProjectId);
+		return ProjectSessionFacade.get()
+				.getProjectNameByProjectID(m_ProjectId);
 	}
 
 	public String getResponsible() {
@@ -301,25 +299,28 @@ public class Task implements Serializable, IScrumDocument {
 	public Date getDueDate() {
 		return m_Due;
 	}
-	
+
 	public String getCustomerName(String strId) {
 		Customer customer = CustomerSessionFacade.get().getCustomerById(strId);
-		if (customer != null) return customer.getName();
+		if (customer != null)
+			return customer.getName();
 		return "";
 	}
 
 	public String getReadableId() {
 		return m_TaskId;
 	}
-	
-	public boolean getIsExecutable() {		
+
+	public boolean getIsExecutable() {
 		return m_IsExecutable;
 	}
+
 	public void setIsExecutable(boolean isExecutable) {
 		m_IsExecutable = isExecutable;
 	}
+
 	public boolean isExecutable() {
-		//task must have assignee and expected effort to be executable
-		return (!m_Editor.equals("") && m_Time > 0) ? true : false;		
+		// task must have assignee and expected effort to be executable
+		return (!m_Editor.equals("") && m_EffectiveEffort > 0) ? true : false;
 	}
 }

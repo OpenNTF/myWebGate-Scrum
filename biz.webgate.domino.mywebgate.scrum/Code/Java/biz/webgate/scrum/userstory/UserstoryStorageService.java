@@ -20,8 +20,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import com.ibm.xsp.extlib.util.ExtLibUtil;
-
 import lotus.domino.Database;
 import lotus.domino.Document;
 import lotus.domino.Session;
@@ -32,8 +30,9 @@ import biz.webgate.scrum.project.Project;
 import biz.webgate.scrum.project.ProjectSessionFacade;
 import biz.webgate.scrum.task.Task;
 import biz.webgate.scrum.task.TaskSessionFacade;
-import biz.webgate.scrum.task.TaskStorageService;
 import biz.webgate.xpages.dss.DominoStorageService;
+
+import com.ibm.xsp.extlib.util.ExtLibUtil;
 
 public class UserstoryStorageService {
 

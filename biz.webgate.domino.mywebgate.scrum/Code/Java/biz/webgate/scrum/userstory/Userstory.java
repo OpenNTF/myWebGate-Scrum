@@ -168,7 +168,8 @@ public class Userstory implements Serializable, IScrumDocument {
 	}
 
 	public String getResponsible() {
-		return ProjectSessionFacade.get().getProjectById(m_ProjectId).getResponsible();
+		return ProjectSessionFacade.get().getProjectById(m_ProjectId)
+				.getResponsible();
 	}
 
 	public void setStart(Date start) {
@@ -287,30 +288,49 @@ public class Userstory implements Serializable, IScrumDocument {
 	}
 
 	public boolean isExecutable() {
-		return TaskSessionFacade.get().getTasksOfUserstory(TaskSessionFacade.SORT_BY_ID, false, m_Id, "", true).size() > 0;
+		return TaskSessionFacade.get().getTasksOfUserstory(
+				TaskSessionFacade.SORT_BY_ID, false, m_Id, "", true).size() > 0;
 	}
 
 	public int getExpectedEffort() {
 		int expectedEffort = 0;
-		for (Task task : TaskSessionFacade.get().getTasksOfUserstory(TaskSessionFacade.SORT_BY_ID, false, m_Id, "", false)) {
-			expectedEffort += task.getTime();
+		for (Task task : TaskSessionFacade.get().getTasksOfUserstory(
+				TaskSessionFacade.SORT_BY_ID, false, m_Id, "", false)) {
+			expectedEffort += task.getExpectedEffort();
 		}
 		return expectedEffort;
 	}
 
-	public int getCompletedEffort() {
+	public int getResolvedEffort() {
 		int completedEffort = 0;
-		for (Task task : TaskSessionFacade.get().getTasksOfUserstory(TaskSessionFacade.SORT_BY_ID, false, m_Id, "4", false)) {
-			completedEffort += task.getTime();
+		for (Task task : TaskSessionFacade.get().getTasksOfUserstory(
+				TaskSessionFacade.SORT_BY_ID, false, m_Id, "4", false)) {
+			completedEffort += task.getExpectedEffort();
 		}
 		return completedEffort;
 	}
 
 	public int getRemainingEffort() {
-		return getExpectedEffort() - getCompletedEffort();
+		return getExpectedEffort() - getResolvedEffort();
 	}
 
 	public int getRemainingEffortPercent() {
-		return (getCompletedEffort() == 0) ? 100 : 100 * getCompletedEffort() / getExpectedEffort();
+		return (getResolvedEffort() == 0) ? 100 : 100 * getResolvedEffort()
+				/ getExpectedEffort();
+	}
+
+	/**
+	 * Returns the difference between expected Efforts and effective Efforts.
+	 * Negative values indicate the Task has been finished faster than planned.
+	 * Positive values indicate more has been invested to finish the task.
+	 */
+	public int getEffortDeviation() {
+		int effortDeviation = 0;
+		for (Task task : TaskSessionFacade.get().getTasksOfUserstory(
+				TaskSessionFacade.SORT_BY_ID, false, m_Id, "4", false)) {
+			effortDeviation += task.getEffectiveEffort()
+					- task.getExpectedEffort();
+		}
+		return effortDeviation;
 	}
 }

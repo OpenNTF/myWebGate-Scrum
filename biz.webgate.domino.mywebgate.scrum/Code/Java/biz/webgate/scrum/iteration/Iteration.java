@@ -25,7 +25,6 @@ import biz.webgate.scrum.project.ProjectSessionFacade;
 import biz.webgate.scrum.scrumdocument.IScrumDocument;
 import biz.webgate.scrum.userstory.Userstory;
 import biz.webgate.scrum.userstory.UserstorySessionFacade;
-import biz.webgate.scrum.userstory.UserstoryStorageService;
 import biz.webgate.xpages.dss.annotations.DominoEntity;
 import biz.webgate.xpages.dss.annotations.DominoStore;
 import biz.webgate.xpages.dss.binding.util.FileHelper;
@@ -252,42 +251,62 @@ public class Iteration implements Serializable, IScrumDocument {
 	}
 
 	public boolean isExecutable() {
-		//at least one userstory must be executable
-		for (Userstory userstory : UserstorySessionFacade.get().getUserstoriesOfIteration(m_Id, false)) {
-			if(userstory.isExecutable()){
+		// at least one userstory must be executable
+		for (Userstory userstory : UserstorySessionFacade.get()
+				.getUserstoriesOfIteration(m_Id, false)) {
+			if (userstory.isExecutable()) {
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
 	public int getExpectedEffort() {
 		int expectedEffort = 0;
 		for (Userstory userstory : UserstorySessionFacade.get()
 				.getUserstoriesOfIteration(m_Id, false)) {
-			expectedEffort += userstory.getExpectedEffort();
+			if (!userstory.getStatus().equals("0")) {
+				expectedEffort += userstory.getExpectedEffort();
+			}
 		}
 		return expectedEffort;
 	}
-	
-	public int getCompletedEffort() {
-		int completedEffort = 0;
+
+	public int getResolvedEffort() {
+		int resolvedEffort = 0;
 		for (Userstory userstory : UserstorySessionFacade.get()
 				.getUserstoriesOfIteration(m_Id, false)) {
-			completedEffort += userstory.getCompletedEffort();
+			if (!userstory.getStatus().equals("0")) {
+				resolvedEffort += userstory.getResolvedEffort();
+			}
 		}
-		return completedEffort;
+		return resolvedEffort;
 	}
-	
+
 	public int getRemainingEffort() {
 		int remainingEffort = 0;
-		for (Userstory userstory : UserstorySessionFacade.get().getUserstoriesOfIteration(m_Id, false)) {
-			remainingEffort += userstory.getRemainingEffort();
+		for (Userstory userstory : UserstorySessionFacade.get()
+				.getUserstoriesOfIteration(m_Id, false)) {
+			if (!userstory.getStatus().equals("0")) {
+				remainingEffort += userstory.getRemainingEffort();
+			}
 		}
 		return remainingEffort;
 	}
-	
+
 	public int getRemainingEffortPercent() {
-		return (getCompletedEffort() == 0) ? 100 : 100 * getCompletedEffort() / getExpectedEffort();
+		return (getResolvedEffort() == 0) ? 100 : 100 * getResolvedEffort()
+				/ getExpectedEffort();
+	}
+
+	public int getEffortDeviation() {
+		int effortDeviation = 0;
+		for (Userstory userstory : UserstorySessionFacade.get()
+				.getUserstoriesOfIteration(m_Id, false)) {
+			if (!userstory.getStatus().equals("0")) {
+				effortDeviation += userstory.getEffortDeviation();
+			}
+		}
+		return effortDeviation;
 	}
 }
