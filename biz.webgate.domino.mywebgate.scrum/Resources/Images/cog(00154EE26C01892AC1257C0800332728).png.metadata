@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?><note class="form" replicaid="C1257BFE003BAEFD" version="9.0" xmlns="http://www.lotus.com/dxl">
-<noteinfo noteid="616" sequence="3" unid="213B1167A7CF1869C1257C070031137A">
-<created><datetime dst="true">20131017T105602,50+02</datetime></created>
-<modified><datetime dst="true">20131017T105609,99+02</datetime></modified>
-<revised><datetime dst="true">20131017T105609,98+02</datetime></revised>
-<lastaccessed><datetime dst="true">20131017T105609,99+02</datetime></lastaccessed>
-<addedtofile><datetime dst="true">20131017T105609,95+02</datetime></addedtofile></noteinfo>
+<?xml version="1.0" encoding="UTF-8"?><note class="form" replicaid="C1257BFF003B00D8" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="606" sequence="3" unid="00154EE26C01892AC1257C0800332728">
+<created><datetime dst="true">20131018T111843,60+02</datetime></created>
+<modified><datetime dst="true">20131018T111844,91+02</datetime></modified>
+<revised><datetime dst="true">20131018T111844,90+02</datetime></revised>
+<lastaccessed><datetime dst="true">20131018T111844,91+02</datetime></lastaccessed>
+<addedtofile><datetime dst="true">20131018T111844,87+02</datetime></addedtofile></noteinfo>
 <updatedby><name>CN=Marco Baumann/O=WGC/C=CH</name></updatedby>
 <wassignedby><name>CN=Marco Baumann/O=WGC/C=CH</name></wassignedby>
 <item name="$TITLE"><text>cog.png</text></item>

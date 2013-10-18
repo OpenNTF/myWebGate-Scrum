@@ -219,33 +219,7 @@ getComponent("dlgEditIteration").hide();}]]></xp:this.action>
 }}]]></xe:this.label>
 					</xe:tooltip>
 				</xe:formRow>
-
-				<xe:formRow id="froIterationEffectiveStart" for="iptIterationStart"
-					label="Effective start date">
-					<xe:this.rendered><![CDATA[#{javascript:@TextToNumber(editIteration.status) > 1;}]]></xe:this.rendered>
-					<xp:inputText id="iptIterationStart" value="#{editIteration.start}">
-						<xp:this.converter>
-							<xp:convertDateTime type="date">
-							</xp:convertDateTime>
-						</xp:this.converter>
-						<xp:dateTimeHelper dojoType="dijit.form.DateTextBox">
-						</xp:dateTimeHelper>
-					</xp:inputText>
-				</xe:formRow>
-
-				<xe:formRow id="froIterationEffectiveEnd" for="iptIterationEnd"
-					label="Effective end date">
-					<xe:this.rendered><![CDATA[#{javascript:@TextToNumber(editIteration.status) > 1;}]]></xe:this.rendered>
-					<xp:inputText id="iptIterationEnd" value="#{editIteration.end}">
-						<xp:this.converter>
-							<xp:convertDateTime type="date">
-							</xp:convertDateTime>
-						</xp:this.converter>
-						<xp:dateTimeHelper dojoType="dijit.form.DateTextBox">
-						</xp:dateTimeHelper>
-					</xp:inputText>
-				</xe:formRow>
-
+				
 				<xe:formRow id="froIterationBody" for="itaIterationBody"
 					label="Description">
 					<xp:inputTextarea id="itaIterationBody" value="#{editIteration.body}"

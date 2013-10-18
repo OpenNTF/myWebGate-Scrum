@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?><note class="form" replicaid="C1257BFE003BAEFD" version="9.0" xmlns="http://www.lotus.com/dxl">
-<noteinfo noteid="61a" sequence="3" unid="88094887F8B5CEBDC1257C070031137C">
-<created><datetime dst="true">20131017T105602,52+02</datetime></created>
-<modified><datetime dst="true">20131017T105610,05+02</datetime></modified>
-<revised><datetime dst="true">20131017T105610,04+02</datetime></revised>
-<lastaccessed><datetime dst="true">20131017T105610,05+02</datetime></lastaccessed>
-<addedtofile><datetime dst="true">20131017T105610,01+02</datetime></addedtofile></noteinfo>
+<?xml version="1.0" encoding="UTF-8"?><note class="form" replicaid="C1257BFF003B00D8" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="60a" sequence="3" unid="8D1C4247EACC3CAEC1257C080033272B">
+<created><datetime dst="true">20131018T111843,63+02</datetime></created>
+<modified><datetime dst="true">20131018T111844,97+02</datetime></modified>
+<revised><datetime dst="true">20131018T111844,96+02</datetime></revised>
+<lastaccessed><datetime dst="true">20131018T111844,97+02</datetime></lastaccessed>
+<addedtofile><datetime dst="true">20131018T111844,93+02</datetime></addedtofile></noteinfo>
 <updatedby><name>CN=Marco Baumann/O=WGC/C=CH</name></updatedby>
 <wassignedby><name>CN=Marco Baumann/O=WGC/C=CH</name></wassignedby>
 <item name="$TITLE"><text>cog.png</text></item>

@@ -1,14 +1,14 @@
 <?xml version='1.0' encoding='utf-8'?>
 <note default='true' class='icon' xmlns='http://www.lotus.com/dxl' version='9.0'
- replicaid='C1257BFD004EFA7E'>
-<noteinfo noteid='11a' unid='C457B4797F319F04C1257BFD004EFACC' sequence='13'>
-<created><datetime dst='true'>20131007T162240,12+02</datetime></created>
-<modified><datetime dst='true'>20131010T170923,42+02</datetime></modified>
-<revised><datetime dst='true'>20131010T170923,41+02</datetime></revised>
-<lastaccessed><datetime dst='true'>20131010T170923,42+02</datetime></lastaccessed>
-<addedtofile><datetime dst='true'>20131007T162240,23+02</datetime></addedtofile></noteinfo>
-<updatedby><name>CN=Simeon Hafner/O=WGC/C=CH</name></updatedby>
-<wassignedby><name>CN=Simeon Hafner/O=WGC/C=CH</name></wassignedby>
+ replicaid='C1257BFF003B00D8'>
+<noteinfo noteid='11a' unid='C92CE105B01874B0C1257BFF003B00DC' sequence='19'>
+<created><datetime dst='true'>20131009T124428,44+02</datetime></created>
+<modified><datetime dst='true'>20131018T115103,29+02</datetime></modified>
+<revised><datetime dst='true'>20131018T115103,28+02</datetime></revised>
+<lastaccessed><datetime dst='true'>20131018T115103,29+02</datetime></lastaccessed>
+<addedtofile><datetime dst='true'>20131009T124428,47+02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Marco Baumann/O=WGC/C=CH</name></updatedby>
+<wassignedby><name>CN=Marco Baumann/O=WGC/C=CH</name></wassignedby>
 <item name='$DBTheme' sign='true'><text>blue.theme</text></item>
 <item name='IconBitmap' summary='true' sign='true'>
 <rawitemdata type='6'>
@@ -34,8 +34,8 @@ AAAAAAAAAAAAAAAAAAAAAAAAAA==
 <item name='$Daos'><text>0</text></item>
 <item name='$DefaultFrameset'><text>fsNotesMain</text></item>
 <item name='$DefaultWebLaunchPage'><text>pgWebStart</text></item>
-<item name='$TITLE'><text>T: Scrum
-#1scrum</text></item>
 <item name='$Flags'><text>Jz7FE</text></item>
-<item name='$FlagsNoRefresh'><text>rv</text></item></note>
+<item name='$FlagsNoRefresh'><text>rv</text></item>
+<item name='$TITLE'><text>T: Scrum
+#1mywebgate.scrum</text></item></note>
 

@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?><note class="form" replicaid="C1257BFE003BAEFD" version="9.0" xmlns="http://www.lotus.com/dxl">
-<noteinfo noteid="342" sequence="18" unid="1F7B1879B73C9F2AC1257BFE003BBC11">
-<created><datetime dst="true">20131008T125227,69+02</datetime></created>
-<modified><datetime dst="true">20131017T115841,66+02</datetime></modified>
-<revised><datetime dst="true">20131017T115841,65+02</datetime></revised>
-<lastaccessed><datetime dst="true">20131017T115841,66+02</datetime></lastaccessed>
-<addedtofile><datetime dst="true">20131008T125229,29+02</datetime></addedtofile></noteinfo>
+<?xml version="1.0" encoding="UTF-8"?><note class="form" replicaid="C1257BFF003B00D8" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="342" sequence="26" unid="834B2661F379A0DEC1257BFF003B01BF">
+<created><datetime dst="true">20131009T124430,71+02</datetime></created>
+<modified><datetime dst="true">20131018T114427,06+02</datetime></modified>
+<revised><datetime dst="true">20131018T114427,05+02</datetime></revised>
+<lastaccessed><datetime dst="true">20131018T114427,06+02</datetime></lastaccessed>
+<addedtofile><datetime dst="true">20131009T124436,24+02</datetime></addedtofile></noteinfo>
 <updatedby><name>CN=Marco Baumann/O=WGC/C=CH</name></updatedby>
 <wassignedby><name>CN=Marco Baumann/O=WGC/C=CH</name></wassignedby>
 <item name="$TITLE"><text>ccTaskOverview.xsp</text></item>

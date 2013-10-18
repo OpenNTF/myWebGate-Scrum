@@ -281,14 +281,13 @@ public class Iteration implements Serializable, IScrumDocument {
 	
 	public int getRemainingEffort() {
 		int remainingEffort = 0;
-		for (Userstory userstory : UserstorySessionFacade.get()
-				.getUserstoriesOfIteration(m_Id, false)) {
+		for (Userstory userstory : UserstorySessionFacade.get().getUserstoriesOfIteration(m_Id, false)) {
 			remainingEffort += userstory.getRemainingEffort();
 		}
 		return remainingEffort;
 	}
 	
 	public int getRemainingEffortPercent() {
-		return getRemainingEffort() * 100 / getCompletedEffort();
+		return (getCompletedEffort() == 0) ? 100 : 100 * getCompletedEffort() / getExpectedEffort();
 	}
 }

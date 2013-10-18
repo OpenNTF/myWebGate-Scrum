@@ -268,29 +268,40 @@ getComponent("dlgEditIteration").show()}]]></xp:this.action>
 
 						<xp:table style="width:100%;" styleClass="selectedTask">
 							<xp:tr>
+								<xp:this.rendered><![CDATA[#{javascript:repeatedIteration.body != "";}]]></xp:this.rendered>
 								<xp:td colspan="2" style="padding-bottom:10px;">
 									<xp:text escape="true" id="cfBody" value="#{repeatedIteration.body}">
 									</xp:text>
 								</xp:td>
 							</xp:tr>
 							<xp:tr>
-								<xp:this.rendered><![CDATA[#{javascript:@TextToNumber(repeatedIteration.status) > 1;}]]></xp:this.rendered>
-								<xp:td style="padding:10px 0;width:150px;">
-									<xp:label value="Effective Start / End Date" id="label2"
-										for="dspStartDate">
+								<xp:td style="width:150px;">
+									<xp:label value="Expected Effort" id="label5" for="dspEffort">
 									</xp:label>
 								</xp:td>
-								<xp:td style="padding:10px 0;">
-									<xp:text escape="true" id="dspStartDate" value="#{repeatedIteration.start}">
+								<xp:td>
+									<xp:text escape="true" id="dspEffort">
+										<xp:this.value><![CDATA[#{javascript:repeatedIteration.getExpectedEffort() + " h"
+}]]></xp:this.value>
 									</xp:text>
-									&#160;/&#160;
-									<xp:text escape="true" id="dspEndDate" value="#{repeatedIteration.end}">
+								</xp:td>
+							</xp:tr>
+							<xp:tr>
+								<xp:td>
+									<xp:label value="Remaining Workload" id="label3"
+										for="dspWorkloadRem">
+									</xp:label>
+								</xp:td>
+								<xp:td>
+									<xp:text escape="true" id="dspWorkloadRem">
+										<xp:this.value><![CDATA[#{javascript:repeatedIteration.getRemainingEffort() + " h / " + repeatedIteration.getRemainingEffortPercent() + " %"
+}]]></xp:this.value>
 									</xp:text>
 								</xp:td>
 							</xp:tr>
 							<xp:tr>
 								<xp:this.rendered><![CDATA[#{javascript:@Elements(repeatedIteration.files) > 1}]]></xp:this.rendered>
-								<xp:td colspan="2">
+								<xp:td colspan="2" style="padding-top:20px;">
 									<xp:panel style="width:500px;">
 										<xc:ccFileDownload fileDownloadFieldName="Files"
 											fileDownloadId="Files" fileDownloadObject="#{javascript:repeatedIteration}"
@@ -353,7 +364,7 @@ getComponent("dlgEditIteration").show()}]]></xp:this.action>
 								}]]></xp:this.value>
 								<xp:tr>
 									<xp:td style="text-align:center;">
-										<xp:image id="image5" style="margin-top:1px;">
+										<xp:image id="imgUSExecutable" style="margin-top:1px;">
 											<xp:this.url><![CDATA[#{javascript:if (repeatedUserstory.isExecutable() == true) {
 	"/bullet_green.png"
 } else {
@@ -365,7 +376,7 @@ getComponent("dlgEditIteration").show()}]]></xp:this.action>
 	"Userstory is not executable - missing information"
 }}]]></xp:this.alt>
 										</xp:image>
-										<xe:tooltip id="tooltip5" for="imgExecutable">
+										<xe:tooltip id="tooltip5" for="imgUSExecutable">
 											<xe:this.label><![CDATA[#{javascript:if (repeatedUserstory.isExecutable() == true) {
 	"Userstory is executable"
 } else {

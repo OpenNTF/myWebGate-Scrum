@@ -159,35 +159,7 @@ getComponent("dlgEditUserstory").hide("tblUserstories");}]]></xp:this.action>
 					</xp:inputTextarea>
 				</xe:formRow>
 
-				<xe:formRow id="froUSEffectiveStart" for="iptUSStart"
-					label="Effective start date">
-					<xe:this.rendered><![CDATA[#{javascript:var status = @TextToNumber(editUserstory.status); 
-status > 1 && status < 9}]]></xe:this.rendered>
-					<xp:inputText id="iptUSStart" value="#{editUserstory.start}">
-						<xp:this.converter>
-							<xp:convertDateTime type="date">
-							</xp:convertDateTime>
-						</xp:this.converter>
-						<xp:dateTimeHelper dojoType="dijit.form.DateTextBox">
-						</xp:dateTimeHelper>
-					</xp:inputText>
-				</xe:formRow>
-
-				<xe:formRow id="froUSEffectiveEnd" for="iptUSEnd"
-					label="Effective end date">
-					<xe:this.rendered><![CDATA[#{javascript:var status = @TextToNumber(editUserstory.status); 
-status > 1 && status < 9}]]></xe:this.rendered>
-					<xp:inputText id="iptUSEnd" value="#{editUserstory.end}">
-						<xp:this.converter>
-							<xp:convertDateTime type="date">
-							</xp:convertDateTime>
-						</xp:this.converter>
-						<xp:dateTimeHelper dojoType="dijit.form.DateTextBox">
-						</xp:dateTimeHelper>
-					</xp:inputText>
-				</xe:formRow>
-
-
+				
 				<xe:formRow id="froUSTags" label="Tags" for="cmtTags">
 					<xc:ccMultivalueText id="cmtTags"
 						textArrayFieldName="Tags" textArrayId="taTags"

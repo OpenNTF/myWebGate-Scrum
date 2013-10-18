@@ -13,8 +13,7 @@
 			<xp:button value="New Task" id="btNewTask" style="float:left;margin-top:2px;">
 				<xp:this.rendered><![CDATA[#{javascript:!(compositeData.ProjectIsNew || compositeData.UserstoryIsNew || compositeData.UserOnly) && (hasRole("[Admin]") || hasRole("[Intern]"))}]]></xp:this.rendered>
 				<xp:eventHandler event="onclick" submit="true"
-					refreshMode="partial" execId="dlgEditTask"
-					refreshId="dlgEditTask">
+					refreshMode="partial" execId="dlgEditTask" refreshId="dlgEditTask">
 					<xp:this.action><![CDATA[#{javascript:viewScope.editTaskId = "";
 if (compositeData.refreshId!= null && compositeData.refreshId != ""){
 	viewScope.taskRefreshId = getClientId(compositeData.refreshId);
@@ -515,9 +514,8 @@ getComponent("dlgEditMailOut").show();}]]></xp:this.action>
 					<xp:td style="text-align:center;">
 						<xp:link escape="true" id="lnkEdit" text="">
 							<xp:this.rendered><![CDATA[#{javascript:(hasRole("[Admin]") || hasRole("[Intern]"))}]]></xp:this.rendered>
-							<xp:eventHandler event="onclick"
-								submit="true" refreshMode="partial" refreshId="dlgEditTask"
-								disableValidators="true">
+							<xp:eventHandler event="onclick" submit="true"
+								refreshMode="partial" refreshId="dlgEditTask" disableValidators="true">
 								<xp:this.action><![CDATA[#{javascript:viewScope.editTaskId = repeatedTask.getId();
 viewScope.isEditTask = true;
 if (compositeData.refreshId!= null && compositeData.refreshId != ""){
@@ -538,8 +536,9 @@ getComponent("dlgEditTask").show()}]]></xp:this.action>
 					<xp:td style="text-align:center;">
 						<xp:link escape="true" id="lnkDelete">
 							<xp:this.rendered><![CDATA[#{javascript:(hasRole("[Admin]") || hasRole("[Intern]"))}]]></xp:this.rendered>
-							<xp:eventHandler event="onclick"
-								submit="true" refreshMode="partial" refreshId='#{javascript:if (compositeData.refreshId!= null &amp;&amp; compositeData.refreshId != ""){
+							<xp:eventHandler event="onclick" submit="true"
+								refreshMode="partial"
+								refreshId='#{javascript:if (compositeData.refreshId!= null &amp;&amp; compositeData.refreshId != ""){
 	compositeData.refreshId;
 } else {
 	"tblTasks";
@@ -568,6 +567,7 @@ getComponent("dlgEditTask").show()}]]></xp:this.action>
 						<xp:table style="width:100%;margin-bottom:10px;"
 							styleClass="selectedTask">
 							<xp:tr>
+								<xp:this.rendered><![CDATA[#{javascript:repeatedTask.body != "";}]]></xp:this.rendered>
 								<xp:td style="padding-bottom:10px;width:150px;">
 									<xp:label value="Description" id="label10" for="dspDescription">
 									</xp:label>
@@ -578,7 +578,7 @@ getComponent("dlgEditTask").show()}]]></xp:this.action>
 								</xp:td>
 							</xp:tr>
 							<xp:tr>
-								<xp:td>
+								<xp:td style="width:150px;">
 									<xp:label value="Iteration" id="label4" for="dspIteration">
 									</xp:label>
 								</xp:td>
@@ -617,20 +617,6 @@ getComponent("dlgEditTask").show()}]]></xp:this.action>
 								</xp:td>
 							</xp:tr>
 							<xp:tr>
-								<xp:this.rendered><![CDATA[#{javascript:@TextToNumber(repeatedTask.getStatus()) > 1}]]></xp:this.rendered>
-								<xp:td>
-									<xp:label value="Effective Start / End Date" id="label7" for="dspStartDate">
-									</xp:label>
-								</xp:td>
-								<xp:td>
-									<xp:text escape="true" id="dspStartDate" value="#{repeatedTask.start}">
-									</xp:text>
-									&#160;/&#160;
-									<xp:text escape="true" id="dspEndDate" value="#{repeatedTask.end}">
-									</xp:text>
-								</xp:td>
-							</xp:tr>
-							<xp:tr>
 								<xp:td style="padding-bottom:10px;">
 									<xp:label value="Created" id="label6" for="dspAuthor">
 									</xp:label>
@@ -656,15 +642,18 @@ getComponent("dlgEditTask").show()}]]></xp:this.action>
 									</xe:djextListTextBox>
 								</xp:td>
 							</xp:tr>
+							<xp:tr>
+								<xp:this.rendered><![CDATA[#{javascript:@Elements(repeatedTask.files) > 1}]]></xp:this.rendered>
+								<xp:td colspan="2" style="padding-top:20px;">
+									<xp:panel style="width:500px;">
+										<xc:ccFileDownload fileDownloadFieldName="Files"
+											fileDownloadId="Files" fileDownloadObject="#{javascript:repeatedTask}"
+											uploadDisabled="true" deletionDisabled="true">
+										</xc:ccFileDownload>
+									</xp:panel>
+								</xp:td>
+							</xp:tr>
 						</xp:table>
-
-						<xp:panel style="width:500px;">
-							<xp:this.rendered><![CDATA[#{javascript:@Elements(repeatedTask.files) > 1}]]></xp:this.rendered>
-							<xc:ccFileDownload fileDownloadFieldName="Files"
-								fileDownloadId="Files" fileDownloadObject="#{javascript:repeatedTask}"
-								uploadDisabled="true" deletionDisabled="true">
-							</xc:ccFileDownload>
-						</xp:panel>
 
 						<hr style="width:90%;color:#eeeeee;" />
 
