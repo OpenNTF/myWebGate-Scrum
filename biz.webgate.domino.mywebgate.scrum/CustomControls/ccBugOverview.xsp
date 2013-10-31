@@ -516,8 +516,9 @@ getComponent("dlgEditBug").show()}]]></xp:this.action>
 									</xp:label>
 								</xp:td>
 								<xp:td style="padding-bottom:10px;">
-									<xp:text escape="true" id="dspDescription" value="#{repeatedBug.body}">
-									</xp:text>
+									<xp:inputText id="dspDescription" value="#{repeatedBug.body}"
+										readonly="true">
+									</xp:inputText>
 								</xp:td>
 							</xp:tr>
 							<xp:tr>

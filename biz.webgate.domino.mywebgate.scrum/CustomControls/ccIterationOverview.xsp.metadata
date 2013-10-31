@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?><note class="form" replicaid="C1257BFF003B00D8" version="9.0" xmlns="http://www.lotus.com/dxl">
-<noteinfo noteid="362" sequence="26" unid="C7A914C87DDFAE77C1257BFF003B01D8">
-<created><datetime dst="true">20131009T124430,96+02</datetime></created>
-<modified><datetime dst="true">20131018T112956,74+02</datetime></modified>
-<revised><datetime dst="true">20131018T112956,73+02</datetime></revised>
-<lastaccessed><datetime dst="true">20131018T112956,74+02</datetime></lastaccessed>
-<addedtofile><datetime dst="true">20131009T124436,88+02</datetime></addedtofile></noteinfo>
+<?xml version="1.0" encoding="UTF-8"?><note class="form" replicaid="C1257BFE003BAEFD" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="362" sequence="72" unid="D391100C411D3641C1257BFE003BBC54">
+<created><datetime dst="true">20131008T125228,36+02</datetime></created>
+<modified><datetime>20131031T150453,64+01</datetime></modified>
+<revised><datetime>20131031T150453,63+01</datetime></revised>
+<lastaccessed><datetime>20131031T150453,64+01</datetime></lastaccessed>
+<addedtofile><datetime dst="true">20131008T125229,93+02</datetime></addedtofile></noteinfo>
 <updatedby><name>CN=Marco Baumann/O=WGC/C=CH</name></updatedby>
 <wassignedby><name>CN=Marco Baumann/O=WGC/C=CH</name></wassignedby>
 <item name="$TITLE"><text>ccIterationOverview.xsp</text></item>

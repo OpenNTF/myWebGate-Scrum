@@ -28,8 +28,8 @@ return editUserstory;}]]></xe:this.createObject>
 				</xe:objectData>
 			</xp:this.data>
 
-			<xe:formTable id="ftaUSEdit" labelWidth="110px;"
-				style="margin-top:10px;" styleClass="ftEditDialog">
+			<xe:formTable id="ftaUSEdit" style="margin-top:10px;"
+				styleClass="ftEditDialog" labelWidth="170px">
 				<xp:this.facets>
 					<xe:dialogButtonBar id="dbbUSEdit" xp:key="footer">
 						<xp:button id="btSaveBug" value="Save">
@@ -86,23 +86,43 @@ getComponent("dlgEditUserstory").hide("tblUserstories");}]]></xp:this.action>
 					</xp:inputText>
 				</xe:formRow>
 
-				<xe:formRow id="froUSTime" for="iptUSTime" label="Expected Effort">
-					<xp:inputText id="iptUSTime"
-						value="#{javascript:editUserstory.getExpectedEffort()}" style="width:30px;"
-						readonly="true">
-						<xp:this.converter>
-							<xp:convertNumber type="number" integerOnly="true">
-							</xp:convertNumber>
-						</xp:this.converter>
-					</xp:inputText>
-					&#160;h
+				<xe:formRow id="froExpectedEffort" for="dspExpectedEffort"
+					label="Expected Effort">
+					<xp:text escape="true" id="dspExpectedEffort">
+						<xp:this.value><![CDATA[#{javascript:editUserstory.getExpectedEffort(true) + " h"
+}]]></xp:this.value>
+					</xp:text>
 				</xe:formRow>
 
 				<xe:formRow id="froWorkloadRem" for="dspWorkloadRem"
 					label="Remaining Workload">
+					<xp:this.rendered><![CDATA[#{javascript:var status = @TextToNumber(editUserstory.status);
+status > 1 && status < 9;}]]></xp:this.rendered>
 					<xp:text escape="true" id="dspWorkloadRem">
 						<xp:this.value><![CDATA[#{javascript:editUserstory.getRemainingEffort() + " h / " + editUserstory.getRemainingEffortPercent() + " %"
 }]]></xp:this.value>
+					</xp:text>
+				</xe:formRow>
+
+				<xe:formRow id="froEffectiveEffort" for="dspEffectiveEffort"
+					label="Effective Effort">
+					<xp:this.rendered><![CDATA[#{javascript:var status = @TextToNumber(editUserstory.status);
+status > 1 && status < 9;}]]></xp:this.rendered>
+					<xp:text escape="true" id="dspEffectiveEffort">
+						<xp:this.value><![CDATA[#{javascript:editUserstory.getEffectiveEffort() + " h"
+}]]></xp:this.value>
+					</xp:text>
+				</xe:formRow>
+
+				<xe:formRow id="froDeviation" for="dspDeviation"
+					label="Deviation Expected/Effective">
+					<xp:this.rendered><![CDATA[#{javascript:var status = @TextToNumber(editUserstory.status);
+status > 1 && status < 9;}]]></xp:this.rendered>
+					<xp:text escape="true" id="dspDeviation">
+						<xp:this.value><![CDATA[#{javascript:editUserstory.getEffortDeviation() + " h"
+}]]></xp:this.value>
+						<xp:this.style><![CDATA[#{javascript:var dev = editUserstory.getEffortDeviation(); 
+return (dev > 0 ) ? "color:#FF0000;" : "color:#009900;"}]]></xp:this.style>
 					</xp:text>
 				</xe:formRow>
 
@@ -118,7 +138,8 @@ getComponent("dlgEditUserstory").hide("tblUserstories");}]]></xp:this.action>
 						</xp:selectItem>
 						<xp:selectItem itemLabel="Accepted" itemValue="5">
 						</xp:selectItem>
-						<xp:selectItem itemLabel="Postponed" itemValue="9"></xp:selectItem>
+						<xp:selectItem itemLabel="Postponed" itemValue="9">
+						</xp:selectItem>
 						<xp:eventHandler event="onchange" submit="true"
 							refreshMode="partial" refreshId="ftaUSEdit" disableValidators="true">
 						</xp:eventHandler>
@@ -159,7 +180,7 @@ getComponent("dlgEditUserstory").hide("tblUserstories");}]]></xp:this.action>
 					</xp:inputTextarea>
 				</xe:formRow>
 
-				
+
 				<xe:formRow id="froUSTags" label="Tags" for="cmtTags">
 					<xc:ccMultivalueText id="cmtTags"
 						textArrayFieldName="Tags" textArrayId="taTags"

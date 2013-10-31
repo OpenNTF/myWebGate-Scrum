@@ -321,6 +321,6 @@ public class Task implements Serializable, IScrumDocument {
 
 	public boolean isExecutable() {
 		// task must have assignee and expected effort to be executable
-		return (!m_Editor.equals("") && m_EffectiveEffort > 0) ? true : false;
+		return (!m_Editor.equals("") && m_ExpectedEffort > 0) ? true : false;
 	}
 }

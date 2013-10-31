@@ -1,17 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?><note class="form" replicaid="C1257BFF003B00D8" version="9.0" xmlns="http://www.lotus.com/dxl">
-<noteinfo noteid="322" sequence="26" unid="E9FEB0334BF92E89C1257BFF003B01B0">
-<created><datetime dst="true">20131009T124430,56+02</datetime></created>
-<modified><datetime dst="true">20131018T152840,41+02</datetime></modified>
-<revised><datetime dst="true">20131018T152840,40+02</datetime></revised>
-<lastaccessed><datetime dst="true">20131018T152840,41+02</datetime></lastaccessed>
-<addedtofile><datetime dst="true">20131009T124435,60+02</datetime></addedtofile></noteinfo>
+<?xml version="1.0" encoding="UTF-8"?><note class="form" replicaid="C1257BFE003BAEFD" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="322" sequence="86" unid="C74FE7ECC360060FC1257BFE003BBBD7">
+<created><datetime dst="true">20131008T125227,11+02</datetime></created>
+<modified><datetime>20131031T142247,10+01</datetime></modified>
+<revised><datetime>20131031T142247,09+01</datetime></revised>
+<lastaccessed><datetime>20131031T142247,10+01</datetime></lastaccessed>
+<addedtofile><datetime dst="true">20131008T125228,65+02</datetime></addedtofile></noteinfo>
 <updatedby><name>CN=Marco Baumann/O=WGC/C=CH</name></updatedby>
 <wassignedby><name>CN=Marco Baumann/O=WGC/C=CH</name></wassignedby>
 <item name="$TITLE"><text>dlgEditUserstory.xsp</text></item>
 <item name="$Flags"><text>gC~4;</text></item>
+
 <item name="$DesignerVersion"><text>8.5.2</text></item>
-
-
 
 
 

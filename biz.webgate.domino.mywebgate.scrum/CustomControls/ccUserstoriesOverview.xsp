@@ -286,30 +286,34 @@ getComponent("dlgEditUserstory").show()}]]></xp:this.action>
 								styleClass="selectedTask">
 								<xp:tr>
 									<xp:this.rendered><![CDATA[#{javascript:repeatedUserstory.body != "";}]]></xp:this.rendered>
-									<xp:td style="padding-bottom:10px;width:150px;">
-										<xp:label value="Description" id="label7" for="dspBody">
+									<xp:td style="padding-bottom:10px;width:170px;">
+										<xp:label value="Description" id="lblBody" for="dspBody">
 										</xp:label>
 									</xp:td>
 									<xp:td style="padding-bottom:10px;">
-										<xp:text escape="true" id="dspBody" value="#{repeatedUserstory.body}">
-										</xp:text>
+										<xp:inputText id="dspBody" value="#{repeatedUserstory.body}"
+											readonly="true">
+										</xp:inputText>
 									</xp:td>
 								</xp:tr>
 								<xp:tr>
-									<xp:td>
-										<xp:label value="Expected Effort" id="label5" for="dspEffort">
+									<xp:td style="width:170px;">
+										<xp:label value="Expected Effort" id="lblExpectedEffort"
+											for="dspExpectedEffort">
 										</xp:label>
 									</xp:td>
 									<xp:td>
-										<xp:text escape="true" id="dspEffort">
-											<xp:this.value><![CDATA[#{javascript:repeatedUserstory.getExpectedEffort() + " h"
+										<xp:text escape="true" id="dspExpectedEffort">
+											<xp:this.value><![CDATA[#{javascript:repeatedUserstory.getExpectedEffort(true) + " h"
 }]]></xp:this.value>
 										</xp:text>
 									</xp:td>
 								</xp:tr>
 								<xp:tr>
+									<xp:this.rendered><![CDATA[#{javascript:var status = @TextToNumber(repeatedUserstory.status);
+status > 1 && status < 9;}]]></xp:this.rendered>
 									<xp:td>
-										<xp:label value="Remaining Workload" id="label3"
+										<xp:label value="Remaining Workload" id="lblRemainingWorkload"
 											for="dspWorkloadRem">
 										</xp:label>
 									</xp:td>
@@ -321,9 +325,41 @@ getComponent("dlgEditUserstory").show()}]]></xp:this.action>
 									</xp:td>
 								</xp:tr>
 								<xp:tr>
+									<xp:this.rendered><![CDATA[#{javascript:var status = @TextToNumber(repeatedUserstory.status);
+status > 1 && status < 9;}]]></xp:this.rendered>
+									<xp:td style="padding-top:10px;">
+										<xp:label value="Effective Effort" id="lblEffectiveEffort"
+											for="dspEffectiveEffort">
+										</xp:label>
+									</xp:td>
+									<xp:td style="padding-top:10px;">
+										<xp:text escape="true" id="dspEffectiveEffort">
+											<xp:this.value><![CDATA[#{javascript:repeatedUserstory.getEffectiveEffort() + " h"
+}]]></xp:this.value>
+										</xp:text>
+									</xp:td>
+								</xp:tr>
+								<xp:tr>
+									<xp:this.rendered><![CDATA[#{javascript:var status = @TextToNumber(repeatedUserstory.status);
+status > 1 && status < 9;}]]></xp:this.rendered>
+									<xp:td style="padding-bottom:10px;">
+										<xp:label value="Deviation Expected/Effective" id="lblDeviation"
+											for="dspDeviation">
+										</xp:label>
+									</xp:td>
+									<xp:td style="padding-bottom:10px;">
+										<xp:text escape="true" id="dspDeviation">
+											<xp:this.value><![CDATA[#{javascript:repeatedUserstory.getEffortDeviation() + " h"
+}]]></xp:this.value>
+											<xp:this.style><![CDATA[#{javascript:var dev = repeatedUserstory.getEffortDeviation(); 
+return (dev > 0 ) ? "color:#FF0000;" : "color:#009900;"}]]></xp:this.style>
+										</xp:text>
+									</xp:td>
+								</xp:tr>
+								<xp:tr>
 									<xp:this.rendered><![CDATA[#{javascript:repeatedUserstory.status == "9"}]]></xp:this.rendered>
 									<xp:td style="padding-bottom:10px;width:150px;">
-										<xp:label value="Reason for postponing" id="label2"
+										<xp:label value="Reason for postponing" id="lblPostponeReason"
 											for="dspPostponeReason">
 										</xp:label>
 									</xp:td>

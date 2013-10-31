@@ -51,7 +51,7 @@ public class TaskSessionFacade {
 	public static final int SORT_BY_SUBJECT = 8;
 	public static final int SORT_BY_EDITOR = 9;
 	public static final int SORT_BY_DUE = 10;
-	public static final int SORT_BY_TIME = 11;
+	
 	public static final int SORT_BY_STATUS = 12;
 	public static final int SORT_BY_ID = 13;
 

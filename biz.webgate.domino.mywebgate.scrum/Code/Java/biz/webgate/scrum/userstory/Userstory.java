@@ -288,35 +288,37 @@ public class Userstory implements Serializable, IScrumDocument {
 	}
 
 	public boolean isExecutable() {
-		return TaskSessionFacade.get().getTasksOfUserstory(
-				TaskSessionFacade.SORT_BY_ID, false, m_Id, "", true).size() > 0;
+		return TaskSessionFacade.get().getTasksOfUserstory(TaskSessionFacade.SORT_BY_ID, false, m_Id, "", true).size() > 0;
 	}
 
-	public int getExpectedEffort() {
+	public int getExpectedEffort(boolean incComplete) {
+		//incComplete = true: get expected effort of all tasks
+		//incComplete = false: get expected effort of all pending tasks
 		int expectedEffort = 0;
-		for (Task task : TaskSessionFacade.get().getTasksOfUserstory(
-				TaskSessionFacade.SORT_BY_ID, false, m_Id, "", false)) {
-			expectedEffort += task.getExpectedEffort();
+		for (Task task : TaskSessionFacade.get().getTasksOfUserstory(TaskSessionFacade.SORT_BY_ID, false, m_Id, "", false)) {
+			if (incComplete == true || (incComplete == false && !task.getStatus().equals("4"))) {
+				expectedEffort += task.getExpectedEffort();	
+			}
 		}
 		return expectedEffort;
 	}
 
-	public int getResolvedEffort() {
-		int completedEffort = 0;
-		for (Task task : TaskSessionFacade.get().getTasksOfUserstory(
-				TaskSessionFacade.SORT_BY_ID, false, m_Id, "4", false)) {
-			completedEffort += task.getExpectedEffort();
+	public int getEffectiveEffort() {
+		int effectiveEffort = 0;
+		for (Task task : TaskSessionFacade.get().getTasksOfUserstory(TaskSessionFacade.SORT_BY_ID, false, m_Id, "4", false)) {
+			//get completed tasks
+			effectiveEffort += task.getEffectiveEffort();
 		}
-		return completedEffort;
+		return effectiveEffort;
 	}
 
 	public int getRemainingEffort() {
-		return getExpectedEffort() - getResolvedEffort();
+		//ExptecedEffort of all not-complete tasks
+		return getExpectedEffort(false);
 	}
 
 	public int getRemainingEffortPercent() {
-		return (getResolvedEffort() == 0) ? 100 : 100 * getResolvedEffort()
-				/ getExpectedEffort();
+		return (getEffectiveEffort() == 0) ? 100 : 100 * getRemainingEffort() / getExpectedEffort(true);
 	}
 
 	/**
@@ -326,10 +328,8 @@ public class Userstory implements Serializable, IScrumDocument {
 	 */
 	public int getEffortDeviation() {
 		int effortDeviation = 0;
-		for (Task task : TaskSessionFacade.get().getTasksOfUserstory(
-				TaskSessionFacade.SORT_BY_ID, false, m_Id, "4", false)) {
-			effortDeviation += task.getEffectiveEffort()
-					- task.getExpectedEffort();
+		for (Task task : TaskSessionFacade.get().getTasksOfUserstory(TaskSessionFacade.SORT_BY_ID, false, m_Id, "4", false)) {
+			effortDeviation += task.getEffectiveEffort() - task.getExpectedEffort();
 		}
 		return effortDeviation;
 	}

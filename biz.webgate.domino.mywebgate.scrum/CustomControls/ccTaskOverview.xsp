@@ -573,8 +573,9 @@ getComponent("dlgEditTask").show()}]]></xp:this.action>
 									</xp:label>
 								</xp:td>
 								<xp:td style="padding-bottom:10px;">
-									<xp:text escape="true" id="dspDescription" value="#{repeatedTask.body}">
-									</xp:text>
+									<xp:inputText id="dspDescription"
+										value="#{repeatedTask.body}" readonly="true">
+									</xp:inputText>
 								</xp:td>
 							</xp:tr>
 							<xp:tr>
@@ -607,13 +608,29 @@ getComponent("dlgEditTask").show()}]]></xp:this.action>
 							</xp:tr>
 							<xp:tr>
 								<xp:td>
-									<xp:label value="Expected Effort" id="label8" for="dspEffort">
+									<xp:label value="Expected Effort" id="label8"
+										for="dspExpectedEffort">
 									</xp:label>
 								</xp:td>
 								<xp:td>
-									<xp:text escape="true" id="dspEffort" value="#{repeatedTask.time}">
+									<xp:text escape="true" id="dspExpectedEffort">
+										<xp:this.value><![CDATA[#{javascript:repeatedTask.getExpectedEffort() + " h"
+}]]></xp:this.value>
 									</xp:text>
-									&#160;h
+								</xp:td>
+							</xp:tr>
+							<xp:tr>
+								<xp:this.rendered><![CDATA[#{javascript:repeatedTask.status > 1}]]></xp:this.rendered>
+								<xp:td>
+									<xp:label value="Effective Effort" id="label7"
+										for="dspEffectiveEffort">
+									</xp:label>
+								</xp:td>
+								<xp:td>
+									<xp:text escape="true" id="dspEffectiveEffort">
+										<xp:this.value><![CDATA[#{javascript:repeatedTask.getEffectiveEffort() + " h"
+}]]></xp:this.value>
+									</xp:text>
 								</xp:td>
 							</xp:tr>
 							<xp:tr>

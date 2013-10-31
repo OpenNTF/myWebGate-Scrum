@@ -270,23 +270,27 @@ getComponent("dlgEditIteration").show()}]]></xp:this.action>
 							<xp:tr>
 								<xp:this.rendered><![CDATA[#{javascript:repeatedIteration.body != "";}]]></xp:this.rendered>
 								<xp:td colspan="2" style="padding-bottom:10px;">
-									<xp:text escape="true" id="cfBody" value="#{repeatedIteration.body}">
-									</xp:text>
+									<xp:inputText id="cfBody" value="#{repeatedIteration.body}"
+										readonly="true">
+									</xp:inputText>
 								</xp:td>
 							</xp:tr>
 							<xp:tr>
-								<xp:td style="width:150px;">
-									<xp:label value="Expected Effort" id="label5" for="dspEffort">
+								<xp:td style="width:170px;">
+									<xp:label value="Expected Effort" id="label5"
+										for="dspExpectedEffort">
 									</xp:label>
 								</xp:td>
 								<xp:td>
-									<xp:text escape="true" id="dspEffort">
+									<xp:text escape="true" id="dspExpectedEffort">
 										<xp:this.value><![CDATA[#{javascript:repeatedIteration.getExpectedEffort() + " h"
 }]]></xp:this.value>
 									</xp:text>
 								</xp:td>
 							</xp:tr>
 							<xp:tr>
+								<xp:this.rendered><![CDATA[#{javascript:var status = @TextToNumber(repeatedIteration.status);
+status > 1;}]]></xp:this.rendered>
 								<xp:td>
 									<xp:label value="Remaining Workload" id="label3"
 										for="dspWorkloadRem">
@@ -296,6 +300,36 @@ getComponent("dlgEditIteration").show()}]]></xp:this.action>
 									<xp:text escape="true" id="dspWorkloadRem">
 										<xp:this.value><![CDATA[#{javascript:repeatedIteration.getRemainingEffort() + " h / " + repeatedIteration.getRemainingEffortPercent() + " %"
 }]]></xp:this.value>
+									</xp:text>
+								</xp:td>
+							</xp:tr>
+							<xp:tr>
+								<xp:this.rendered><![CDATA[#{javascript:var status = @TextToNumber(repeatedIteration.status);
+status > 1;}]]></xp:this.rendered>
+								<xp:td style="padding-top:10px;">
+									<xp:label value="Effective Effort" id="lblEffectiveEffort"
+										for="dspEffectiveEffort">
+									</xp:label>
+								</xp:td>
+								<xp:td style="padding-top:10px;">
+									<xp:text escape="true" id="dspEffectiveEffort">
+										<xp:this.value><![CDATA[#{javascript:repeatedIteration.getEffectiveEffort() + " h"}]]></xp:this.value>
+									</xp:text>
+								</xp:td>
+							</xp:tr>
+							<xp:tr>
+								<xp:this.rendered><![CDATA[#{javascript:var status = @TextToNumber(repeatedIteration.status);
+status > 1;}]]></xp:this.rendered>
+								<xp:td>
+									<xp:label value="Deviation Expected/Effective" id="label2"
+										for="dspDeviation">
+									</xp:label>
+								</xp:td>
+								<xp:td>
+									<xp:text escape="true" id="dspDeviation">
+										<xp:this.value><![CDATA[#{javascript:repeatedIteration.getEffortDeviation() + " h"}]]></xp:this.value>
+										<xp:this.style><![CDATA[#{javascript:var dev = repeatedIteration.getEffortDeviation(); 
+return (dev > 0 ) ? "color:#FF0000;" : "color:#009900;"}]]></xp:this.style>
 									</xp:text>
 								</xp:td>
 							</xp:tr>

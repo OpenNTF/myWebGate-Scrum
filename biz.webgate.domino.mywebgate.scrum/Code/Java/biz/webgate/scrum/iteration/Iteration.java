@@ -263,21 +263,19 @@ public class Iteration implements Serializable, IScrumDocument {
 
 	public int getExpectedEffort() {
 		int expectedEffort = 0;
-		for (Userstory userstory : UserstorySessionFacade.get()
-				.getUserstoriesOfIteration(m_Id, false)) {
+		for (Userstory userstory : UserstorySessionFacade.get().getUserstoriesOfIteration(m_Id, false)) {
 			if (!userstory.getStatus().equals("0")) {
-				expectedEffort += userstory.getExpectedEffort();
+				expectedEffort += userstory.getExpectedEffort(true);
 			}
 		}
 		return expectedEffort;
 	}
 
-	public int getResolvedEffort() {
+	public int getEffectiveEffort() {
 		int resolvedEffort = 0;
-		for (Userstory userstory : UserstorySessionFacade.get()
-				.getUserstoriesOfIteration(m_Id, false)) {
+		for (Userstory userstory : UserstorySessionFacade.get().getUserstoriesOfIteration(m_Id, false)) {
 			if (!userstory.getStatus().equals("0")) {
-				resolvedEffort += userstory.getResolvedEffort();
+				resolvedEffort += userstory.getEffectiveEffort();
 			}
 		}
 		return resolvedEffort;
@@ -285,8 +283,7 @@ public class Iteration implements Serializable, IScrumDocument {
 
 	public int getRemainingEffort() {
 		int remainingEffort = 0;
-		for (Userstory userstory : UserstorySessionFacade.get()
-				.getUserstoriesOfIteration(m_Id, false)) {
+		for (Userstory userstory : UserstorySessionFacade.get().getUserstoriesOfIteration(m_Id, false)) {
 			if (!userstory.getStatus().equals("0")) {
 				remainingEffort += userstory.getRemainingEffort();
 			}
@@ -295,14 +292,12 @@ public class Iteration implements Serializable, IScrumDocument {
 	}
 
 	public int getRemainingEffortPercent() {
-		return (getResolvedEffort() == 0) ? 100 : 100 * getResolvedEffort()
-				/ getExpectedEffort();
+		return (getEffectiveEffort() == 0) ? 100 : 100 * getEffectiveEffort() / getExpectedEffort();
 	}
 
 	public int getEffortDeviation() {
 		int effortDeviation = 0;
-		for (Userstory userstory : UserstorySessionFacade.get()
-				.getUserstoriesOfIteration(m_Id, false)) {
+		for (Userstory userstory : UserstorySessionFacade.get().getUserstoriesOfIteration(m_Id, false)) {
 			if (!userstory.getStatus().equals("0")) {
 				effortDeviation += userstory.getEffortDeviation();
 			}

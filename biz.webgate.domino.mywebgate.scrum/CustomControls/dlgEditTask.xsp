@@ -28,21 +28,28 @@ return thisEditTask;}]]></xe:this.createObject>
 				<xp:this.facets>
 					<xe:dialogButtonBar id="dbbEditTask" xp:key="footer">
 						<xp:button id="btSaveTask" value="Save">
-							<xp:eventHandler event="onclick" submit="true"
-								refreshMode="complete">
+							<xp:eventHandler event="onclick"
+								submit="true" refreshMode="complete">
 								<xp:this.action><![CDATA[#{javascript:ccBean.updateMultiValueData(editTask, "taskAlias");
 
 if (@TextToNumber(editTask.status) > 1) {
-	if (editTask.editor == "" || editTask.time == 0) {		
+	if (editTask.editor == "" || editTask.expectedEffort < 1) {
 		if (editTask.editor == "") {
 			var msg = new javax.faces.application.FacesMessage();
 			facesContext.addMessage("saveError",msg("Please assign this task before continuing"));
-		} 
-		if (editTask.time == 0){
+		}
+		if (editTask.expectedEffort < 1){
 			var msg = new javax.faces.application.FacesMessage();
 			facesContext.addMessage("msgTaskTime",msg("Please enter the expected effort for this task"));
 		}
 		return false;	
+	}
+	if (@TextToNumber(editTask.status) == 4) {
+		if (editTask.effectiveEffort < 1){
+			var msg = new javax.faces.application.FacesMessage();
+			facesContext.addMessage("msgTaskTime",msg("Please enter the effective effort for this task"));
+			return false;
+		}
 	}
 }
 
@@ -153,15 +160,35 @@ if(viewScope.taskRefreshId != null || viewScope.taskRefreshId != ""){
 					</xp:inputText>
 				</xe:formRow>
 
-				<xe:formRow id="froTaskTime" for="iptTaskTime" label="Expected Effort">
-					<xp:inputText id="iptTaskTime" value="#{editTask.time}"
+				<xe:formRow id="froTaskExpectedEffort" for="iptTaskExpectedEffort"
+					label="Expected Effort">
+					<xp:inputText id="iptTaskExpectedEffort" value="#{editTask.expectedEffort}"
 						style="width:30px;">
+						<xp:this.required><![CDATA[#{javascript:@TextToNumber(editTask.status) > 1}]]></xp:this.required>
+						<xp:this.validators>
+							<xp:validateRequired
+								message="Please enter the expected effort for this task">
+							</xp:validateRequired>
+						</xp:this.validators>
 						<xp:eventHandler event="onchange" submit="true"
 							refreshMode="partial" refreshId="calcExec">
 						</xp:eventHandler>
 					</xp:inputText>
 					&#160;h
+				</xe:formRow>
 
+				<xe:formRow id="froTaskEffectiveEffort" for="iptTaskEffectiveEffort"
+					label="Effective Effort">
+					<xp:this.rendered><![CDATA[#{javascript:editTask.status > 1}]]></xp:this.rendered>
+					<xp:inputText id="iptTaskEffectiveEffort" value="#{editTask.effectiveEffort}"
+						style="width:30px;" required="#{javascript:@TextToNumber(editTask.status) == 4}">
+						<xp:this.validators>
+							<xp:validateRequired
+								message="Please enter the effective effort for this task">
+							</xp:validateRequired>
+						</xp:this.validators>
+					</xp:inputText>
+					&#160;h
 				</xe:formRow>
 
 				<xe:formRow id="froTaskStatus" for="cbbTaskStatus" label="Status">
@@ -200,7 +227,7 @@ if(viewScope.taskRefreshId != null || viewScope.taskRefreshId != ""){
 						</xe:tooltip>
 					</xp:span>
 				</xe:formRow>
-				
+
 				<xe:formRow id="froTaskTags" label="Tag(s)" for="mvtTaskTags">
 					<xc:ccMultivalueText id="mvtTaskTags"
 						textArrayFieldName="Tags" textArrayId="taTags"

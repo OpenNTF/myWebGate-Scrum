@@ -93,9 +93,7 @@ public class TaskComparator implements Comparator<Task> {
 			s2 = o2.getEditor().toLowerCase();
 			break;
 		case TaskSessionFacade.SORT_BY_DUE:
-			return compareDates(o1.getDue(), o2.getDue());
-		case TaskSessionFacade.SORT_BY_TIME:
-			return o1.getTime() - o2.getTime();
+			return compareDates(o1.getDue(), o2.getDue());		
 		case TaskSessionFacade.SORT_BY_STATUS:
 			s1 = o1.getStatus().toLowerCase();
 			s2 = o2.getStatus().toLowerCase();

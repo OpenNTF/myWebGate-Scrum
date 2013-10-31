@@ -40,8 +40,6 @@ public class TaskSortFactory {
 			TaskSessionFacade.SORT_BY_EDITOR);
 	private static Comparator<Task> m_DueComp = new TaskComparator(
 			TaskSessionFacade.SORT_BY_DUE);
-	private static Comparator<Task> m_TimeComp = new TaskComparator(
-			TaskSessionFacade.SORT_BY_TIME);
 	private static Comparator<Task> m_StatusComp = new TaskComparator(
 			TaskSessionFacade.SORT_BY_STATUS);
 	private static Comparator<Task> m_IdComp = new TaskComparator(
@@ -78,9 +76,6 @@ public class TaskSortFactory {
 			break;
 		case TaskSessionFacade.SORT_BY_DUE:
 			Collections.sort(lstTasks, m_DueComp);
-			break;
-		case TaskSessionFacade.SORT_BY_TIME:
-			Collections.sort(lstTasks, m_TimeComp);
 			break;
 		case TaskSessionFacade.SORT_BY_STATUS:
 			Collections.sort(lstTasks, m_StatusComp);

@@ -151,10 +151,10 @@ public class ScrumDocumentSessionFacade {
 		Calendar cal1 = Calendar.getInstance(), cal2 = Calendar.getInstance();
 		long t1, t2;
 		for (IScrumDocument doc : getAllDocuments(SORT_BY_CREATEDAT, false)) {
-			if (doc.getCreatedAt() == null) {
+			if (doc.getModifiedAt() == null) {
 				lstWithLimit.add(doc);
 			} else {
-				cal1.setTime(doc.getCreatedAt());
+				cal1.setTime(doc.getModifiedAt());
 				cal1.set(Calendar.HOUR_OF_DAY, 0);
 				cal1.set(Calendar.MINUTE, 0);
 				cal1.set(Calendar.SECOND, 0);
